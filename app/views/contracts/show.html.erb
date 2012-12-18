@@ -1,0 +1,79 @@
+<div class="contextual">
+  <% if User.current.roles_for_project(@project).first.permissions.include?(:edit_contracts) %>
+    <%= link_to "Add Time Entries", "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries", :method => :get %>
+  <% end %>
+</div>
+
+<h2>
+  <%= @contract.title %> 
+  <% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
+    <%= link_to image_tag("/images/edit.png"), "#{@contract.id}/edit", :title => "Edit" %>
+  <% end %>
+  <% if User.current.roles_for_project(@project).first.permissions.include?(:delete_contracts) %>
+    <%= link_to image_tag("/images/delete.png"), "#{@contract.id}", :method => :delete, 
+      :title => "Delete", :confirm => "Are you sure you want to delete #{@contract.title}?" %>
+  <% end %>
+</h2>
+
+<div class="contract_title_div">
+  <p class="contract_details_header">Title:</p>
+  <p class="contract_details_content"><%= @contract.title %></p>
+</div>
+
+<div class="contract_description_div">
+  <p class="contract_details_header">Description:</p>
+  <p class="contract_details_content"><%= @contract.description %></p>
+</div>
+
+<div class="contract_agreement_date_div">
+  <p class="contract_details_header">Agreement Date:</p>
+  <p class="contract_details_content"><%= @contract.agreement_date.strftime('%m/%d/%Y')  %></p>
+</div>
+
+<div class="contract_start_date_div">
+  <p class="contract_details_header">Start Date:</p>
+  <p class="contract_details_content"><%= @contract.start_date.strftime('%m/%d/%Y') %></p>
+</div>
+
+<div class="contract_end_date_div">
+  <p class="contract_details_header">End Date:</p>
+  <p class="contract_details_content"><%= @contract.end_date.strftime('%m/%d/%Y')  %></p>
+</div>
+
+<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
+  <div class="contract_hourly_rate_div">
+    <p class="contract_details_header">Hourly Rate:</p>
+    <p class="contract_details_content"><%= number_to_currency(@contract.hourly_rate) %></p>
+  </div>
+<% end %>
+
+<div class="contract_project_div">
+  <p class="contract_details_header">Project:</p>
+  <p class="contract_details_content"><%= @contract.project %></p>
+</div>
+
+<% if !@contract.contract_url.empty? %>
+  <div class="contract_contract_url_div">
+    <p class="contract_details_header">Contract:</p>
+    <p class="contract_details_content">
+      <%= link_to image_tag("/images/files/text.png"), @contract.contract_url %>
+    </p>
+  </div>
+<% end %>
+
+<% if !@contract.invoice_url.empty? %>
+  <div class="contract_invoice_url_div">
+    <p class="contract_details_header">Contract:</p>
+    <p class="contract_details_content">
+      <%= link_to image_tag("/images/files/text.png"), @contract.invoice_url %>
+    </p>
+  </div>
+<% end %>
+                            
+<h3>Time Entries</h3>
+
+<%= render 'time_entries_list' %>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>
+<% end %>

@@ -1,0 +1,59 @@
+<h2>All Contracts</h2>
+
+<%= render 'contracts_summary' %>
+
+<table class="contracts_table">
+  <tr class="contracts_table_header_row">
+    <td>Name</td>
+    <td>Project</td>
+    <td>Agreed On</td>
+    <td>Date Range</td>
+    <td>Amount Purchased</td>
+    <td>Hourly Rate</td>
+    <td>Amount Remaining</td>
+    <td>Hours Worked</td>
+    <td>~Hours Remaining</td>
+    <td>Contract</td>
+    <td>Invoice</td>
+  </tr>
+  <% @contracts.each do |contract| %>
+    <tr>
+      <td><%= link_to contract.title, "/projects/#{contract.project.identifier}/contracts/#{contract.id}", :method => :get %></td>
+      <td><%= contract.project.name %></td>
+      <td><%= contract.agreement_date.strftime('%m/%d/%Y') %></td>
+      <td><%= contract.start_date.strftime('%m/%d/%Y') + " - " + contract.end_date.strftime('%m/%d/%Y') %></td>
+      <td><%= number_to_currency(contract.purchase_amount) %></td>
+      <td><%= number_to_currency(contract.hourly_rate) %></td>
+      <td><%= number_to_currency(contract.amount_remaining) %></td>
+      <td><%= number_with_precision contract.hours_spent, :precision => 2 %></td>
+      <td><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
+      <td>
+        <% if !contract.contract_url.empty? %>
+          <%= link_to image_tag("/images/files/text.png"), contract.contract_url %>
+        <% end %>
+      </td>
+      <td>
+        <% if !contract.invoice_url.empty? %>
+          <%= link_to image_tag("/images/files/text.png"), contract.invoice_url%>
+        <% end %>
+      </td>
+      <% if User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
+        <td>
+          <%= link_to image_tag("/images/edit.png"), 
+            "/projects/#{contract.project.identifier}/contracts/#{contract.id}/edit", :method => :get, :title => "Edit" %>
+        </td>
+      <% end %>
+      <% if User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
+        <td>
+          <%= link_to image_tag("/images/delete.png"), 
+            "/projects/#{contract.project.identifier}/contracts/#{contract.id}", :method => :delete,
+          :title => "Delete", :confirm => "Are you sure you want to delete #{contract.title}?" %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>
+<% end %>

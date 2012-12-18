@@ -1,0 +1,12 @@
+.contracts_table {
+  width: 100%
+}
+
+.contracts_table_header_row, .time_entries_header_row {
+  font-weight: bold;
+}
+
+.time_entries_for_contract_table, .time_entries_assoc_table {
+  width: 100%
+}
+

@@ -1,0 +1,42 @@
+<h2><%= @contract.title %> - Add Time Entries</h2>
+
+<%= form_tag("/projects/#{@contract.project.identifier}/contracts/#{@contract.id}/assoc_time_entries_with_contract", :method => "put") do %>
+  <table class="time_entries_assoc_table">
+    <tr class="time_entries_header_row">
+      <td>Add to Contract</td>
+      <td>Date</td>
+      <td>Current Contract</td>
+      <td>Member</td>
+      <td>Activity</td>
+      <td>Issue</td>
+      <td>Comments</td>
+      <td>Hours</td>
+    </tr>
+    <% @time_entries.each do |time_entry| %>
+      <tr>
+        <% ((time_entry.contract != nil) && (time_entry.contract.id == @contract.id)) ? if_disabled = true : if_disabled = false %>
+        <% ((time_entry.contract != nil) && (time_entry.contract.id == @contract.id)) ? if_checked  = true : if_checked = false %>
+        <td><%= check_box_tag("time_entries[#{time_entry.id}]", "1", if_checked, :disabled => if_disabled) %></td>
+        <td><%= time_entry.spent_on.strftime('%m/%d/%Y') %></td>
+        <td><%= time_entry.contract.title unless time_entry.contract == nil %></td>
+        <td><%= link_to time_entry.user.name, user_path(time_entry.user) %></td>
+        <td><%= time_entry.activity.name %></td>
+        <td><%= link_to time_entry.issue, issue_path(time_entry.issue) unless !time_entry.issue %></td>
+        <td><%= time_entry.comments %></td>
+        <td><%= time_entry.hours %></td>
+        <td><%= link_to image_tag("/images/edit.png"), edit_time_entry_path(time_entry), :title => "Edit" %></td>
+        <td>
+          <%= link_to image_tag("/images/delete.png"), time_entry_path(time_entry),
+            :title => "Delete", 
+            :confirm => "Are you sure you want to delete this time entry?", 
+            :method => :delete %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <%= submit_tag("Apply") %>
+<% end %>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>
+<% end %>

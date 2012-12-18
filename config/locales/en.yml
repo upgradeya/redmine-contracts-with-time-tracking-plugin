@@ -1,0 +1,12 @@
+# English strings go here for Rails i18n
+en:
+  field_contract: Contract
+  field_title: Title
+  field_description: Description
+  field_agreement_date: Agreement Date
+  field_start_date: Start Date
+  field_end_date: End Date
+  field_purchase_amount: Purchase Amount
+  field_hourly_rate: Hourly Rate
+  field_contract_url: Contract URL
+  field_invoice_url: Invoice URL

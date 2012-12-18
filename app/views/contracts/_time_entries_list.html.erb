@@ -1,0 +1,26 @@
+<table class="time_entries_for_contract_table">
+  <tr class="time_entries_header_row">
+    <td><b>Date</b></td>
+    <td><b>Member</b></td>
+    <td><b>Activity</b></td>
+    <td><b>Issue</b></td>
+    <td><b>Comments</b></td>
+    <td><b>Hours</b></td>
+  </tr>
+  <% @time_entries.each do |time_entry| %>
+    <tr>
+      <td><%= time_entry.spent_on.strftime('%m/%d/%Y') %></td>
+      <td><%= link_to time_entry.user.name, user_path(time_entry.user) %></td>
+      <td><%= time_entry.activity.name %></td>
+      <td><%= link_to time_entry.issue, issue_path(time_entry.issue) unless !time_entry.issue %></td>
+      <td><%= time_entry.comments %></td>
+      <td><%= time_entry.hours %></td>
+      <td><%= link_to image_tag("/images/edit.png"), edit_time_entry_path(time_entry), :title => "Edit" %></td>
+      <td>
+        <%= link_to image_tag("/images/delete.png"), time_entry_path(time_entry), 
+          :title => "Delete", :confirm => "Are you sure you want to delete this time entry?", :method => :delete %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+

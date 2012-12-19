@@ -1,0 +1,54 @@
+<table class="contracts-list">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Agreed On</th>
+      <th>Date Range</th>
+      <th>Purchased</th>
+      <% if (@project != nil) && (User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate)) %>
+        <th>Hourly Rate</th>
+      <% end %>
+      <th>Remaining</th>
+      <th>Hours Worked</th>
+      <th>~Hours Left</th>
+      <th>Contract</th>
+      <th>Invoice</th>
+    </tr>
+  </thead>
+  <% @contracts.each do |contract| %>
+    <tr class="<%= cycle("odd", "even") %>">
+      <td>
+        <%= link_to contract.title, "contracts/#{contract.id}", :method => :get %> 
+      </td>
+      <td><%= contract.agreement_date.strftime('%m/%d/%Y') %></td>
+      <td><%= contract.start_date.strftime('%m/%d/%Y') + " - " + contract.end_date.strftime('%m/%d/%Y') %></td>
+      <td><%= number_to_currency(contract.purchase_amount) %></td>
+      <% if (@project != nil) && (User.current.roles_for_project(contract.project).first.permissions.include?(:view_hourly_rate)) %>
+        <td><%= number_to_currency(contract.hourly_rate) %></td>
+      <% end %>
+      <td class="green"><%= number_to_currency(contract.amount_remaining) %></td>
+      <td><%= number_with_precision contract.hours_spent, :precision => 2 %></td>
+      <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
+      <td>
+        <% if !contract.contract_url.empty? %>
+          <%= link_to image_tag("/images/files/text.png"), contract.contract_url %>
+        <% end %>
+      </td>
+      <td>
+        <% if !contract.invoice_url.empty? %>
+          <%= link_to image_tag("/images/files/text.png"), contract.invoice_url%>
+        <% end %>
+      </td>
+      <% if User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
+        <td><%= link_to image_tag("/images/edit.png"), "contracts/#{contract.id}/edit", :method => :get, :title => "Edit" %></td>
+      <% end %>
+      <% if User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
+        <td>
+          <%= link_to image_tag("/images/delete.png"), "contracts/#{contract.id}", :method => :delete, 
+          :title => "Delete", :confirm => "Are you sure you want to delete #{contract.title}?" %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+

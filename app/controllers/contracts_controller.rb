@@ -23,6 +23,8 @@ class ContractsController < ApplicationController
     @total_purchased_hours   = @contracts.sum { |contract| contract.hours_purchased }
     @total_remaining_dollars = @contracts.sum { |contract| contract.amount_remaining }
     @total_remaining_hours   = @contracts.sum { |contract| contract.hours_remaining }
+    
+    render "index"
   end
 
   def new

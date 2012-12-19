@@ -1,16 +1,17 @@
-<table class="contracts_summary_table" >
-  <tr class="contracts_summary_tr">
-    <td class="contracts_summary_td">
-      <h3 class="contracts_summary_h3">Total Purchased for All Contracts</h3>
-      <p class="contracts_summary_amount_purchased"><%= number_to_currency(@total_purchased_dollars) %></p>
-      <p class="contracts_summary_or">-or-</p>
-      <p class="contracts_summary_hours_purchased">~<%= number_with_precision @total_purchased_hours, :precision => 2 %> hrs</p>
+<table class="contracts-summary" >
+  <tr>
+    <td>
+      <h3>Total Purchased for All Contracts</h3>
+      <p class="bigbold"><%= number_to_currency(@total_purchased_dollars) %></p>
+      <p>-or-</p>
+      <p class="bigbold">~<%= number_with_precision @total_purchased_hours, :precision => 2 %> hrs</p>
     </td>
-    <td class="contracts_summary_td">
-      <h3 class="contracts_summary_h3">Total Remaining for All Contracts</h3>
-      <p class="contracts_summary_amount_remaining"><%= number_to_currency(@total_remaining_dollars) %></p>
-      <p class="contracts_summary_or">-or-</p>
-      <p class="contracts_summary_hours_remaining">~<%= number_with_precision @total_remaining_hours, :precision => 2 %> hrs</p>
+    <td>
+      <h3>Total Remaining for All Contracts</h3>
+      <p class="green bigbold"><%= number_to_currency(@total_remaining_dollars) %></p>
+      <p>-or-</p>
+      <p class="blue bigbold">~<%= number_with_precision @total_remaining_hours, :precision => 2 %> hrs</p>
     </td>
   </tr>
 </table>
+</br>

@@ -1,12 +1,32 @@
-.contracts_table {
-  width: 100%
+.contracts-summary td{
+  background: #EEE;
+  padding: 10px;
+  border: 1px solid #E4E4E4;
+  text-align: center;
 }
 
-.contracts_table_header_row, .time_entries_header_row {
-  font-weight: bold;
+.contracts-summary h3{
+  font-size: 1.2em;
 }
 
-.time_entries_for_contract_table, .time_entries_assoc_table {
-  width: 100%
+.contracts-list, .time-entries-for-contract-list {
+  width: 100%;
+}
+
+.contracts-list th, .time-entries-for-contract-list th {
+  text-align: left;
+}
+
+.bigbold{
+  font-size:1.5em;
+  font-weight:bold;
+}
+
+.green{
+  color:#009b00;
+}
+
+.blue{
+  color:#0072ca;
 }
 

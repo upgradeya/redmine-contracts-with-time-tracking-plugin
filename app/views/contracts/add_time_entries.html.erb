@@ -1,19 +1,23 @@
 <h2><%= @contract.title %> - Add Time Entries</h2>
 
 <%= form_tag("/projects/#{@contract.project.identifier}/contracts/#{@contract.id}/assoc_time_entries_with_contract", :method => "put") do %>
-  <table class="time_entries_assoc_table">
-    <tr class="time_entries_header_row">
-      <td>Add to Contract</td>
-      <td>Date</td>
-      <td>Current Contract</td>
-      <td>Member</td>
-      <td>Activity</td>
-      <td>Issue</td>
-      <td>Comments</td>
-      <td>Hours</td>
-    </tr>
-    <% @time_entries.each do |time_entry| %>
+  <table class="bulk-time-entries list">
+    <thead>
       <tr>
+        <th>Add to Contract</th>
+        <th>Date</th>
+        <th>Current Contract</th>
+        <th>Member</th>
+        <th>Activity</th>
+        <th>Issue</th>
+        <th>Comments</th>
+        <th>Hours</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <% @time_entries.each do |time_entry| %>
+      <tr class="<%= cycle("odd", "even") %>">
         <% ((time_entry.contract != nil) && (time_entry.contract.id == @contract.id)) ? if_disabled = true : if_disabled = false %>
         <% ((time_entry.contract != nil) && (time_entry.contract.id == @contract.id)) ? if_checked  = true : if_checked = false %>
         <td><%= check_box_tag("time_entries[#{time_entry.id}]", "1", if_checked, :disabled => if_disabled) %></td>

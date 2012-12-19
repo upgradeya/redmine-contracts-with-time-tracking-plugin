@@ -13,7 +13,7 @@
   width: 100%;
 }
 
-.contracts-list th, .time-entries-for-contract-list th {
+.contracts-list th, .time-entries-for-contract-list th, .bulk-time-entries th {
   text-align: left;
 }
 

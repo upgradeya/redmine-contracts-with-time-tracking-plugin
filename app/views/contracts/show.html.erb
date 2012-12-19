@@ -37,6 +37,10 @@
   </div>
 <% end %>
 
+<div>
+  <p><b>Amount Purchased:</b> <%= number_to_currency(@contract.purchase_amount) %></p>
+</div>
+
 <% if !@contract.contract_url.empty? %>
   <div> 
     <p><%= link_to "View Contract", @contract.contract_url %></p>

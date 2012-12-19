@@ -5,7 +5,7 @@ class ContractsController < ApplicationController
   
   def index
     @project = Project.find(params[:project_id])
-    @contracts = Contract.where(:project_id => @project.id)
+    @contracts = Contract.order("start_date ASC").where(:project_id => @project.id)
     @total_purchased_dollars = @project.total_amount_purchased
     @total_purchased_hours   = @project.total_hours_purchased
     @total_remaining_dollars = @project.total_amount_remaining
@@ -17,7 +17,7 @@ class ContractsController < ApplicationController
     @projects = @user.projects.select { |project| @user.roles_for_project(project).
                                                         first.permissions.
                                                         include?(:view_all_contracts_for_project) }
-    @contracts = @projects.collect { |project| project.contracts }
+    @contracts = @projects.collect { |project| project.contracts.order("start_date ASC") }
     @contracts.flatten!
     @total_purchased_dollars = @contracts.sum { |contract| contract.purchase_amount }
     @total_purchased_hours   = @contracts.sum { |contract| contract.hours_purchased }
@@ -47,7 +47,7 @@ class ContractsController < ApplicationController
 
   def show
     @contract = Contract.find(params[:id])
-    @time_entries = @contract.time_entries
+    @time_entries = @contract.time_entries.order("spent_on DESC")
   end
 
   def edit
@@ -83,7 +83,7 @@ class ContractsController < ApplicationController
   def add_time_entries
     @contract = Contract.find(params[:id])
     @project = @contract.project
-    @time_entries = @contract.project.time_entries
+    @time_entries = @contract.project.time_entries.order("spent_on DESC")
   end
 
   def assoc_time_entries_with_contract

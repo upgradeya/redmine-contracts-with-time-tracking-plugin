@@ -3,8 +3,6 @@
 #
 
 match 'contracts/all'                                       => 'contracts#all',     :via => :get
-match 'contracts'                                           => 'contracts#index',   :via => :get
-match 'contracts/new'                                       => 'contracts#index',   :via => :get
 match 'contracts/:id'                                       => 'contracts#destroy', :via => :delete
 match 'contracts/:id/edit'                                  => 'contracts#edit',    :via => :get
 match 'projects/:project_id/contracts'                      => 'contracts#index',   :via => :get

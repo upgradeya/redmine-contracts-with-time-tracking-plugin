@@ -1,6 +1,6 @@
 class ContractsController < ApplicationController
   unloadable
-  before_filter :find_project, :authorize, :only => [:index, :show, :new, :edit, :destroy, 
+  before_filter :find_project, :authorize, :only => [:index, :show, :new, :create, :edit, :update, :destroy, 
                                                      :add_time_entries, :assoc_time_entries_with_contract]
   
   def index

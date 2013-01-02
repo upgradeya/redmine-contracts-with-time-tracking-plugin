@@ -6,7 +6,7 @@
 
 <h2>
   <%= @contract.title %> 
-  <% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
+  <% if User.current.roles_for_project(@project).first.permissions.include?(:edit_contracts) %>
     <%= link_to image_tag("/images/edit.png"), "#{@contract.id}/edit", :title => "Edit" %>
   <% end %>
   <% if User.current.roles_for_project(@project).first.permissions.include?(:delete_contracts) %>

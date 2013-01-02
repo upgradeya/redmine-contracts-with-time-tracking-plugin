@@ -1,7 +1,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ContractsControllerTest < ActionController::TestCase
-  fixtures :contracts, :projects, :users, :roles
+  fixtures :contracts, :projects, :users
 
   def setup
     @contract = contracts(:contract_one)

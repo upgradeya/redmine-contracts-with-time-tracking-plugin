@@ -26,6 +26,14 @@ module Contracts
       def total_hours_remaining
         self.contracts.sum { |contract| contract.hours_remaining }
       end
+
+			def contracts_for_all_ancestor_projects(contracts=self.contracts)
+				if self.parent != nil
+					parent = self.parent
+					contracts +=  parent.contracts_for_all_ancestor_projects
+				end
+				return contracts
+			end
     end
 
   end

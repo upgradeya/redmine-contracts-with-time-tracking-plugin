@@ -2,7 +2,8 @@ module Contracts
   class ContractsHookListener < Redmine::Hook::ViewListener
 
     def view_timelog_edit_form_bottom(context={})
-      @contracts = Contract.where(:project_id => context[:time_entry].project_id)
+			@current_project = Project.find(context[:time_entry].project_id)
+      @contracts = @current_project.contracts_for_all_ancestor_projects
       if context[:time_entry].contract_id != nil
         selected_contract = context[:time_entry].contract_id
       elsif !(@contracts.select { |contract| (contract.start_date <= DateTime.now) && (DateTime.now <= contract.end_date) }.empty?)

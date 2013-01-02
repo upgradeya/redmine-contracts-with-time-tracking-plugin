@@ -57,10 +57,9 @@ class ContractTest < ActiveSupport::TestCase
     assert !@contract.save
   end
 
-  test "agreement date should be before or equal to start date" do
+  test "agreement date can come after start date" do
     @contract.start_date = @contract.agreement_date - 7
-    assert !@contract.save
-    puts @contract.errors
+    assert @contract.save
   end
   
   test "start date should come before end date" do

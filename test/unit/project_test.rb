@@ -21,13 +21,17 @@ class ProjectTest < ActiveSupport::TestCase
   fixtures :projects, :contracts
 
   def setup
-    @project = projects(:projects_001)
-    @contract = contracts(:contract_one)
-    @contract2 = contracts(:contract_two)
+    @project 				= projects(:projects_001)
+		@subproject 		= projects(:projects_003)
+		@sub_subproject =	projects(:projects_004)
+    @contract 			= contracts(:contract_one)
+    @contract2 			= contracts(:contract_two)
     @contract.project_id = @project.id
     @contract2.project_id = @project.id
     @contract.save
     @contract2.save
+		@sub_subproject.parent_id = @subproject.id
+		@sub_subproject.save
   end
 
   test "should have many contracts" do
@@ -49,4 +53,10 @@ class ProjectTest < ActiveSupport::TestCase
   test "should calculate hours remaining across all contracts" do
     assert_equal @project.total_hours_remaining, (@contract.hours_remaining + @contract2.hours_remaining)
   end
+
+	test "should get contracts for all ancestor projects" do
+		@contract2.project_id = @subproject.id
+		@contract2.save
+		assert_equal 2, @sub_subproject.contracts_for_all_ancestor_projects.count		
+	end
 end

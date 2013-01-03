@@ -18,7 +18,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ProjectTest < ActiveSupport::TestCase
-  fixtures :projects, :contracts
+  fixtures :projects, :contracts, :time_entries
 
   def setup
     @project 				= projects(:projects_001)
@@ -26,12 +26,20 @@ class ProjectTest < ActiveSupport::TestCase
 		@sub_subproject =	projects(:projects_004)
     @contract 			= contracts(:contract_one)
     @contract2 			= contracts(:contract_two)
+		@time_entry1		= time_entries(:time_entries_001)
+		@time_entry2		= time_entries(:time_entries_004)
+		@time_entry3 		= time_entries(:time_entries_005)	
     @contract.project_id = @project.id
     @contract2.project_id = @project.id
     @contract.save
     @contract2.save
 		@sub_subproject.parent_id = @subproject.id
 		@sub_subproject.save
+		@project.time_entries.clear
+		@project.time_entries.append(@time_entry1)
+		@project.save
+		@time_entry3.project_id = @sub_subproject.id
+		@time_entry3.save
   end
 
   test "should have many contracts" do
@@ -58,5 +66,13 @@ class ProjectTest < ActiveSupport::TestCase
 		@contract2.project_id = @subproject.id
 		@contract2.save
 		assert_equal 2, @sub_subproject.contracts_for_all_ancestor_projects.count		
+	end
+
+	test "should get all time entries for current project and all descendent projects" do
+		time_entries = @project.time_entries_for_all_descendant_projects
+		assert_equal 3, time_entries.count
+		assert time_entries.include?(@time_entry1)
+		assert time_entries.include?(@time_entry2)
+		assert time_entries.include?(@time_entry3)
 	end
 end

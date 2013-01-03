@@ -34,6 +34,13 @@ module Contracts
 				end
 				return contracts
 			end
+
+			def time_entries_for_all_descendant_projects(time_entries=self.time_entries)
+				if self.children != nil
+					self.children.each { |child| time_entries += child.time_entries_for_all_descendant_projects }
+				end
+				return time_entries
+			end
     end
 
   end

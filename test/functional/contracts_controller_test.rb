@@ -160,4 +160,18 @@ test "should create new contract with permission" do
 		delete :destroy, :project_id => @project.id, :id => @contract.id
 		assert_response 403
 	end
+
+	test "should get 'add time entries' with permission" do
+		Role.find(4).add_permission! :edit_contracts
+		get :add_time_entries, :project_id => @project.id, :id => @contract.id
+		assert_response :success	
+		assert_not_nil assigns(:contract)
+		assert_not_nil assigns(:project)
+		assert_not_nil assigns(:time_entries)
+	end
+
+	test "should not get 'add time entries' without permission" do
+		get :add_time_entries, :project_id => @project.id, :id => @contract.id		
+		assert_response 403
+	end
 end

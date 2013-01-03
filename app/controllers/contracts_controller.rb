@@ -83,7 +83,7 @@ class ContractsController < ApplicationController
   def add_time_entries
     @contract = Contract.find(params[:id])
     @project = @contract.project
-    @time_entries = @contract.project.time_entries.order("spent_on DESC")
+    @time_entries = @contract.project.time_entries_for_all_descendant_projects.sort_by! { |entry| entry.spent_on }
   end
 
   def assoc_time_entries_with_contract

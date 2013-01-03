@@ -2,13 +2,12 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class ContractsControllerTest < ActionController::TestCase
   include ActionView::Helpers::NumberHelper
-  fixtures :contracts, :projects, :users
+  fixtures :contracts, :projects, :users, :time_entries
 
   def setup 
-    @contract = contracts(:contract_one)
-    @project = projects(:projects_001)
- 	 	@user = users(:users_004)
-    
+    @contract 		= contracts(:contract_one)
+    @project 			= projects(:projects_001)
+ 	 	@user 				= users(:users_004)
 		@contract.project_id = @project.id
     @request.session[:user_id] = @user.id
     @project.enabled_module_names = [:contracts]
@@ -144,4 +143,14 @@ class ContractsControllerTest < ActionController::TestCase
     assert_select "h2", "Editing Contract - #{@contract.title}"
     assert_template :partial => "_form"
   end
+
+	test "add time entries view with edit contract permission" do
+		Role.find(4).add_permission! :edit_contracts
+		get :add_time_entries, :project_id => @project.id, :id => @contract.id
+		assert_response :success
+		@project.time_entries.each { |entry| assert_tag :tag => "td", :content => "#{entry.hours}" }
+		@project.children.each do |subproject|
+			subproject.time_entries.each { |entry| assert_tag :tag => "td", :content => "#{entry.hours}" }	
+		end
+	end
 end

@@ -49,7 +49,6 @@ class TimelogControllerTest < ActionController::TestCase
                                 :issue_id => '1',
                                 :hours => '7.3',
 																:contract_id => @contract.id}
-		puts flash[:error]
 		assert_equal "This time entry exceeded the time remaining for the contract by #{hours_over} hours.\nTo stay within the contract, please edit the time entry to be no more than #{hours_left} hours.", flash[:error]		
   end
 

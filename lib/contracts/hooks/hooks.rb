@@ -21,10 +21,12 @@ module Contracts
 		def controller_timelog_edit_before_save(context={})
 			if context[:time_entry].contract_id != nil
 				contract = Contract.find(context[:time_entry].contract_id)
-				hours_over = contract.exceeds_remaining_hours_by?(context[:time_entry].hours)
-				msg = "This time entry exceeded the time remaining for the contract by #{hours_over} hours.\nTo stay within the contract, please edit the time entry to be no more than #{contract.hours_remaining} hours."
-			end
-			context[:controller].flash[:error] = msg
+				unless contract.hours_remaining < 0 
+					hours_over = contract.exceeds_remaining_hours_by?(context[:time_entry].hours)
+					msg = "This time entry exceeded the time remaining for the contract by #{hours_over} hours.\nTo stay within the contract, please edit the time entry to be no more than #{contract.hours_remaining} hours."
+					context[:controller].flash[:error] = msg unless hours_over == 0
+				end
+			end	
 		end
   end
 end

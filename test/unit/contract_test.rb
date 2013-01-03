@@ -80,4 +80,11 @@ class ContractTest < ActiveSupport::TestCase
     amount_remaining = @contract.purchase_amount - (@contract.hours_spent * @contract.hourly_rate)
     assert_equal @contract.amount_remaining, amount_remaining
   end
+
+	test "should return message if time entry exceeds amount remaining" do
+		contract = contracts(:contract_three)
+		hours = (contract.amount_remaining / contract.hourly_rate) + 10
+		hours_over = contract.exceeds_remaining_hours_by?(hours)
+		assert_equal 10.0, hours_over
+	end
 end

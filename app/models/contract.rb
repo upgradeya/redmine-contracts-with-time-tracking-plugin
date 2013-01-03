@@ -26,6 +26,11 @@ class Contract < ActiveRecord::Base
     self.hours_purchased - self.hours_spent
   end
 
+	def exceeds_remaining_hours_by?(hours=0)
+			hours_over = hours - self.hours_remaining
+			hours_over > 0 ? hours_over : 0
+	end
+
   private
     
     def remove_contract_id_from_associated_time_entries

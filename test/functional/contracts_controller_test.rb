@@ -174,4 +174,8 @@ test "should create new contract with permission" do
 		get :add_time_entries, :project_id => @project.id, :id => @contract.id		
 		assert_response 403
 	end
+
+	test "should notify user if adding time entry(ies) exceeds amount remaining" do
+			
+	end
 end

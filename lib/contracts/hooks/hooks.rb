@@ -17,5 +17,14 @@ module Contracts
       select = context[:form].select :contract_id, all_options
       return "<p>#{select}</p>"  
     end
+
+		def controller_timelog_edit_before_save(context={})
+			if context[:time_entry].contract_id != nil
+				contract = Contract.find(context[:time_entry].contract_id)
+				hours_over = contract.exceeds_remaining_hours_by?(context[:time_entry].hours)
+				msg = "This time entry exceeded the time remaining for the contract by #{hours_over} hours.\nTo stay within the contract, please edit the time entry to be no more than #{contract.hours_remaining} hours."
+			end
+			context[:controller].flash[:error] = msg
+		end
   end
 end

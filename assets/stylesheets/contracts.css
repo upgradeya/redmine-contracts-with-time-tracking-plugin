@@ -30,3 +30,12 @@
   color:#0072ca;
 }
 
+.contract-summary-td {
+	width: 60%;
+	padding-right: 10px;
+}
+
+.hours-summary-td {
+	width: 35%;
+}
+

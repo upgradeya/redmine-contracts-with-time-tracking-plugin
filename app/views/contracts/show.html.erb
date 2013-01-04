@@ -16,41 +16,74 @@
 </h2>
 
 <div>
-  <p><%= @contract.description %></p>
+	<table>
+		<tr>
+			<td colspan="2"><p><%= @contract.description %></p></td>
+		</tr>
+		<tr>
+			<td class="contract-summary-td">
+				<table class="contract-summary list">
+					<thead>
+						<tr>
+							<th>Agreement Date</th>
+							<th>Date Range</th>
+							<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
+								<th>Hourly Rate</th> 
+							<% end %>
+							<th>Amount Purchased</th>
+							<% if !@contract.contract_url.empty? %>
+								<th>Contract</th>
+							<% end %>
+							<% if !@contract.invoice_url.empty? %>
+								<th>Invoice</th>
+							<% end %>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="<%= cycle("odd", "even") %>">
+							<td><%= @contract.agreement_date.strftime('%m/%d/%Y')  %></td>
+							<td><%= @contract.start_date.strftime('%m/%d/%Y') %> - <%= @contract.end_date.strftime('%m/%d/%Y')  %></td>
+							<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
+								<td><%= number_to_currency(@contract.hourly_rate) %></td>
+							<% end %>
+							<td><%= number_to_currency(@contract.purchase_amount) %></td>
+							<% if !@contract.contract_url.empty? %>
+									<td><%= link_to "View Contract", @contract.contract_url %></td>
+							<% end %>
+							<% if !@contract.invoice_url.empty? %>
+									<td><%= link_to "View Invoice", @contract.invoice_url %></td>
+							<% end %>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+			<td class="hours-summary-td">
+				<table class="hours-summary list">
+					<thead>
+						<tr>
+							<th>Members</th>
+							<th>Hours</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @members.each do |member| %>
+							<tr class="<%= cycle("odd", "even") %>">
+								<td><%= member.name %></td>
+								<td><%= @time_entries.select { |entry| entry.user == member }.sum { |entry| entry.hours } %></td>
+							</tr>
+						<% end %>
+						<tr class="total-hours">
+							<td></td>
+							<td><%= @time_entries.sum { |entry| entry.hours } %></td>
+						</tr>	
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</table>
 </div>
 
-<div>
-  <p><b>Agreement Date:</b> <%= @contract.agreement_date.strftime('%m/%d/%Y')  %></p>
-</div>
-
-<div>
-  <p><b>Date Range:</b> <%= @contract.start_date.strftime('%m/%d/%Y') %> - <%= @contract.end_date.strftime('%m/%d/%Y')  %></p>
-</div>
-
-<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
-  <div>
-    <p><b>Hourly Rate:</b> <%= number_to_currency(@contract.hourly_rate) %></p>
-  </div>
-<% end %>
-
-<div>
-  <p><b>Amount Purchased:</b> <%= number_to_currency(@contract.purchase_amount) %></p>
-</div>
-
-<% if !@contract.contract_url.empty? %>
-  <div> 
-    <p><%= link_to "View Contract", @contract.contract_url %></p>
-  </div>
-<% end %>
-
-<% if !@contract.invoice_url.empty? %>
-  <div> 
-    <p><%= link_to "View Invoice", @contract.invoice_url %></p>
-  </div>
-<% end %>
-                            
 <h3>Time Entries</h3>
-
 <%= render 'time_entries_list' %>
 
 <% content_for :header_tags do %>

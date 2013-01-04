@@ -1,13 +1,13 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ContractsControllerTest < ActionController::TestCase
-  fixtures :contracts, :projects, :users
+  fixtures :contracts, :projects, :users, :time_entries
 
   def setup
     @contract = contracts(:contract_one)
     @project = projects(:projects_001)
 		@user = users(:users_004)
-		
+		@time_entry = time_entries(:time_entries_002)	
 		@contract.project_id = @project.id
 		@request.session[:user_id] = @user.id
 		@project.enabled_module_names = [:contracts]
@@ -83,7 +83,16 @@ test "should create new contract with permission" do
     assert_response :success
     assert_not_nil assigns(:contract)
     assert_not_nil assigns(:time_entries)
+		assert_not_nil assigns(:members)
   end
+
+  test "should get show and assign all user who've logged time to contributers" do
+		Role.find(4).add_permission! :view_contract_details
+		@time_entry.contract_id = @contract.id
+		@time_entry.save
+    get :show, :project_id => @project.id, :id => @contract.id
+		assert assigns(:members).include?(@time_entry.user)
+	end
 
 	test "should not get show without permission" do
 		assert !@user.roles_for_project(@project).first.permissions.include?(:view_contract_details)
@@ -175,7 +184,26 @@ test "should create new contract with permission" do
 		assert_response 403
 	end
 
-	test "should notify user if adding time entry(ies) exceeds amount remaining" do
+	test "should be able to associate time entries with contracts with permission" do
+		Role.find(4).add_permission! :edit_contracts
+ 		put :assoc_time_entries_with_contract, :project_id => @project.id, :id => @contract.id,
+					:time_entries => [[@time_entry.id]]
+    assert_redirected_to :action => "show", :project_id => @project.id, :id => @contract.id
+	end
+
+	test "should not be able to associate time entries with contracts without permission" do
+ 		put :assoc_time_entries_with_contract, :project_id => @project.id, :id => @contract.id,
+					:time_entries => [[@time_entry.id]]
+		assert_response 403
+	end
+
 			
+	test "should warn user if time entry exceeds contract's amount remaining" do
+		Role.find(4).add_permission! :edit_contracts
+		hours_over = @time_entry.hours - @contract.hours_remaining
+ 		put :assoc_time_entries_with_contract, :project_id => @project.id, :id => @contract.id,
+					:time_entries => [[@time_entry.id]]
+		assert_response 302 
+ 	 	assert_equal "You are now #{hours_over} hours over the contract's limit.", flash[:error]
 	end
 end

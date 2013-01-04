@@ -101,15 +101,20 @@ class ContractsControllerTest < ActionController::TestCase
 		Role.find(4).add_permission! :view_contract_details
     get :show, :project_id => @project.id, :id => @contract.id
     assert_select "h2", "#{@contract.title}"
+		assert_tag :tag => "table", :attributes => { :class => "contract-summary list" }
     assert_tag :tag => "p", :content => "#{@contract.description}"
-    assert_tag :tag => "p", :content => "Agreement Date:"
-    assert_tag :tag => "p", :content => "Date Range:"
-    assert_tag :tag => "p", :content => "Amount Purchased:"
+    assert_tag :tag => "th", :content => "Agreement Date"
+    assert_tag :tag => "th", :content => "Date Range"
+    assert_tag :tag => "th", :content => "Amount Purchased"
 
-    assert_tag :tag => "h3", :content => "Time Entries"
+		assert_tag :tag => "table", :attributes => { :class => "hours-summary list"}
+		assert_tag :tag => "th", :content => "Member"
+		assert_tag :tag => "th", :content => "Hours"
+    
+		assert_tag :tag => "h3", :content => "Time Entries"
     assert_tag :tag => "table", :attributes => { :class => "time-entries-for-contract-list list" }
 
-    assert_no_tag :tag => "p", :content => "Hourly Rate:"
+    assert_no_tag :tag => "p", :content => "Hourly Rate"
 		assert_no_tag :tag => "a", :attributes => { :title => "Edit" } 
 		assert_no_tag :tag => "a", :attributes => { :title => "Delete" } 
 		assert_no_tag :tag => "a", :content => "Add Time Entries"
@@ -134,7 +139,7 @@ class ContractsControllerTest < ActionController::TestCase
 		Role.find(4).add_permission! :view_contract_details
 		Role.find(4).add_permission! :view_hourly_rate
     get :show, :project_id => @project.id, :id => @contract.id
-		assert_tag :tag => "p", :content => "Hourly Rate:"
+		assert_tag :tag => "th", :content => "Hourly Rate"
 	end	
 
   test "edit view" do 

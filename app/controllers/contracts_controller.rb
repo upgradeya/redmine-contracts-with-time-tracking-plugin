@@ -48,6 +48,8 @@ class ContractsController < ApplicationController
   def show
     @contract = Contract.find(params[:id])
     @time_entries = @contract.time_entries.order("spent_on DESC")
+		@members= []
+		@time_entries.each { |entry| @members.append(entry.user) unless @members.include?(entry.user) }
   end
 
   def edit
@@ -97,6 +99,7 @@ class ContractsController < ApplicationController
         updated_time_entry.save
       end
     end
+		flash[:error] = "You are now #{-1 * @contract.hours_remaining} hours over the contract's limit." unless @contract.hours_remaining >= 0
     redirect_to "/projects/#{@contract.project.id}/contracts/#{@contract.id}" 
   end
 

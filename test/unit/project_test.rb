@@ -47,25 +47,25 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "should calculate amount purchased across all contracts" do
-    assert_equal @project.total_amount_purchased, (@contract.purchase_amount + @contract2.purchase_amount)
+    assert_equal @project.total_amount_purchased, Contract.all.sum { |contract| contract.purchase_amount }
   end
 
   test "should calculate approximate hours purchased across all contracts" do
-    assert_equal @project.total_hours_purchased, (@contract.hours_purchased + @contract2.hours_purchased)
+    assert_equal @project.total_hours_purchased, Contract.all.sum { |contract| contract.hours_purchased }
   end
 
   test "should calculate amount remaining across all contracts" do
-    assert_equal @project.total_amount_remaining, (@contract.amount_remaining + @contract2.amount_remaining)
+    assert_equal @project.total_amount_remaining, Contract.all.sum { |contract| contract.amount_remaining }
   end
 
   test "should calculate hours remaining across all contracts" do
-    assert_equal @project.total_hours_remaining, (@contract.hours_remaining + @contract2.hours_remaining)
+    assert_equal @project.total_hours_remaining, Contract.all.sum { |contract| contract.hours_remaining }
   end
 
 	test "should get contracts for all ancestor projects" do
 		@contract2.project_id = @subproject.id
 		@contract2.save
-		assert_equal 2, @sub_subproject.contracts_for_all_ancestor_projects.count		
+		assert_equal 3, @sub_subproject.contracts_for_all_ancestor_projects.count		
 	end
 
 	test "should get all time entries for current project and all descendent projects" do

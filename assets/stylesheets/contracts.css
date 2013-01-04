@@ -39,3 +39,6 @@
 	width: 35%;
 }
 
+.contract-summary th,  .hours-summary th {
+	text-align: left;	
+}

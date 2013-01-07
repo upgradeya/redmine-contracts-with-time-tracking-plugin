@@ -1,6 +1,6 @@
 <div class="contextual">
   <% if (@project != nil) && (User.current.roles_for_project(@project).first.permissions.include?(:create_contracts)) %>
-    <%= link_to "New Contract", "contracts/new", :method => :get, :class => 'icon icon-add' %>
+    <%= link_to "New Contract", "contracts/new", :class => 'icon icon-add' %>
   <% end %>
 </div>
 

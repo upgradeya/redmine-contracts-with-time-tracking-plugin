@@ -1,6 +1,6 @@
 <div class="contextual">
   <% if User.current.roles_for_project(@project).first.permissions.include?(:edit_contracts) %>
-    <%= link_to "Add Time Entries", "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries", :method => :get %>
+    <%= link_to "Add Time Entries", "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries" %>
   <% end %>
 </div>
 

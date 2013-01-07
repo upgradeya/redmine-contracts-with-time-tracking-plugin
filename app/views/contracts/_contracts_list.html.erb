@@ -20,7 +20,7 @@
   <% @contracts.each do |contract| %>
     <tr class="<%= cycle("odd", "even") %>">
       <td>
-        <%= link_to contract.title, "/projects/#{contract.project.identifier}/contracts/#{contract.id}", :method => :get %> 
+        <%= link_to contract.title, "/projects/#{contract.project.identifier}/contracts/#{contract.id}" %>
       </td>
       <td><%= contract.agreement_date.strftime('%m/%d/%Y') %></td>
       <td><%= contract.start_date.strftime('%m/%d/%Y') + " - " + contract.end_date.strftime('%m/%d/%Y') %></td>
@@ -43,12 +43,12 @@
       </td>
       <td>
         <% if User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
-          <%= link_to image_tag("/images/edit.png"), "contracts/#{contract.id}/edit", :method => :get, :title => "Edit" %>
+          <%= link_to image_tag("/images/edit.png"), "/projects/#{contract.project.identifier}/contracts/#{contract.id}/edit", :title => "Edit" %>
         <% end %>
       </td>
       <td>
         <% if User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
-            <%= link_to image_tag("/images/delete.png"), "contracts/#{contract.id}", :method => :delete, 
+            <%= link_to image_tag("/images/delete.png"), "/projects/#{contract.project.identifier}/contracts/#{contract.id}", :method => :delete, 
             :title => "Delete", :confirm => "Are you sure you want to delete #{contract.title}?" %>
         <% end %>
       </td>

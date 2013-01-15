@@ -18,15 +18,15 @@ Easiest way to get this plugin:
 Screenshots
 -----------
 
-View all contracts for a project:
+### View all contracts for a project:
 ![view contracts for project](https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin/raw/master/docs/screenshots/multiple_contracts.png)
 
-View contract details:
+### View contract details:
 ![view contract details](https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin/raw/master/docs/screenshots/single_contract.png)
 
-Create and edit contracts:
+### Create and edit contracts:
 ![create and edit contracts](https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin/raw/master/docs/screenshots/edit_contract.png)
 
-Set permisisons:
+### Set permisisons:
 ![manage permissions](https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin/raw/master/docs/screenshots/permissions.png)
 

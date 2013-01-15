@@ -5,11 +5,11 @@ require_dependency 'contracts/validators/is_after_agreement_date_validator'
 require_dependency 'contracts/validators/is_after_start_date_validator'
 
 Redmine::Plugin.register :contracts do
-  name 'Contracts plugin'
+  name 'Redmine Contracts With Time Tracking'
   author 'Ben Syzek'
-  description 'This is a Redmine plugin for creating and managing contracts.'
-  version '0.0.1'
-  #url 'http://example.com/path/to/plugin'
+  description 'A Redmine plugin that allows you to manage contracts and associate time-entries with those contracts.'
+  version '1.0.0'
+  url 'https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin'
   #author_url 'http://example.com/about'
  
   menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => 'Contracts', :if => Proc.new { User.current.logged? } 

@@ -1,0 +1,67 @@
+# Russian strings go here for Rails i18n
+ru:
+  project_module_contracts: Контракты
+  permission_view_all_contracts_for_project: Просмотр всех контрактов проекта
+  permission_view_contract_details: Просмотр деталей контракта
+  permission_edit_contracts: Редактирование контрактов
+  permission_create_contracts: Создание контрактов
+  permission_delete_contracts: Удаление контрактов
+  permission_view_hourly_rate: Просмотр стоимости часа
+
+  contracts: Контракты
+  label_contracts: Контракты
+  label_contract: Контракт
+  label_new_contract: Новый контракт
+  label_editing_contract: Редактирование контракта
+  label_add_time_entries: Добавить работы
+  label_edit: Редактировать
+  label_delete: Удалить
+  label_view_contract: Просмотр контракта
+  label_view_invoice: Просмотр счета
+  label_date_period: Период действия
+  label_amount_purchased: Оплачено
+  label_invoice: Счет
+  label_members: Участники
+  label_hours: Часы
+  label_time_entries: Список работ
+  label_add_to_contract: Добавить
+  label_date: Дата
+  label_current_contract: Текущий контракт
+  label_member: Участник
+  label_activity: Действие
+  label_issue: Задача
+  label_comments: Комментарий
+  label_apply: Применить
+  label_name: Название
+  label_agreed_on: Заключен
+  label_purchased: Оплачено
+  label_remaining: Осталось
+  label_hours_worked: Часов потрачено
+  label_hours_left: "~Часов осталось"
+  label_total_purchased: Всего оплачено по контрактам
+  label_total_remaining: Всего осталось по контрактам
+  label_or: "или"
+  label_create_contract: Создать контракт
+  label_update_contract: Обновить контракт
+  label_contract_empty: Без контракта
+
+  text_are_you_sure_delete_title: "Вы действительно хотите удалить %{value}?"
+  text_are_you_sure_delete_time_entry: "Вы действительно хотите удалить эту запись?"
+  text_time_exceeded_time_remaining: "Эта работа превышает оставшееся время по контракту на %{hours_over}.\nДля работы в рамках контракта укажите время не более %{hours_remaining}."
+  text_must_come_after_agreement_date: должна быть не ранее даты соглашения
+  text_must_come_after_start_date: должна быть позже даты начала
+  text_contract_saved: Контракт успешно создан!
+  text_contract_updated: Контракт успешно обновлен!
+  text_contract_deleted: Контракт успешно удален
+  text_hours_over_contract: "Лимит по контракту превышен на %{hours_over}."
+
+  field_contract: Контракт
+  field_title: Заголовок
+  field_description: Описание
+  field_agreement_date: Дата соглашения
+  field_start_date: Дата начала работ
+  field_end_date: Дата завершения работ
+  field_purchase_amount: Сумма к оплате
+  field_hourly_rate: Часовой рейт
+  field_contract_url: Ссылка на контракт
+  field_invoice_url: Ссылка на счет

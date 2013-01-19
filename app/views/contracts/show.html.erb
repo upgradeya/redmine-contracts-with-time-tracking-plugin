@@ -1,17 +1,17 @@
 <div class="contextual">
   <% if User.current.roles_for_project(@project).first.permissions.include?(:edit_contracts) %>
-    <%= link_to "Add Time Entries", "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries" %>
+    <%= link_to l(:label_add_time_entries), "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries" %>
   <% end %>
 </div>
 
 <h2>
   <%= @contract.title %> 
   <% if User.current.roles_for_project(@project).first.permissions.include?(:edit_contracts) %>
-    <%= link_to image_tag("/images/edit.png"), "#{@contract.id}/edit", :title => "Edit" %>
+    <%= link_to image_tag("/images/edit.png"), "#{@contract.id}/edit", :title => l(:label_edit) %>
   <% end %>
   <% if User.current.roles_for_project(@project).first.permissions.include?(:delete_contracts) %>
     <%= link_to image_tag("/images/delete.png"), "#{@contract.id}", :method => :delete, 
-      :title => "Delete", :confirm => "Are you sure you want to delete #{@contract.title}?" %>
+      :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, @contract.title) %>
   <% end %>
 </h2>
 
@@ -25,33 +25,33 @@
 				<table class="contract-summary list">
 					<thead>
 						<tr>
-							<th>Agreement Date</th>
-							<th>Date Range</th>
+							<th><%= l(:field_agreement_date) %></th>
+							<th><%= l(:label_date_period) %></th>
 							<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
-								<th>Hourly Rate</th> 
+								<th><%= l(:field_hourly_rate) %></th> 
 							<% end %>
-							<th>Amount Purchased</th>
+							<th><%= l(:label_amount_purchased) %></th>
 							<% if !@contract.contract_url.empty? %>
-								<th>Contract</th>
+								<th><%= l(:label_contract) %></th>
 							<% end %>
 							<% if !@contract.invoice_url.empty? %>
-								<th>Invoice</th>
+								<th><%= l(:label_invoice) %></th>
 							<% end %>
 						</tr>
 					</thead>
 					<tbody>
 						<tr class="<%= cycle("odd", "even") %>">
-							<td><%= @contract.agreement_date.strftime('%m/%d/%Y')  %></td>
-							<td><%= @contract.start_date.strftime('%m/%d/%Y') %> - <%= @contract.end_date.strftime('%m/%d/%Y')  %></td>
+							<td><%= format_date(@contract.agreement_date)  %></td>
+							<td><%= format_date(@contract.start_date) %> - <%= format_date(@contract.end_date)  %></td>
 							<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
 								<td><%= number_to_currency(@contract.hourly_rate) %></td>
 							<% end %>
 							<td><%= number_to_currency(@contract.purchase_amount) %></td>
 							<% if !@contract.contract_url.empty? %>
-									<td><%= link_to "View Contract", @contract.contract_url %></td>
+									<td><%= link_to l(:label_view_contract), @contract.contract_url %></td>
 							<% end %>
 							<% if !@contract.invoice_url.empty? %>
-									<td><%= link_to "View Invoice", @contract.invoice_url %></td>
+									<td><%= link_to l(:label_view_invoice), @contract.invoice_url %></td>
 							<% end %>
 						</tr>
 					</tbody>
@@ -61,8 +61,8 @@
 				<table class="hours-summary list">
 					<thead>
 						<tr>
-							<th>Members</th>
-							<th>Hours</th>
+							<th><%= l(:label_members) %></th>
+							<th><%= l(:label_hours) %></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -83,7 +83,7 @@
 	</table>
 </div>
 
-<h3>Time Entries</h3>
+<h3><%= l(:label_time_entries) %></h3>
 <%= render 'time_entries_list' %>
 
 <% content_for :header_tags do %>

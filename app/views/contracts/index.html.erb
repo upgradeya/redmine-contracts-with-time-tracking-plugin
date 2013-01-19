@@ -1,10 +1,10 @@
 <div class="contextual">
   <% if (@project != nil) && (User.current.roles_for_project(@project).first.permissions.include?(:create_contracts)) %>
-    <%= link_to "New Contract", "contracts/new", :class => 'icon icon-add' %>
+    <%= link_to l(:label_new_contract), "contracts/new", :class => 'icon icon-add' %>
   <% end %>
 </div>
 
-<h2>Contracts</h2>
+<h2><%= l(:label_contracts) %></h2>
 
 <%= render 'contracts_summary' %>
 <%= render 'contracts_list' %>

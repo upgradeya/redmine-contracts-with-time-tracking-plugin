@@ -12,7 +12,7 @@ module Contracts
         selected_contract = ''
       end
       db_options = options_from_collection_for_select(@contracts, :id, :title, selected_contract)
-      no_contract_option = "<option value=''>-- No Contract -- </option>\n".html_safe
+      no_contract_option = "<option value=''>-- #{l(:label_contract_empty)} -- </option>\n".html_safe
       all_options = no_contract_option << db_options 
       select = context[:form].select :contract_id, all_options
       return "<p>#{select}</p>"  
@@ -23,7 +23,7 @@ module Contracts
 				contract = Contract.find(context[:time_entry].contract_id)
 				unless contract.hours_remaining < 0 
 					hours_over = contract.exceeds_remaining_hours_by?(context[:time_entry].hours)
-					msg = "This time entry exceeded the time remaining for the contract by #{hours_over} hours.\nTo stay within the contract, please edit the time entry to be no more than #{contract.hours_remaining} hours."
+					msg = l(:text_time_exceeded_time_remaining, :hours_over => l_hours(hours_over), :hours_remaining => l_hours(contract.hours_remaining))
 					context[:controller].flash[:error] = msg unless hours_over == 0
 				end
 			end	

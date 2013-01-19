@@ -1,28 +1,28 @@
 <table class="time-entries-for-contract-list list">
   <thead>
     <tr>
-      <th>Date</th>
-      <th>Member</th>
-      <th>Activity</th>
-      <th>Issue</th>
-      <th>Comments</th>
-      <th>Hours</th>
+      <th><%= l(:label_date) %></th>
+      <th><%= l(:label_member) %></th>
+      <th><%= l(:label_activity) %></th>
+      <th><%= l(:label_issue) %></th>
+      <th><%= l(:label_comments) %></th>
+      <th><%= l(:label_hours) %></th>
       <th></th>
       <th></th>
     </tr>
   </thead>
   <% @time_entries.each do |time_entry| %>
     <tr class="<%= cycle("odd", "even") %>">
-      <td><%= time_entry.spent_on.strftime('%m/%d/%Y') %></td>
+      <td><%= format_date(time_entry.spent_on) %></td>
       <td><%= link_to time_entry.user.name, user_path(time_entry.user) %></td>
       <td><%= time_entry.activity.name %></td>
       <td><%= link_to time_entry.issue, issue_path(time_entry.issue) unless !time_entry.issue %></td>
       <td><%= time_entry.comments %></td>
       <td><%= time_entry.hours %></td>
-      <td><%= link_to image_tag("/images/edit.png"), edit_time_entry_path(time_entry), :title => "Edit" %></td>
+      <td><%= link_to image_tag("/images/edit.png"), edit_time_entry_path(time_entry), :title => l(:label_edit) %></td>
       <td>
         <%= link_to image_tag("/images/delete.png"), time_entry_path(time_entry), 
-          :title => "Delete", :confirm => "Are you sure you want to delete this time entry?", :method => :delete %>
+          :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_time_entry), :method => :delete %>
       </td>
     </tr>
   <% end %>

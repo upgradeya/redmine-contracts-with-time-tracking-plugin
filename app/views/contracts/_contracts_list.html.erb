@@ -1,18 +1,18 @@
 <table class="contracts-list list">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Agreed On</th>
-      <th>Date Range</th>
-      <th>Purchased</th>
+      <th><%= l(:label_name) %></th>
+      <th><%= l(:label_agreed_on) %></th>
+      <th><%= l(:label_date_period) %></th>
+      <th><%= l(:label_purchased) %></th>
       <% if (@project != nil) && (User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate)) %>
-        <th>Hourly Rate</th>
+        <th><%= l(:field_hourly_rate) %></th>
       <% end %>
-      <th>Remaining</th>
-      <th>Hours Worked</th>
-      <th>~Hours Left</th>
-      <th>Contract</th>
-      <th>Invoice</th>
+      <th><%= l(:label_remaining) %></th>
+      <th><%= l(:label_hours_worked) %></th>
+      <th><%= l(:label_hours_left) %></th>
+      <th><%= l(:label_contract) %></th>
+      <th><%= l(:label_invoice) %></th>
       <th></th>
       <th></th>
     </tr>
@@ -22,8 +22,8 @@
       <td>
         <%= link_to contract.title, "/projects/#{contract.project.identifier}/contracts/#{contract.id}" %>
       </td>
-      <td><%= contract.agreement_date.strftime('%m/%d/%Y') %></td>
-      <td><%= contract.start_date.strftime('%m/%d/%Y') + " - " + contract.end_date.strftime('%m/%d/%Y') %></td>
+      <td><%= format_date(contract.agreement_date) %></td>
+      <td><%= format_date(contract.start_date) + " - " + format_date(contract.end_date) %></td>
       <td><%= number_to_currency(contract.purchase_amount) %></td>
       <% if (@project != nil) && (User.current.roles_for_project(contract.project).first.permissions.include?(:view_hourly_rate)) %>
         <td><%= number_to_currency(contract.hourly_rate) %></td>
@@ -43,13 +43,13 @@
       </td>
       <td>
         <% if User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
-          <%= link_to image_tag("/images/edit.png"), "/projects/#{contract.project.identifier}/contracts/#{contract.id}/edit", :title => "Edit" %>
+          <%= link_to image_tag("/images/edit.png"), "/projects/#{contract.project.identifier}/contracts/#{contract.id}/edit", :title => l(:label_edit) %>
         <% end %>
       </td>
       <td>
         <% if User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
             <%= link_to image_tag("/images/delete.png"), "/projects/#{contract.project.identifier}/contracts/#{contract.id}", :method => :delete, 
-            :title => "Delete", :confirm => "Are you sure you want to delete #{contract.title}?" %>
+            :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, contract.title) %>
         <% end %>
       </td>
     </tr>

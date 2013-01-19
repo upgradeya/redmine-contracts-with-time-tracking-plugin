@@ -1,5 +1,60 @@
 # English strings go here for Rails i18n
 en:
+  project_module_contracts: Contracts
+  permission_view_all_contracts_for_project: View all contracts for project
+  permission_view_contract_details: View contract details
+  permission_edit_contracts: Edit contracts
+  permission_create_contracts: Create contracts
+  permission_delete_contracts: Delete contracts
+  permission_view_hourly_rate: View hourly rate
+
+  contracts: Contracts
+  label_contracts: Contracts
+  label_contract: Contract
+  label_new_contract: New Contract
+  label_editing_contract: Editing Contract
+  label_add_time_entries: Add Time Entries
+  label_edit: Edit
+  label_delete: Delete
+  label_view_contract: View Contract
+  label_view_invoice: View Invoice
+  label_date_period: Date Range
+  label_amount_purchased: Amount Purchased
+  label_invoice: Invoice
+  label_members: Members
+  label_hours: Hours
+  label_time_entries: Time Entries
+  label_add_to_contract: Add to Contract
+  label_date: Date
+  label_current_contract: Current Contract
+  label_member: Member
+  label_activity: Activity
+  label_issue: Issue
+  label_comments: Comments
+  label_apply: Apply
+  label_name: Name
+  label_agreed_on: Agreed On
+  label_purchased: Purchased
+  label_remaining: Remaining
+  label_hours_worked: Hours Worked
+  label_hours_left: "~Hours Left"
+  label_total_purchased: Total Purchased for All Contracts
+  label_total_remaining: Total Remaining for All Contracts
+  label_or: "-or-"
+  label_create_contract: Create Contract
+  label_update_contract: Update Contract
+  label_contract_empty: No Contract
+
+  text_are_you_sure_delete_title: "Are you sure you want to delete %{value}?"
+  text_are_you_sure_delete_time_entry: "Are you sure you want to delete this time entry?"
+  text_time_exceeded_time_remaining: "This time entry exceeded the time remaining for the contract by %{hours_over}.\nTo stay within the contract, please edit the time entry to be no more than %{hours_remaining}."
+  text_must_come_after_agreement_date: must come on or after the agreement date
+  text_must_come_after_start_date: must come after the start date
+  text_contract_saved: Contract successfully saved!
+  text_contract_updated: Contract successfully updated!
+  text_contract_deleted: Contract successfully deleted
+  text_hours_over_contract: "You are now %{hours_over} over the contract's limit."
+
   field_contract: Contract
   field_title: Title
   field_description: Description

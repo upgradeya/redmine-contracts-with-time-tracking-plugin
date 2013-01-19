@@ -37,7 +37,7 @@ class ContractsController < ApplicationController
   def create
     @contract = Contract.new(params[:contract])
     if @contract.save
-      flash[:notice] = "Contract successfully saved!"
+      flash[:notice] = l(:text_contract_saved)
       redirect_to :action => "show", :id => @contract.id
     else
       flash[:error] = "* " + @contract.errors.full_messages.join("</br>* ")
@@ -60,7 +60,7 @@ class ContractsController < ApplicationController
   def update
     @contract = Contract.find(params[:id])
     if @contract.update_attributes(params[:contract])
-      flash[:notice] = "Contract successfully updated!"
+      flash[:notice] = l(:text_contract_updated)
       redirect_to :action => "show", :id => @contract.id 
     else
       flash[:error] = "* " + @contract.errors.full_messages.join("</br>* ")
@@ -71,7 +71,7 @@ class ContractsController < ApplicationController
   def destroy
     @contract = Contract.find(params[:id])
     if @contract.destroy
-      flash[:notice] = "Contract successfully deleted"
+      flash[:notice] = l(:text_contract_deleted)
       if !params[:project_id].nil?
         redirect_to :action => "index", :project_id => params[:project_id]
       else
@@ -99,7 +99,7 @@ class ContractsController < ApplicationController
         updated_time_entry.save
       end
     end
-		flash[:error] = "You are now #{-1 * @contract.hours_remaining} hours over the contract's limit." unless @contract.hours_remaining >= 0
+		flash[:error] = l(:text_hours_over_contract, :hours_over => l_hours(-1 * @contract.hours_remaining)) unless @contract.hours_remaining >= 0
     redirect_to "/projects/#{@contract.project.id}/contracts/#{@contract.id}" 
   end
 

@@ -13,35 +13,35 @@
     <p><%= f.text_area :description, { :cols => 50, :rows => 3 } %></p>
   </div>
   <div>
-    <p><%= f.label "Agreement Date: " %></p>
-    <p><%= f.date_select :agreement_date, :order => [:month, :day, :year] %></p>
+    <p><%= f.label l(:field_agreement_date) %></p>
+    <p><%= f.date_select :agreement_date %></p>
   </div>
   <div>
-    <p><%= f.label "Start Date: " %></p>
-    <p><%= f.date_select :start_date, :order => [:month, :day, :year] %></p>
+    <p><%= f.label l(:field_start_date) %></p>
+    <p><%= f.date_select :start_date %></p>
   </div>
   <div>
-    <p><%= f.label "End Date: " %></p>
-    <p><%= f.date_select :end_date, :order => [:month, :day, :year] %></p>
+    <p><%= f.label l(:field_end_date) %></p>
+    <p><%= f.date_select :end_date %></p>
   </div>
   <div>
-    <p><%= f.label "Purchase Amount (e.g. $2000.00)" %></p>
-    <p>$<%= f.text_field :purchase_amount, :size => 10 %></p>
+    <p><%= f.label l(:field_purchase_amount) %></p>
+    <p><%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') == 0 %> <%= f.text_field :purchase_amount, :size => 10 %> <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') != 0 %></p>
   </div>
   <div>
-    <p><%= f.label "Hourly Rate: (e.g. $60.00) " %></p>
-    <p>$<%= f.text_field :hourly_rate, :size => 10 %></p>
+    <p><%= f.label l(:field_hourly_rate) %></p>
+    <p><%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') == 0 %> <%= f.text_field :hourly_rate, :size => 10 %> <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') != 0 %></p>
   </div>
   <div>
-    <p><%= f.label "Contract URL: " %></p>
+    <p><%= f.label l(:field_contract_url) %></p>
     <p><%= f.text_field :contract_url, :size => 50 %></p>
   </div>
   <div>
-    <p><%= f.label "Invoice URL: " %></p>
+    <p><%= f.label l(:field_invoice_url) %></p>
     <p><%= f.text_field :invoice_url, :size => 50 %></p>
   </div>
   <div>
-    <% controller.action_name == "new" ? msg = "Create Contract" : msg = "Update Contract" %>
+    <% controller.action_name == "new" ? msg = l(:label_create_contract) : msg = l(:label_update_contract) %>
     <p><%= f.submit msg  %></p>
   </div>
 <% end %>

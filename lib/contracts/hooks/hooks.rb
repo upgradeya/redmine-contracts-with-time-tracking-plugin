@@ -4,6 +4,7 @@ module Contracts
     def view_timelog_edit_form_bottom(context={})
 			@current_project = Project.find(context[:time_entry].project_id)
       @contracts = @current_project.contracts_for_all_ancestor_projects
+      return "" if @contracts.empty?
       if context[:time_entry].contract_id != nil
         selected_contract = context[:time_entry].contract_id
       elsif !(@contracts.select { |contract| (contract.start_date <= DateTime.now) && (DateTime.now <= contract.end_date) }.empty?)

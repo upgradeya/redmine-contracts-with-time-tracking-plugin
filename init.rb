@@ -12,7 +12,7 @@ Redmine::Plugin.register :contracts do
   url 'https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin'
   #author_url 'http://example.com/about'
  
-  menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? } 
+  menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? && User.current.allowed_to?(:view_all_contracts_for_project, nil, :global => true) } 
   menu :project_menu, :contracts, { :controller => :contracts, :action => :index }, :caption => :label_contracts, :param => :project_id
 
   project_module :contracts do

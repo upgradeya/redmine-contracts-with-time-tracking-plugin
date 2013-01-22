@@ -6,6 +6,8 @@ This plugin allows you to:
 - Visualize how much time/money has been spent on a particular contract
 - Associate time entries with specific contracts
 
+### Special thanks to [UpgradeYa](http://www.upgradeya.com) for funding version 1.0 of this project. 
+
 Installation
 ------------ 
 

@@ -47,7 +47,7 @@ de:
 
   text_are_you_sure_delete_title: "Sind sie sicher das Sie %{value} löschen möchten?"
   text_are_you_sure_delete_time_entry: "Sind Sie sicher das sie diesen Zeiteintrag löschen möchten?"
-  text_time_exceeded_time_remaining: "Dieser Zeiteintrag überschreitet die verbeleibende Zeit im Vertrag um %{hours_over}.\nUm im Vertragsrahmen zu bleiben ändern Sie bitte den Eintrag auf nicht mehr als %{hours_remaining} Stunden."
+  text_time_exceeded_time_remaining: "Dieser Zeiteintrag überschreitet die verbeleibende Zeit im Vertrag um %{hours_over} Stunden.\nUm im Vertragsrahmen zu bleiben ändern Sie bitte den Eintrag auf nicht mehr als %{hours_remaining} Stunden."
   text_must_come_after_agreement_date: muss nach dem Vertragsdatum liegen
   text_must_come_after_start_date: muss nach dem Startdatum des Vertrages liegen
   text_contract_saved: Der Vertrag wurde erfolgreich gespeichert!

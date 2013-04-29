@@ -18,7 +18,7 @@ de:
   label_delete: löschen
   label_view_contract: Vertrag anzeigen
   label_view_invoice: Rechnung anzeigen
-  label_date_period: Date Range
+  label_date_period: Vertragszeitraum
   label_amount_purchased: bezahlter Betrag
   label_invoice: Rechnung
   label_members: Mitglieder
@@ -57,11 +57,11 @@ de:
 
   field_contract: Vertrag
   field_title: Titel
-  field_description: Beschreiung
+  field_description: Beschreibung
   field_agreement_date: Vertragsdatum
-  field_start_date: Startdatum
-  field_end_date: Enddatum
-  field_purchase_amount: Stundenkontingent
+  field_start_date: Beginn
+  field_end_date: Ende
+  field_purchase_amount: Summe
   field_hourly_rate: Stundensatz
   field_contract_url: Vertrags-URL
   field_invoice_url: Rechnungs-URL

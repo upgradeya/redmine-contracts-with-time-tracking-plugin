@@ -1,0 +1,67 @@
+# German strings go here for Rails i18n
+de:
+  project_module_contracts: Verträge
+  permission_view_all_contracts_for_project: Alle Verträge für Projekt anzeigen
+  permission_view_contract_details: Vertragsdetails anzeigen
+  permission_edit_contracts: Verträge bearbeiten
+  permission_create_contracts: Verträge erstellen
+  permission_delete_contracts: Verträge löschen
+  permission_view_hourly_rate: Stundensatz
+
+  contracts: Verträge
+  label_contracts: Verträge
+  label_contract: Vertrag
+  label_new_contract: Neuer Vertrag
+  label_editing_contract: Vertrag bearbeiten
+  label_add_time_entries: Zeiten zuordnen
+  label_edit: bearbeiten
+  label_delete: löschen
+  label_view_contract: Vertrag anzeigen
+  label_view_invoice: Rechnung anzeigen
+  label_date_period: Date Range
+  label_amount_purchased: bezahlter Betrag
+  label_invoice: Rechnung
+  label_members: Mitglieder
+  label_hours: Stunden
+  label_time_entries: gebuchte Zeiten
+  label_add_to_contract: dem Vertrag zuordnen
+  label_date: Datum
+  label_current_contract: aktueller Vertrag
+  label_member: Mitglied
+  label_activity: Aktivität
+  label_issue: Ticket
+  label_comments: Kommentare
+  label_apply: Anwenden
+  label_name: Name
+  label_agreed_on: abgeschlossen am
+  label_purchased: vereinbart
+  label_remaining: verbleibend
+  label_hours_worked: gearbeitete Stunden
+  label_hours_left: "~verbleibende Stunden"
+  label_total_purchased: vereinbart für alle Verträge
+  label_total_remaining: verbleibend für alle Verträge
+  label_or: "-oder-"
+  label_create_contract: Vertrag anlegen
+  label_update_contract: Vertrag berarbeiten
+  label_contract_empty: kein Vertrag
+
+  text_are_you_sure_delete_title: "Sind sie sicher das Sie %{value} löschen möchten?"
+  text_are_you_sure_delete_time_entry: "Sind Sie sicher das sie diesen Zeiteintrag löschen möchten?"
+  text_time_exceeded_time_remaining: "Dieser Zeiteintrag überschreitet die verbeleibende Zeit im Vertrag um %{hours_over}.\nUm im Vertragsrahmen zu bleiben ändern Sie bitte den Eintrag auf nicht mehr als %{hours_remaining} Stunden."
+  text_must_come_after_agreement_date: muss nach dem Vertragsdatum liegen
+  text_must_come_after_start_date: muss nach dem Startdatum des Vertrages liegen
+  text_contract_saved: Der Vertrag wurde erfolgreich gespeichert!
+  text_contract_updated: Der Vertrag wurde erfolgreich aktualisiert!
+  text_contract_deleted: Der Vertrag wurde erfolgreich gelöscht
+  text_hours_over_contract: "Das vereinbarte Stundenkontingent wird um %{hours_over} Stunden überschritten"
+
+  field_contract: Vertrag
+  field_title: Titel
+  field_description: Beschreiung
+  field_agreement_date: Vertragsdatum
+  field_start_date: Startdatum
+  field_end_date: Enddatum
+  field_purchase_amount: Stundenkontingent
+  field_hourly_rate: Stundensatz
+  field_contract_url: Vertrags-URL
+  field_invoice_url: Rechnungs-URL

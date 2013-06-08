@@ -73,6 +73,7 @@ en:
   text_invalid_issue_id: "is not a valid issue ID"
   text_expense_created: 'Expense was successfully created.'
   text_expense_updated: 'Expense was successfully updated.'
+  text_na: 'N/A'
 
   field_contract: Contract
   field_title: Title

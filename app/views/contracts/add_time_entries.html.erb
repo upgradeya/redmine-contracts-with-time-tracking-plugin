@@ -28,9 +28,9 @@
         <td><%= link_to time_entry.issue, issue_path(time_entry.issue) unless !time_entry.issue %></td>
         <td><%= time_entry.comments %></td>
         <td><%= time_entry.hours %></td>
-        <td><%= link_to image_tag("/images/edit.png"), edit_time_entry_path(time_entry), :title => l(:label_edit) %></td>
+        <td><%= link_to image_tag("edit.png"), edit_time_entry_path(time_entry), :title => l(:label_edit) %></td>
         <td>
-          <%= link_to image_tag("/images/delete.png"), time_entry_path(time_entry),
+          <%= link_to image_tag("delete.png"), time_entry_path(time_entry),
             :title => l(:label_delete), 
             :confirm => l(:text_are_you_sure_delete_time_entry), 
             :method => :delete %>

@@ -140,7 +140,6 @@ class ContractsController < ApplicationController
   private
 
   def load_contractors_and_rates
-    #@contractors = @project.users
     @contractors = Contract.users_for_project_and_sub_projects(@project)
     @contractor_rates = {}
     @contractors.each do |contractor|

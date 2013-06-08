@@ -7,6 +7,10 @@ en:
   permission_create_contracts: Create contracts
   permission_delete_contracts: Delete contracts
   permission_view_hourly_rate: View hourly rate
+  permission_create_expenses: Create expenses
+  permission_edit_expenses: Edit expenses
+  permission_delete_expenses: Delete expenses
+  permission_view_expenses: View expenses
 
   contracts: Contracts
   label_contracts: Contracts
@@ -14,6 +18,9 @@ en:
   label_new_contract: New Contract
   label_editing_contract: Editing Contract
   label_add_time_entries: Add Time Entries
+  label_add_time_entries: Bulk Assign Time Entries
+  label_add_expense: Add Expense
+  label_log_time: Log time
   label_edit: Edit
   label_delete: Delete
   label_view_contract: View Contract
@@ -23,6 +30,8 @@ en:
   label_invoice: Invoice
   label_members: Members
   label_hours: Hours
+  label_contractor_rate: Contractor Rate
+  label_billable_amount: Billable Amount
   label_time_entries: Time Entries
   label_add_to_contract: Add to Contract
   label_date: Date
@@ -44,9 +53,15 @@ en:
   label_create_contract: Create Contract
   label_update_contract: Update Contract
   label_contract_empty: No Contract
+  label_select_contract: "[Select a contract]"
+  label_save_expense: Save Expense
+  label_expenses: Expenses
+  label_description: Description
+  label_amount: Amount
 
   text_are_you_sure_delete_title: "Are you sure you want to delete %{value}?"
   text_are_you_sure_delete_time_entry: "Are you sure you want to delete this time entry?"
+  text_are_you_sure_delete_expense: "Are you sure you want to delete this expense?"
   text_time_exceeded_time_remaining: "This time entry exceeded the time remaining for the contract by %{hours_over}.\nTo stay within the contract, please edit the time entry to be no more than %{hours_remaining}."
   text_must_come_after_agreement_date: must come on or after the agreement date
   text_must_come_after_start_date: must come after the start date
@@ -54,6 +69,10 @@ en:
   text_contract_updated: Contract successfully updated!
   text_contract_deleted: Contract successfully deleted
   text_hours_over_contract: "You are now %{hours_over} over the contract's limit."
+  text_invalid_rate: "Contractor rate must be zero or greater."
+  text_invalid_issue_id: "is not a valid issue ID"
+  text_expense_created: 'Expense was successfully created.'
+  text_expense_updated: 'Expense was successfully updated.'
 
   field_contract: Contract
   field_title: Title
@@ -65,3 +84,9 @@ en:
   field_hourly_rate: Hourly Rate
   field_contract_url: Contract URL
   field_invoice_url: Invoice URL
+
+  field_expense_name: Name
+  field_expense_date: Expense Date
+  field_amount: Amount
+  field_expense_contract: Contract
+  field_issue: Issue (ID)

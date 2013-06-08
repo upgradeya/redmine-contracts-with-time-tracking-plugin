@@ -1,0 +1,56 @@
+<% controller.action_name == "new" ? action = "create" : action = "update" %>
+<% controller.action_name == "new" ? method = :post : method = :put %>
+<%
+if @expense.new_record?
+  url = "/projects/#{@project.identifier}/expenses/create"
+  method = :post
+else
+  url = "/projects/#{@project.identifier}/expenses/update/#{@expense.id}"
+  method = :put
+end
+# form_for @expense, :url => { :action => action }, :method => method do |f| 
+%>
+<%= form_for @expense, :url => url, :method => method do |f| %>
+  <% if @expense.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+
+      <ul>
+      <% @expense.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="box tabular">
+    <p>
+      <label for="expense_name"><%= l(:field_expense_name) %> <%= span_required %></label>
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      <label for="expense_date"><%= l(:field_expense_date) %> <%= span_required %></label>
+      <%= f.text_field :expense_date, :size => 12 %>
+      <%= calendar_for('expense_expense_date') %>
+    </p>
+    <p>
+      <label for="expense_amount"><%= l(:field_amount) %> <%= span_required %></label>
+      $<%= f.text_field :amount, :size => 6 %>
+    </p>
+    <p>
+      <label for="expense_contract_id"><%= l(:field_expense_contract) %> <%= span_required %></label>
+      <%= select("expense", "contract_id", @contracts.collect { |c| [ c.title, c.id ] }, {:include_blank => l(:label_select_contract)}) %>
+    </p>
+    <p>
+      <%= f.label l(:field_issue) %>
+      <%= f.text_field :issue_id, :size => 5 %>
+    </p>
+    <p>
+      <%= f.label l(:field_description) %>
+      <%= f.text_field :description, :size => 50 %>
+    </p>
+
+  </div>
+  <%= f.submit l(:label_save_expense) %>
+
+<% end %>

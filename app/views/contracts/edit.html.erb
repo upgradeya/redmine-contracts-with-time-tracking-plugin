@@ -1,3 +1,7 @@
 <h2><%= l(:label_editing_contract) %> - <%= @contract.title %></h2>
 
 <%= render "form" %>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>
+<% end %>

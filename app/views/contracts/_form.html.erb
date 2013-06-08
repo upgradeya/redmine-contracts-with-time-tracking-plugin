@@ -40,6 +40,17 @@
     <p><%= f.label l(:field_invoice_url) %></p>
     <p><%= f.text_field :invoice_url, :size => 50 %></p>
   </div>
+  <% if !@contractors.nil? && !@contractors.empty? %>
+    <fieldset id="contractor_rates" class="box tabular"><legend>Contractor Rates</legend>
+      <% @contractors.each do |contractor| %>
+        <% rate = @contractor_rates[contractor.id] %>
+        <p>
+          <label><%= contractor.name %></label>
+          &nbsp;&nbsp;&nbsp;$<%= text_field_tag "rates[#{contractor.id}]", format("%#.2f", rate), :size => 5 %>
+        </p>
+      <% end %>
+    </fieldset>
+  <% end %>
   <div>
     <% controller.action_name == "new" ? msg = l(:label_create_contract) : msg = l(:label_update_contract) %>
     <p><%= f.submit msg  %></p>

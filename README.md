@@ -33,5 +33,3 @@ Screenshots
 ### Set permisisons:
 ![manage permissions](https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin/raw/master/docs/screenshots/permissions.png)
 
-
-

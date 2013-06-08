@@ -8,6 +8,7 @@
       <% if (@project != nil) && (User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate)) %>
         <th><%= l(:field_hourly_rate) %></th>
       <% end %>
+      <th><%= l(:label_expenses) %></th>
       <th><%= l(:label_remaining) %></th>
       <th><%= l(:label_hours_worked) %></th>
       <th><%= l(:label_hours_left) %></th>
@@ -28,6 +29,7 @@
       <% if (@project != nil) && (User.current.roles_for_project(contract.project).first.permissions.include?(:view_hourly_rate)) %>
         <td><%= number_to_currency(contract.hourly_rate) %></td>
       <% end %>
+      <td><%= number_to_currency(contract.expenses_total) %></td>
       <td class="green"><%= number_to_currency(contract.amount_remaining) %></td>
       <td><%= number_with_precision contract.hours_spent, :precision => 2 %></td>
       <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>

@@ -34,22 +34,27 @@ class TimelogControllerTest < ActionController::TestCase
     @controller = TimelogController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-		@contract 	= contracts(:contract_three)
+    @contract   = contracts(:contract_three)
   end
 
-  test "should warn user if time entry exceeds contract's amount remaining" do 
+  test "should warn user if time entry exceeds contract's amount remaining" do
     @request.session[:user_id] = 3
-		hours_over = 7.3 - @contract.hours_remaining 
-		hours_left = @contract.hours_remaining
+    hours_over = 7.3 - @contract.hours_remaining
+    hours_left = @contract.hours_remaining
     post :create, :project_id => 1,
-                :time_entry => {:comments => 'Some work on TimelogControllerTest',
+                  :time_entry => {:comments => 'Some work on TimelogControllerTest',
                                 # Not the default activity
                                 :activity_id => '11',
                                 :spent_on => '2008-03-14',
                                 :issue_id => '1',
                                 :hours => '7.3',
-																:contract_id => @contract.id}
-		assert_equal "This time entry exceeded the time remaining for the contract by #{hours_over} hours.\nTo stay within the contract, please edit the time entry to be no more than #{hours_left} hours.", flash[:error]		
+                                :contract_id => @contract.id}
+    hours_over_str = l_hours(hours_over)
+    hours_left_str = l_hours(hours_left)
+    assert_match "time entry exceeded", flash[:error]
+    assert_match "by #{hours_over_str}", flash[:error]
+    assert_match "please edit the time entry", flash[:error]
+    assert_match "no more than #{hours_left_str}", flash[:error]
   end
 
   #def test_update

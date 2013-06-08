@@ -21,25 +21,26 @@ class ProjectTest < ActiveSupport::TestCase
   fixtures :projects, :contracts, :time_entries
 
   def setup
-    @project 				= projects(:projects_001)
-		@subproject 		= projects(:projects_003)
-		@sub_subproject =	projects(:projects_004)
-    @contract 			= contracts(:contract_one)
-    @contract2 			= contracts(:contract_two)
-		@time_entry1		= time_entries(:time_entries_001)
-		@time_entry2		= time_entries(:time_entries_004)
-		@time_entry3 		= time_entries(:time_entries_005)	
+    @project        = projects(:projects_001)
+    @subproject     = projects(:projects_003)
+    @sub_subproject = projects(:projects_004)
+    @contract       = contracts(:contract_one)
+    @contract2      = contracts(:contract_two)
+    @time_entry1    = time_entries(:time_entries_001)
+    @time_entry2    = time_entries(:time_entries_004)
+    @time_entry3    = time_entries(:time_entries_005)
     @contract.project_id = @project.id
     @contract2.project_id = @project.id
     @contract.save
     @contract2.save
-		@sub_subproject.parent_id = @subproject.id
-		@sub_subproject.save
-		@project.time_entries.clear
-		@project.time_entries.append(@time_entry1)
-		@project.save
-		@time_entry3.project_id = @sub_subproject.id
-		@time_entry3.save
+    @sub_subproject.parent_id = @subproject.id
+    @sub_subproject.save
+    @project.time_entries.clear
+    @project.time_entries.append(@time_entry1)
+    @project.save
+    @time_entry3.project_id = @sub_subproject.id
+    @time_entry3.save
+    @user = @project.users.first
   end
 
   test "should have many contracts" do
@@ -62,17 +63,46 @@ class ProjectTest < ActiveSupport::TestCase
     assert_equal @project.total_hours_remaining, Contract.all.sum { |contract| contract.hours_remaining }
   end
 
-	test "should get contracts for all ancestor projects" do
-		@contract2.project_id = @subproject.id
-		@contract2.save
-		assert_equal 3, @sub_subproject.contracts_for_all_ancestor_projects.count		
-	end
+  test "should get contracts for all ancestor projects" do
+    @contract2.project_id = @subproject.id
+    @contract2.save
+    assert_equal 3, @sub_subproject.contracts_for_all_ancestor_projects.count
+  end
 
-	test "should get all time entries for current project and all descendent projects" do
-		time_entries = @project.time_entries_for_all_descendant_projects
-		assert_equal 3, time_entries.count
-		assert time_entries.include?(@time_entry1)
-		assert time_entries.include?(@time_entry2)
-		assert time_entries.include?(@time_entry3)
-	end
+  test "should get all time entries for current project and all descendent projects" do
+    time_entries = @project.time_entries_for_all_descendant_projects
+    assert_equal 3, time_entries.count
+    assert time_entries.include?(@time_entry1)
+    assert time_entries.include?(@time_entry2)
+    assert time_entries.include?(@time_entry3)
+  end
+
+  test "should have many user project rates" do
+    assert_not_nil @user
+    assert_equal 0, @project.user_project_rates.size
+    upr = @project.user_project_rates.create!(:user_id => @user.id, :rate => 25.00)
+    assert_equal @user, upr.user
+    assert_equal 25.00, upr.rate
+  end
+
+  test "should get a user project rate by user" do
+    assert_not_nil @user
+    upr = @project.user_project_rates.create!(:user_id => @user.id, :rate => 25.00)
+    assert_equal upr, @project.user_project_rate_by_user(@user)
+  end
+
+  test "should get a rate for a user" do
+    assert_not_nil @user
+    @project.user_project_rates.create!(:user_id => @user.id, :rate => 25.00)
+    assert_equal 25.00, @project.rate_for_user(@user)
+  end
+
+  test "should set a user rate" do
+    assert_not_nil @user
+    assert_equal 0, @project.user_project_rates.size
+    assert_nil @project.user_project_rate_by_user(@user)
+    @project.set_user_rate(@user, 37.25)
+    assert_equal 37.25, @project.rate_for_user(@user)
+  end
+
 end

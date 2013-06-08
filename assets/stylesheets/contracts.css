@@ -42,3 +42,7 @@
 .contract-summary th,  .hours-summary th {
 	text-align: left;	
 }
+
+fieldset#contractor_rates { 
+  width: 500px;
+}

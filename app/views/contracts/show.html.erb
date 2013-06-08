@@ -1,90 +1,119 @@
 <div class="contextual">
-  <% if User.current.roles_for_project(@project).first.permissions.include?(:edit_contracts) %>
-    <%= link_to l(:label_add_time_entries), "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries" %>
+  <% if User.current.allowed_to?(:log_time, @project) %>
+    <%= link_to l(:button_log_time), new_project_time_entry_path(@project), :class => 'icon icon-time' %> &nbsp;&nbsp;&nbsp;
+  <% end %>
+  <% if User.current.allowed_to?(:create_expenses, @project) %>
+    <%= link_to l(:label_add_expense), "/projects/#{@project.identifier}/expenses/new", :class => 'icon icon-add' %> &nbsp;&nbsp;&nbsp;
+  <% end %>
+  <% if  has_project_permissions?(@project, :edit_contracts) %>
+    <%= link_to l(:label_add_time_entries), "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries", :class => 'icon icon-issue' %>
   <% end %>
 </div>
 
 <h2>
-  <%= @contract.title %> 
-  <% if User.current.roles_for_project(@project).first.permissions.include?(:edit_contracts) %>
+  <%= @contract.title %>
+  <% if User.current.allowed_to?(:edit_contracts, @project) %>
     <%= link_to image_tag("/images/edit.png"), "#{@contract.id}/edit", :title => l(:label_edit) %>
   <% end %>
-  <% if User.current.roles_for_project(@project).first.permissions.include?(:delete_contracts) %>
-    <%= link_to image_tag("/images/delete.png"), "#{@contract.id}", :method => :delete, 
+  <% if User.current.allowed_to?(:delete_contracts, @project) %>
+    <%= link_to image_tag("/images/delete.png"), "#{@contract.id}", :method => :delete,
       :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, @contract.title) %>
   <% end %>
 </h2>
 
 <div>
-	<table>
-		<tr>
-			<td colspan="2"><p><%= @contract.description %></p></td>
-		</tr>
-		<tr>
-			<td class="contract-summary-td">
-				<table class="contract-summary list">
-					<thead>
-						<tr>
-							<th><%= l(:field_agreement_date) %></th>
-							<th><%= l(:label_date_period) %></th>
-							<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
-								<th><%= l(:field_hourly_rate) %></th> 
-							<% end %>
-							<th><%= l(:label_amount_purchased) %></th>
-							<% if !@contract.contract_url.empty? %>
-								<th><%= l(:label_contract) %></th>
-							<% end %>
-							<% if !@contract.invoice_url.empty? %>
-								<th><%= l(:label_invoice) %></th>
-							<% end %>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="<%= cycle("odd", "even") %>">
-							<td><%= format_date(@contract.agreement_date)  %></td>
-							<td><%= format_date(@contract.start_date) %> - <%= format_date(@contract.end_date)  %></td>
-							<% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
-								<td><%= number_to_currency(@contract.hourly_rate) %></td>
-							<% end %>
-							<td><%= number_to_currency(@contract.purchase_amount) %></td>
-							<% if !@contract.contract_url.empty? %>
-									<td><%= link_to l(:label_view_contract), @contract.contract_url %></td>
-							<% end %>
-							<% if !@contract.invoice_url.empty? %>
-									<td><%= link_to l(:label_view_invoice), @contract.invoice_url %></td>
-							<% end %>
-						</tr>
-					</tbody>
-				</table>
-			</td>
-			<td class="hours-summary-td">
-				<table class="hours-summary list">
-					<thead>
-						<tr>
-							<th><%= l(:label_members) %></th>
-							<th><%= l(:label_hours) %></th>
-						</tr>
-					</thead>
-					<tbody>
-						<% @members.each do |member| %>
-							<tr class="<%= cycle("odd", "even") %>">
-								<td><%= member.name %></td>
-								<td><%= @time_entries.select { |entry| entry.user == member }.sum { |entry| entry.hours } %></td>
-							</tr>
-						<% end %>
-						<tr class="total-hours">
-							<td></td>
-							<td><%= @time_entries.sum { |entry| entry.hours } %></td>
-						</tr>	
-					</tbody>
-				</table>
-			</td>
-		</tr>
-	</table>
+  <table>
+    <tr>
+      <td colspan="2"><p><%= @contract.description %></p></td>
+    </tr>
+    <tr>
+      <td class="contract-summary-td">
+        <table class="contract-summary list">
+          <thead>
+            <tr>
+              <th><%= l(:field_agreement_date) %></th>
+              <th><%= l(:label_date_period) %></th>
+              <% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
+                <th><%= l(:field_hourly_rate) %></th>
+              <% end %>
+              <th><%= l(:label_amount_purchased) %></th>
+              <% if !@contract.contract_url.empty? %>
+                <th><%= l(:label_contract) %></th>
+              <% end %>
+              <% if !@contract.invoice_url.empty? %>
+                <th><%= l(:label_invoice) %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="<%= cycle("odd", "even") %>">
+              <td><%= format_date(@contract.agreement_date)  %></td>
+              <td><%= format_date(@contract.start_date) %> - <%= format_date(@contract.end_date)  %></td>
+              <% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
+                <td><%= number_to_currency(@contract.hourly_rate) %></td>
+              <% end %>
+              <td><%= number_to_currency(@contract.purchase_amount) %></td>
+              <% if !@contract.contract_url.empty? %>
+                  <td><%= link_to l(:label_view_contract), @contract.contract_url %></td>
+              <% end %>
+              <% if !@contract.invoice_url.empty? %>
+                  <td><%= link_to l(:label_view_invoice), @contract.invoice_url %></td>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+      <td class="hours-summary-td">
+        <table class="hours-summary list">
+          <thead>
+            <tr>
+              <th><%= l(:label_members) %></th>
+              <th><%= l(:label_hours) %></th>
+              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                <th><%= l(:label_contractor_rate) %></th>
+                <th><%= l(:label_billable_amount) %></th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @members.each do |member| %>
+              <tr class="<%= cycle("odd", "even") %>">
+                <td><%= member.name %></td>
+                <td><%= format_hours(@contract.hours_spent_by_user(member)) %></td>
+                <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                  <td><%= number_to_currency(@contract.user_contract_rate_or_default(member)) %></td>
+                  <td><%= number_to_currency(@contract.billable_amount_for_user(member)) %></td>
+                <% end %>
+              </tr>
+            <% end %>
+            <tr class="total-hours">
+              <td></td>
+              <td><%= @time_entries.sum { |entry| entry.hours } %></td>
+              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                <td></td>
+                <td><%= number_to_currency(@contract.billable_amount_total) %></td>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </table>
 </div>
 
-<h3><%= l(:label_time_entries) %></h3>
-<%= render 'time_entries_list' %>
+<div class="tabs">
+  <ul>
+    <li><a href="<%= "/projects/#{@contract.project.identifier}/contracts/#{@contract.id}" %>" <%= tab_selected unless @expenses_tab %>><%= l(:label_time_entries) %></a>
+    </li>
+    <li><a href="<%= "/projects/#{@contract.project.identifier}/contracts/#{@contract.id}?expenses=true" %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
+    </li>
+  </ul>
+</div>
+<% if @expenses_tab %>
+  <%= render 'expenses_list' %>
+<% else %>
+  <%= render 'time_entries_list' %>
+<% end %>
 
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>

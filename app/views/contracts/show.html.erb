@@ -3,20 +3,20 @@
     <%= link_to l(:button_log_time), new_project_time_entry_path(@project), :class => 'icon icon-time' %> &nbsp;&nbsp;&nbsp;
   <% end %>
   <% if User.current.allowed_to?(:create_expenses, @project) %>
-    <%= link_to l(:label_add_expense), "/projects/#{@project.identifier}/expenses/new", :class => 'icon icon-add' %> &nbsp;&nbsp;&nbsp;
+    <%= link_to l(:label_add_expense), { :controller => 'expenses', :action => 'new', :project_id => @project.identifier }, :class => 'icon icon-add' %> &nbsp;&nbsp;&nbsp;
   <% end %>
   <% if  has_project_permissions?(@project, :edit_contracts) %>
-    <%= link_to l(:label_add_time_entries), "/projects/#{@project.identifier}/contracts/#{@contract.id}/add_time_entries", :class => 'icon icon-issue' %>
+    <%= link_to l(:label_add_time_entries), { :controller => 'contracts', :action => 'add_time_entries', :project_id => @project.identifier, :id => @contract.id }, :class => 'icon icon-issue' %>
   <% end %>
 </div>
 
 <h2>
   <%= @contract.title %>
   <% if User.current.allowed_to?(:edit_contracts, @project) %>
-    <%= link_to image_tag("edit.png"), "#{@contract.id}/edit", :title => l(:label_edit) %>
+    <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => @project.identifier, :id => @contract.id }, :title => l(:label_edit) %>
   <% end %>
   <% if User.current.allowed_to?(:delete_contracts, @project) %>
-    <%= link_to image_tag("delete.png"), "#{@contract.id}", :method => :delete,
+    <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => @project.identifier, :id => @contract.id }, :method => :delete,
       :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, @contract.title) %>
   <% end %>
 </h2>
@@ -88,7 +88,7 @@
             <% end %>
             <tr class="total-hours">
               <td></td>
-              <td><%= @time_entries.sum { |entry| entry.hours } %></td>
+              <td><%= format_hours(@time_entries.sum { |entry| entry.hours }) %></td>
               <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
                 <td></td>
                 <td><%= number_to_currency(@contract.billable_amount_total) %></td>
@@ -103,9 +103,11 @@
 
 <div class="tabs">
   <ul>
-    <li><a href="<%= "/projects/#{@contract.project.identifier}/contracts/#{@contract.id}" %>" <%= tab_selected unless @expenses_tab %>><%= l(:label_time_entries) %></a>
+    <li>
+      <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id }) %>" <%= tab_selected unless @expenses_tab %>><%= l(:label_time_entries) %></a>
     </li>
-    <li><a href="<%= "/projects/#{@contract.project.identifier}/contracts/#{@contract.id}?expenses=true" %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
+    <li>
+      <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :expenses => 'true' }) %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
     </li>
   </ul>
 </div>

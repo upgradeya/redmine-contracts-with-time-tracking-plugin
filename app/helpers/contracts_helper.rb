@@ -1,7 +1,7 @@
 module ContractsHelper
 
   def expense_edit_urlpath(contract, expense)
-    "/projects/#{contract.project.identifier}/expenses/#{expense.id}/edit"
+    { :controller => 'expenses', :action => 'edit', :project_id => contract.project.identifier, :id => expense.id }
   end
 
   def has_project_permissions?(project, permission)
@@ -15,4 +15,5 @@ module ContractsHelper
   def tab_selected
     raw 'class="selected"'
   end
+
 end

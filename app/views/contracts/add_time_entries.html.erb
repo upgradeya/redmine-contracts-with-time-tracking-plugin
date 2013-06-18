@@ -1,6 +1,6 @@
 <h2><%= @contract.title %> - <%= l(:label_add_time_entries) %></h2>
 
-<%= form_tag("/projects/#{@contract.project.identifier}/contracts/#{@contract.id}/assoc_time_entries_with_contract", :method => "put") do %>
+<%= form_tag( { :controller => 'contracts', :action => 'assoc_time_entries_with_contract', :project_id => @contract.project.identifier, :id => @contract.id }, :method => "put") do %>
   <table class="bulk-time-entries list">
     <thead>
       <tr>

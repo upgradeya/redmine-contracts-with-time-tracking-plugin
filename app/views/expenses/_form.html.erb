@@ -1,14 +1,11 @@
-<% controller.action_name == "new" ? action = "create" : action = "update" %>
-<% controller.action_name == "new" ? method = :post : method = :put %>
 <%
 if @expense.new_record?
-  url = "/projects/#{@project.identifier}/expenses/create"
+  url = url_for({ :controller => 'expenses', :action => 'create', :project_id => @project.identifier})
   method = :post
 else
-  url = "/projects/#{@project.identifier}/expenses/update/#{@expense.id}"
+  url = url_for({ :controller => 'expenses', :action => 'update', :project_id => @project.identifier})
   method = :put
 end
-# form_for @expense, :url => { :action => action }, :method => method do |f| 
 %>
 <%= form_for @expense, :url => url, :method => method do |f| %>
   <% if @expense.errors.any? %>

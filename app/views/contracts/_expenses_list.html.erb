@@ -16,7 +16,7 @@
       <td><%= format_date(expense.expense_date) %></td>
       <td><%= link_to expense.name, expense_edit_urlpath(@contract, expense) %></td>
       <td><%= number_to_currency(expense.amount) %></td>
-      <td><%= link_to expense.contract.title, "/projects/#{expense.contract.project.identifier}/contracts/#{expense.contract.id}" %></td>
+      <td><%= link_to expense.contract.title, { :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id } %></td>
       <td><%= expense.issue.nil? ? l(:text_na) : link_to("#{expense.issue.tracker.name} ##{expense.issue_id}: #{expense.issue.subject}", issue_path(expense.issue)) %></td>
       <td><%= expense.description %></td>
       <td>
@@ -26,7 +26,7 @@
       </td>
       <td>
         <% if User.current.allowed_to?(:delete_expenses, @project) %>
-          <%= link_to image_tag("delete.png"), "/projects/#{@contract.project.identifier}/expenses/destroy/#{expense.id}", 
+          <%= link_to image_tag("delete.png"), { :controller => 'expenses', :action => 'destroy', :project_id => @contract.project.identifier, :id => expense.id }, 
             :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_expense), :method => :delete %>
         <% end %>
       </td>

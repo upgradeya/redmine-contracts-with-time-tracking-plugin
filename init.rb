@@ -7,9 +7,9 @@ require_dependency 'contracts/validators/is_after_start_date_validator'
 
 Redmine::Plugin.register :contracts do
   name 'Redmine Contracts With Time Tracking'
-  author 'Ben Syzek'
+  author 'Ben Syzek, Shanti Braford'
   description 'A Redmine plugin that allows you to manage contracts and associate time-entries with those contracts.'
-  version '1.2.0'
+  version '1.3.0'
   url 'https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin'
  
   menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? && User.current.allowed_to?(:view_all_contracts_for_project, nil, :global => true) } 

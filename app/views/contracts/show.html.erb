@@ -6,13 +6,20 @@
     <%= link_to l(:label_add_expense), { :controller => 'expenses', :action => 'new', :project_id => @project.identifier }, :class => 'icon icon-add' %> &nbsp;&nbsp;&nbsp;
   <% end %>
   <% if  has_project_permissions?(@project, :edit_contracts) %>
-    <%= link_to l(:label_add_time_entries), { :controller => 'contracts', :action => 'add_time_entries', :project_id => @project.identifier, :id => @contract.id }, :class => 'icon icon-issue' %>
+    <%= link_to l(:label_add_time_entries), { :controller => 'contracts', :action => 'add_time_entries', :project_id => @project.identifier, :id => @contract.id }, :class => 'icon icon-issue' %> &nbsp;&nbsp;&nbsp;
   <% end %>
+
 </div>
 
 <h2>
   <%= @contract.title %>
   <% if User.current.allowed_to?(:edit_contracts, @project) %>
+    <% if @contract.is_archived %>
+      <%= link_to image_tag("unlock.png"), { :controller => 'contracts', :action => 'archive', :project_id => @project.identifier, :id => @contract.id, :lock => false }, :method => :put %>
+    <% else %>
+      <%= link_to image_tag("locked.png"), { :controller => 'contracts', :action => 'archive', :project_id => @project.identifier, :id => @contract.id, :lock => true }, :method => :put %>
+    <% end %>
+
     <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => @project.identifier, :id => @contract.id }, :title => l(:label_edit) %>
   <% end %>
   <% if User.current.allowed_to?(:delete_contracts, @project) %>
@@ -91,7 +98,7 @@
               <td><%= format_hours(@time_entries.sum { |entry| entry.hours }) %></td>
               <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
                 <td></td>
-                <td><%= number_to_currency(@contract.billable_amount_total) %></td>
+                <td><%= number_to_currency(@contract.smart_billable_amount_total) %></td>
               <% end %>
             </tr>
           </tbody>

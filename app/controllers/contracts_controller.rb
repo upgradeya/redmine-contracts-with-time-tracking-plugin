@@ -134,7 +134,23 @@ class ContractsController < ApplicationController
     unless @contract.hours_remaining >= 0
       flash[:error] = l(:text_hours_over_contract, :hours_over => l_hours(-1 * @contract.hours_remaining))
     end
-    redirect_to "/projects/#{@contract.project.id}/contracts/#{@contract.id}" 
+    redirect_to url_for({ :controller => 'contracts', :action => 'show', :project_id => @project.identifier, :id => @contract.id })
+  end
+
+  def archive
+    @contract = Contract.find(params[:id])
+    @lock = (params[:lock] == 'true')
+    if @lock
+      @contract.update_attribute(:is_archived, @lock)
+      flash[:notice] = l(:text_contract_locked)
+    else
+      @contract.is_archived = false
+      @contract.hours_worked = nil
+      @contract.billable_amount_total = nil
+      @contract.save!
+      flash[:notice] = l(:text_contract_unlocked)
+    end
+    redirect_to url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id })
   end
 
   private

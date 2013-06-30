@@ -76,6 +76,8 @@ en:
   text_expense_created: 'Expense was successfully created.'
   text_expense_updated: 'Expense was successfully updated.'
   text_na: 'N/A'
+  text_contract_locked: Contract was successfully locked.
+  text_contract_unlocked: Contract was successfully unlocked.
 
   field_contract: Contract
   field_title: Title

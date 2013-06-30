@@ -90,11 +90,11 @@ class ContractTest < ActiveSupport::TestCase
 
   test "should calculate the billable amount for a contract based upon contractor-specific rates" do
     billable = @time_entry.hours * @contract.user_project_rate_or_default(@time_entry.user)
-    assert_equal billable, @contract.billable_amount_total
+    assert_equal billable, @contract.calculate_billable_amount_total
   end
 
   test "should calculate dollar amount remaining for contract" do
-    amount_remaining = @contract.purchase_amount - (@contract.billable_amount_total)
+    amount_remaining = @contract.purchase_amount - (@contract.calculate_billable_amount_total)
     assert_equal @contract.amount_remaining, amount_remaining
   end
 

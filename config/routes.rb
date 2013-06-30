@@ -12,6 +12,7 @@ match 'projects/:project_id/contracts/:id'                  => 'contracts#show',
 match 'projects/:project_id/contracts'                      => 'contracts#create',  :via => :post
 match 'projects/:project_id/contracts/:id'                  => 'contracts#update',  :via => :put
 match 'projects/:project_id/contracts/:id'                  => 'contracts#destroy', :via => :delete
+match 'projects/:project_id/contracts/:id/archive'          => 'contracts#archive', :via => :put
 match 'projects/:project_id/contracts/:id/add_time_entries' => 'contracts#add_time_entries', :via => :get
 match 'projects/:project_id/contracts/:id/assoc_time_entries_with_contract' => 
         'contracts#assoc_time_entries_with_contract', 

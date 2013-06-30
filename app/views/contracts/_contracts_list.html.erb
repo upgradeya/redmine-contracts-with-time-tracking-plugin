@@ -31,7 +31,7 @@
       <% end %>
       <td><%= number_to_currency(contract.expenses_total) %></td>
       <td class="green"><%= number_to_currency(contract.amount_remaining) %></td>
-      <td><%= number_with_precision contract.hours_spent, :precision => 2 %></td>
+      <td><%= number_with_precision contract.smart_hours_spent, :precision => 2 %></td>
       <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
       <td>
         <% if !contract.contract_url.empty? %>

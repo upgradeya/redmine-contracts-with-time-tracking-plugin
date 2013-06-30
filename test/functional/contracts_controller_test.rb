@@ -192,7 +192,7 @@ test "should create new contract with permission" do
     Role.find(4).add_permission! :edit_contracts
     put :assoc_time_entries_with_contract, :project_id => @project.id, :id => @contract.id,
           :time_entries => [[@time_entry.id]]
-    assert_redirected_to :action => "show", :project_id => @project.id, :id => @contract.id
+    assert_redirected_to :action => "show", :project_id => @project.identifier, :id => @contract.id
   end
 
   test "should not be able to associate time entries with contracts without permission" do
@@ -200,7 +200,6 @@ test "should create new contract with permission" do
           :time_entries => [[@time_entry.id]]
     assert_response 403
   end
-
 
   test "should warn user if time entry exceeds contract's amount remaining" do
     Role.find(4).add_permission! :edit_contracts
@@ -211,4 +210,28 @@ test "should create new contract with permission" do
     hours_over_str = l_hours(hours_over)
     assert_match "now #{hours_over_str} over", flash[:error]
   end
+
+  test "should archive contracts" do
+    Role.find(4).add_permission! :edit_contracts
+    assert_false @contract.is_archived
+    put :archive, :project_id => @project.id, :id => @contract.id,
+          :lock => 'true'
+    assert assigns(:contract).is_archived
+    assert_redirected_to :action => "show", :project_id => @project.identifier, :id => @contract.id
+  end
+
+  test "should un-archive contracts" do
+    Role.find(4).add_permission! :edit_contracts
+    @contract.is_archived = true
+    @contract.billable_amount_total = 1
+    @contract.hours_worked = 1
+    @contract.save!
+    put :archive, :project_id => @project.id, :id => @contract.id,
+          :lock => 'false'
+    assert_false assigns(:contract).is_archived
+    assert_nil assigns(:contract).billable_amount_total
+    assert_nil assigns(:contract).hours_worked
+    assert_redirected_to :action => "show", :project_id => @project.identifier, :id => @contract.id
+  end
+
 end

@@ -17,6 +17,17 @@ class Contract < ActiveRecord::Base
     self.purchase_amount / self.hourly_rate
   end
 
+  def smart_hours_spent
+    if self.is_archived
+      if self.hours_worked.nil?
+        self.hours_worked = hours_spent
+        save!
+      end
+      return self.hours_worked
+    end
+    hours_spent
+  end
+
   def hours_spent
     self.time_entries.sum { |time_entry| time_entry.hours }
   end
@@ -28,9 +39,25 @@ class Contract < ActiveRecord::Base
   def billable_amount_for_user(user)
     member_hours = self.time_entries.select { |entry| entry.user == user }.sum { |entry| entry.hours }
     member_rate = self.user_contract_rate_or_default(user)
+    member_hours * member_rate
   end
 
-  def billable_amount_total
+  # IF the contract is archived
+  #  - check to see if the billable amount total is pre-calculcated, if so, return it
+  #  - if not, calculate and save the billable amount total, and return it
+  # ELSE return the calculated billable amount total
+  def smart_billable_amount_total
+    if self.is_archived
+      if self.billable_amount_total.nil?
+        self.billable_amount_total = calculate_billable_amount_total
+        save!
+      end
+      return self.billable_amount_total
+    end
+    calculate_billable_amount_total
+  end
+
+  def calculate_billable_amount_total
     members = members_with_entries
     return 0 if members.empty?
     total_billable_amount = 0
@@ -44,7 +71,7 @@ class Contract < ActiveRecord::Base
   end
 
   def amount_remaining
-    self.purchase_amount - self.billable_amount_total - self.expenses_total
+    self.purchase_amount - self.smart_billable_amount_total - self.expenses_total
   end
 
   def hours_remaining

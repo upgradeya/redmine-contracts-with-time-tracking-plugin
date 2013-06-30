@@ -12,6 +12,11 @@ module Contracts
     end
 
     module InstanceMethods
+
+      def unarchived_contracts
+        contracts.select { |contract| !contract.is_archived }
+      end
+
       def user_project_rate_by_user(user)
         self.user_project_rates.select { |upr| upr.user_id == user.id}.first
       end
@@ -50,6 +55,14 @@ module Contracts
         if self.parent != nil
           parent = self.parent
           contracts +=  parent.contracts_for_all_ancestor_projects
+        end
+        return contracts
+      end
+
+      def unarchived_contracts_for_all_ancestor_projects(contracts = self.unarchived_contracts)
+        if self.parent != nil
+          parent = self.parent
+          contracts += parent.unarchived_contracts_for_all_ancestor_projects
         end
         return contracts
       end

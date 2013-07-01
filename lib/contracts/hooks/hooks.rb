@@ -46,6 +46,9 @@ module Contracts
           msg = l(:text_time_exceeded_time_remaining, :hours_over => l_hours(hours_over), :hours_remaining => l_hours(contract.hours_remaining))
           context[:controller].flash[:error] = msg unless hours_over == 0
         end
+        if contract.is_archived
+          context[:controller].flash[:error] = l(:text_archived_contract_cache_updated)
+        end
       end
     end
   end

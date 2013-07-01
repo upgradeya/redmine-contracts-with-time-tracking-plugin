@@ -88,9 +88,22 @@ class ContractTest < ActiveSupport::TestCase
     assert_equal @contract.hours_spent, @time_entry.hours
   end
 
+  test "should calculate and cache total hours spent for archived projects" do
+    @contract.update_attribute(:is_archived, true)
+    assert_equal @time_entry.hours, @contract.smart_hours_spent
+    assert_equal @time_entry.hours, @contract.hours_worked
+  end
+
   test "should calculate the billable amount for a contract based upon contractor-specific rates" do
     billable = @time_entry.hours * @contract.user_project_rate_or_default(@time_entry.user)
     assert_equal billable, @contract.calculate_billable_amount_total
+  end
+
+  test "should calculate and cache the billable amount for an archived contract" do
+    @contract.update_attribute(:is_archived, true)
+    billable = @time_entry.hours * @contract.user_project_rate_or_default(@time_entry.user)
+    assert_equal billable, @contract.smart_billable_amount_total
+    assert_equal billable, @contract.billable_amount_total
   end
 
   test "should calculate dollar amount remaining for contract" do
@@ -161,6 +174,44 @@ class ContractTest < ActiveSupport::TestCase
     end
     assert_equal 2, @contract.expenses.reload.size
     assert_equal 2.22, @contract.expenses_total
+  end
+
+  test "should reset the cache (hours worked & billable amount total)" do
+    @contract.update_attributes(:billable_amount_total => 1,
+                                :hours_worked => 1)
+    @contract.reset_cache!
+    assert_nil @contract.billable_amount_total
+    assert_nil @contract.hours_worked
+  end
+
+  test "should have its cache reset when in the archived state and a time entry is destroyed" do
+    @contract.update_attribute(:is_archived, true)
+    billable = @time_entry.hours * @contract.user_project_rate_or_default(@time_entry.user)
+    assert_equal billable, @contract.smart_billable_amount_total
+    assert_equal billable, @contract.billable_amount_total
+    @time_entry.destroy
+    assert_nil @contract.reload.billable_amount_total
+    assert_nil @contract.hours_worked
+    assert_equal 0, @contract.smart_billable_amount_total
+  end
+
+  test "should have its cache reset when in the archived state and a time entry is updated" do
+    @contract.update_attribute(:is_archived, true)
+    billable = @time_entry.hours * @contract.user_project_rate_or_default(@time_entry.user)
+    assert_equal billable, @contract.smart_billable_amount_total
+    assert_equal billable, @contract.billable_amount_total
+
+    # Go from 4.25 hours to 3 hours
+    @time_entry.hours = 3
+    @time_entry.save!
+
+    assert_nil @contract.reload.billable_amount_total
+    assert_nil @contract.hours_worked
+
+    billable = @time_entry.hours * @contract.user_project_rate_or_default(@time_entry.user)
+    assert_equal billable, @contract.smart_billable_amount_total
+    assert_equal billable, @contract.billable_amount_total
+
   end
 
 end

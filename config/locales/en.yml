@@ -60,6 +60,8 @@ en:
   label_amount: Amount
   label_edit_expense: Edit Expense
   label_new_expense: New Expense
+  label_lock: Lock
+  label_unlock: Unlock
 
   text_are_you_sure_delete_title: "Are you sure you want to delete %{value}?"
   text_are_you_sure_delete_time_entry: "Are you sure you want to delete this time entry?"
@@ -79,6 +81,7 @@ en:
   text_contract_locked: Contract was successfully locked.
   text_contract_unlocked: Contract was successfully unlocked.
   text_archived_contract_cache_updated: This entry is associated with a locked contract. The contract's cached values have been updated to reflect your changes.
+  text_expenses_uneditable: Expenses for this contract are not editable (contract is locked).
 
   field_contract: Contract
   field_title: Title

@@ -2,7 +2,7 @@
   <% if User.current.allowed_to?(:log_time, @project) %>
     <%= link_to l(:button_log_time), new_project_time_entry_path(@project), :class => 'icon icon-time' %> &nbsp;&nbsp;&nbsp;
   <% end %>
-  <% if User.current.allowed_to?(:create_expenses, @project) %>
+  <% if !@contract.is_archived && User.current.allowed_to?(:create_expenses, @project) %>
     <%= link_to l(:label_add_expense), { :controller => 'expenses', :action => 'new', :project_id => @project.identifier }, :class => 'icon icon-add' %> &nbsp;&nbsp;&nbsp;
   <% end %>
   <% if  has_project_permissions?(@project, :edit_contracts) %>
@@ -15,9 +15,9 @@
   <%= @contract.title %>
   <% if User.current.allowed_to?(:edit_contracts, @project) %>
     <% if @contract.is_archived %>
-      <%= link_to image_tag("unlock.png"), { :controller => 'contracts', :action => 'archive', :project_id => @project.identifier, :id => @contract.id, :lock => false }, :method => :put %>
+      <%= link_to image_tag("unlock.png"), { :controller => 'contracts', :action => 'archive', :project_id => @project.identifier, :id => @contract.id, :lock => false }, :method => :put, :title => l(:label_unlock) %>
     <% else %>
-      <%= link_to image_tag("locked.png"), { :controller => 'contracts', :action => 'archive', :project_id => @project.identifier, :id => @contract.id, :lock => true }, :method => :put %>
+      <%= link_to image_tag("locked.png"), { :controller => 'contracts', :action => 'archive', :project_id => @project.identifier, :id => @contract.id, :lock => true }, :method => :put, :title => l(:label_lock) %>
     <% end %>
 
     <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => @project.identifier, :id => @contract.id }, :title => l(:label_edit) %>

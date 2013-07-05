@@ -38,7 +38,7 @@ class ExpensesController < ApplicationController
   def destroy
     back_to = contract_urlpath(@expense)
     @expense.destroy
-    flash[:notice] = "Expense deleted."
+    flash[:notice] = l(:text_expense_deleted)
     respond_to do |format|
       format.html { redirect_to back_to }
     end

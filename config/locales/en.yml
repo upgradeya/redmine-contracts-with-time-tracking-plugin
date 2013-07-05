@@ -82,6 +82,7 @@ en:
   text_contract_unlocked: Contract was successfully unlocked.
   text_archived_contract_cache_updated: This entry is associated with a locked contract. The contract's cached values have been updated to reflect your changes.
   text_expenses_uneditable: Expenses for this contract are not editable (contract is locked).
+  text_expense_deleted: Expense deleted.
 
   field_contract: Contract
   field_title: Title

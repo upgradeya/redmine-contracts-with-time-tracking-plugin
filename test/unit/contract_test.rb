@@ -214,4 +214,8 @@ class ContractTest < ActiveSupport::TestCase
 
   end
 
+  test "should expire fragment cache of contract row" do
+    @contract.expire_fragment!
+  end
+
 end

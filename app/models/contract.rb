@@ -11,6 +11,8 @@ class Contract < ActiveRecord::Base
   validates :end_date, :is_after_start_date => true
   before_destroy { |contract| contract.time_entries.clear }
   after_save :apply_rates
+  after_save :expire_fragment!
+
   attr_accessor :rates
 
   def hours_purchased
@@ -158,6 +160,10 @@ class Contract < ActiveRecord::Base
   def expenses_total
 #    return 0.0 if self.expenses.empty?
     expenses_sum = self.expenses.sum { |expense| expense.amount }
+  end
+
+  def expire_fragment!
+    ActionController::Base.new.expire_fragment("contracts_all_row_contract_id_#{self.id}")
   end
 
   private

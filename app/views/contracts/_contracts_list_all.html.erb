@@ -1,0 +1,58 @@
+<table class="contracts-list list">
+  <thead>
+    <tr>
+      <th><%= l(:label_name) %></th>
+      <th><%= l(:label_agreed_on) %></th>
+      <th><%= l(:label_date_period) %></th>
+      <th><%= l(:label_purchased) %></th>
+      <th><%= l(:label_expenses) %></th>
+      <th><%= l(:label_remaining) %></th>
+      <th><%= l(:label_hours_worked) %></th>
+      <th><%= l(:label_hours_left) %></th>
+      <th><%= l(:label_contract) %></th>
+      <th><%= l(:label_invoice) %></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @contracts.each do |contract| %>
+    <tr class="<%= cycle("odd", "even") %>">
+      <td>
+        <%= link_to contract.title, { :controller => 'contracts', :action => 'show', :project_id => contract.project.identifier, :id => contract.id } %>
+      </td>
+      <td><%= format_date(contract.agreement_date) %></td>
+      <td><%= format_date(contract.start_date) + " - " + format_date(contract.end_date) %></td>
+      <td><%= number_to_currency(contract.purchase_amount)
+      %></td>
+      <td><%= number_to_currency(contract.expenses_total) %></td>
+      <td class="green"><%= number_to_currency(contract.amount_remaining)
+      %></td>
+      <td><%= number_with_precision contract.smart_hours_spent, :precision => 2
+      %></td>
+      <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2
+      %></td>
+      <td>
+        <% if !contract.contract_url.empty? %>
+          <%= link_to image_tag("/images/files/text.png"), contract.contract_url %>
+        <% end %>
+      </td>
+      <td>
+        <% if !contract.invoice_url.empty? %>
+          <%= link_to image_tag("/images/files/text.png"), contract.invoice_url %>
+        <% end %>
+      </td>
+      <td>
+        <% if User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
+          <%= link_to image_tag("/images/edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => contract.project.identifier, :id => contract.id }, :title => l(:label_edit) %>
+      <% end %>
+      </td>
+      <td>
+        <% if User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
+            <%= link_to image_tag("/images/delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => contract.project.identifier, :id => contract.id }, :method => :delete, 
+            :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, contract.title) %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+

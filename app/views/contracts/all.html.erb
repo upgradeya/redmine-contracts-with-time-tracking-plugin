@@ -1,0 +1,14 @@
+<div class="contextual">
+  <% if (@project != nil) && (User.current.roles_for_project(@project).first.permissions.include?(:create_contracts)) %>
+    <%= link_to l(:label_new_contract), { :controller => 'contracts', :action => 'new', :project_id => @project.identifier }, :class => 'icon icon-add' %>
+  <% end %>
+</div>
+
+<h2><%= l(:label_contracts) %></h2>
+
+<%= render 'contracts_summary' %>
+<%= render 'contracts_list_all' %>
+
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>
+<% end %>

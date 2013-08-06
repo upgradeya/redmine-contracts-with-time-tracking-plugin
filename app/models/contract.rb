@@ -63,11 +63,13 @@ class Contract < ActiveRecord::Base
   end
 
   def calculate_billable_amount_total
+    logger.debug "---- Getting members with entries"
     members = members_with_entries
+    logger.debug "---- /Getting members with entries"
     return 0 if members.empty?
     total_billable_amount = 0
     members.each do |member|
-      member_hours = self.time_entries.select { |entry| entry.user == member }.sum { |entry| entry.hours }
+      member_hours = self.time_entries.select { |entry| entry.user_id == member.id }.sum { |entry| entry.hours }
       member_rate = self.user_contract_rate_or_default(member)
       billable_amount = member_hours * member_rate
       total_billable_amount += billable_amount
@@ -124,9 +126,12 @@ class Contract < ActiveRecord::Base
   end
 
   def members_with_entries
-    return [] if self.time_entries.reload.empty?
-    uniq_members = self.time_entries.collect { |entry| entry.user.reload }.uniq
-    uniq_members.nil? ? [] : uniq_members
+    return [] if self.time_entries.empty?
+#    uniq_members = self.time_entries.collect { |entry| entry.user }.uniq
+#    uniq_members.nil? ? [] : uniq_members
+    uniq_user_ids = self.time_entries.collect { |entry| entry.user_id }.uniq
+    return [] if uniq_user_ids.nil?
+    User.find(uniq_user_ids)
   end
 
   def self.users_for_project_and_sub_projects(project)
@@ -151,8 +156,8 @@ class Contract < ActiveRecord::Base
   end
 
   def expenses_total
-    return 0.0 if self.expenses.empty?
-    self.expenses.sum { |expense| expense.amount }
+#    return 0.0 if self.expenses.empty?
+    expenses_sum = self.expenses.sum { |expense| expense.amount }
   end
 
   private

@@ -64,9 +64,7 @@ class Contract < ActiveRecord::Base
   end
 
   def calculate_billable_amount_total
-    logger.debug "---- Getting members with entries"
     members = members_with_entries
-    logger.debug "---- /Getting members with entries"
     return 0 if members.empty?
     total_billable_amount = 0
     members.each do |member|

@@ -11,7 +11,6 @@ class Contract < ActiveRecord::Base
   validates :end_date, :is_after_start_date => true
   before_destroy { |contract| contract.time_entries.clear }
   after_save :apply_rates
-  after_save :expire_fragment!
 
   attr_accessor :rates
 
@@ -129,8 +128,6 @@ class Contract < ActiveRecord::Base
 
   def members_with_entries
     return [] if self.time_entries.empty?
-#    uniq_members = self.time_entries.collect { |entry| entry.user }.uniq
-#    uniq_members.nil? ? [] : uniq_members
     uniq_user_ids = self.time_entries.collect { |entry| entry.user_id }.uniq
     return [] if uniq_user_ids.nil?
     User.find(uniq_user_ids)
@@ -158,12 +155,7 @@ class Contract < ActiveRecord::Base
   end
 
   def expenses_total
-#    return 0.0 if self.expenses.empty?
     expenses_sum = self.expenses.sum { |expense| expense.amount }
-  end
-
-  def expire_fragment!
-    ActionController::Base.new.expire_fragment("contracts_all_row_contract_id_#{self.id}")
   end
 
   private

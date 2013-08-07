@@ -17,11 +17,7 @@
   </thead>
   <% @contracts.each do |contract| %>
     <tr class="<%= cycle("odd", "even") %>">
-      <% logger.debug "============ Beginning render of contract_row for Contract ID: #{contract.id}" %>
-      <% cache("contracts_all_row_contract_id_#{contract.id}") do %>
-        <%= render :partial => 'contract_row', :locals => { :contract => contract } %>
-      <% end %>
-      <% logger.debug "============ //Ending render of contract_row for Contract ID: #{contract.id}" %>
+      <%= render :partial => 'contract_row', :locals => { :contract => contract } %>
     </tr>
   <% end %>
 </table>

@@ -1,0 +1,94 @@
+es:
+  project_module_contracts: Contratos
+  permission_view_all_contracts_for_project: Ver Todos los contratos por proyecto
+  permission_view_contract_details: Ver detalles del contrato
+  permission_edit_contracts: Editar contratos
+  permission_create_contracts: Crear contratos
+  permission_delete_contracts: Eliminar contratos
+  permission_view_hourly_rate: Ver tarifa por hora
+  permission_create_expenses: Crear gastos
+  permission_edit_expenses: Editar gastos
+  permission_delete_expenses: Eliminar gastos
+  permission_view_expenses: Ver gastos
+
+  contracts: Contratos
+  label_contracts: Contratos
+  label_contract: Contrato
+  label_new_contract: Nuevo Contrato
+  label_editing_contract: Editar Contrato
+  label_add_time_entries: Añadir registro de tiempo
+  label_add_time_entries: Asignación masiva de registro de tiempo
+  label_add_expense: Añadir Gasto
+  label_log_time: Hora de traza
+  label_edit: Editar
+  label_delete: Eliminar
+  label_view_contract: Ver Contrato
+  label_view_invoice: Ver Factura
+  label_date_period: Rango de fechas
+  label_amount_purchased: Importe contratado
+  label_invoice: Factura
+  label_members: Miembros
+  label_hours: Horas
+  label_contractor_rate: Tarifa Contratada
+  label_billable_amount: Cantidad Facturable
+  label_time_entries: Registros de tiepo
+  label_add_to_contract: Añadir al Contrato
+  label_date: Fecha
+  label_current_contract: Contrato Actual
+  label_member: Miembro
+  label_activity: Actividad
+  label_issue: Cuestión
+  label_comments: Comentarios
+  label_apply: Aplicar
+  label_name: Nombre
+  label_agreed_on: Convenido
+  label_purchased: Contratado
+  label_remaining: Pendiente
+  label_hours_worked: Horas Trabajadas
+  label_hours_left: Horas Restantes
+  label_total_purchased: Total Contratado para Todos los Contratos
+  label_total_remaining: Total Pendiente para Todos los Contratos
+  label_or: "-o-"
+  label_create_contract: Crear Contrato
+  label_update_contract: Actualizar Contrato
+  label_contract_empty: Contrato Vacio
+  label_select_contract: "[Elige un Contrato]"
+  label_save_expense: Guardar Gasto
+  label_expenses: Gastos
+  label_description: Descripción
+  label_amount: Cantidad
+  label_edit_expense: Editar Gasto
+  label_new_expense: Nuevo Gasto
+
+  text_are_you_sure_delete_title: "¿Estás seguro que quieres eliminar %{value}?"
+  text_are_you_sure_delete_time_entry: "¿Estás seguro que quieres eliminar este registro?"
+  text_are_you_sure_delete_expense: "¿Estás seguro que quieres eliminar este gasto?"
+  text_time_exceeded_time_remaining: "Este registro de tiempo super el máximo de tiempo en %{hours_over}.\Para mantenerte en el contrato, edita este registro para que quede en %{hours_remaining}."
+  text_must_come_after_agreement_date: debe ser tras la fecha aceptada
+  text_must_come_after_start_date: debe venir después de la fecha de comienzo
+  text_contract_saved: Contrato guarado correctamente!
+  text_contract_updated: Contrato actualizado correctamente!
+  text_contract_deleted: Contrato eliminado correctamente
+  text_hours_over_contract: "Estás %{hours_over} horas por encioma del límite del contrato"
+  text_invalid_rate: "La tarifa del contrato debe ser superior a cero."
+  text_invalid_issue_id: "no es un ID de cuestión básico"
+  text_expense_created: 'Gasto creado correctamente.'
+  text_expense_updated: 'Gasto actualizado correctamente.'
+  text_na: 'N/A'
+
+  field_contract: Contrato
+  field_title: Título
+  field_description: Descripción
+  field_agreement_date: Fecha del acuerdo
+  field_start_date: Fecha de inicio
+  field_end_date: Fecha de fin
+  field_purchase_amount: Cantidad comprada
+  field_hourly_rate: Tarifa horaria
+  field_contract_url: URL del Contrato
+  field_invoice_url: URL de la Factura
+
+  field_expense_name: Nombre
+  field_expense_date: Fecha de gastos
+  field_amount: Cantidad
+  field_expense_contract: Contrato
+  field_issue: Cuestión (ID)

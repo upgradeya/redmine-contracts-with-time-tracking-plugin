@@ -15,15 +15,18 @@
     </p>
     <p>
       <%= f.label l(:field_agreement_date) %>
-      <%= f.date_select :agreement_date %>
+      <%= f.text_field :agreement_date, :size => 12 %>
+      <%= calendar_for('contract_agreement_date') %>
     </p>
     <p>
       <%= f.label l(:field_start_date) %>
-      <%= f.date_select :start_date %>
+      <%= f.text_field :start_date, :size => 12 %>
+      <%= calendar_for('contract_start_date') %>
     </p>
     <p>
       <%= f.label l(:field_end_date) %>
-      <%= f.date_select :end_date %>
+      <%= f.text_field :end_date, :size => 12 %>
+      <%= calendar_for('contract_end_date') %>
     </p>
     <p>
       <%= f.label l(:field_purchase_amount) %>

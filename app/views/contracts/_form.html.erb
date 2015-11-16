@@ -1,12 +1,13 @@
-<% controller.action_name == "new" ? action = "create" : action = "update" %>
-<% controller.action_name == "new" ? method = :post : method = :put %>
+<% logger.warn "Controller name: " + controller.action_name %>
+<% controller.action_name == "new" || controller.action_name == "create" ? action = "create" : action = "update" %>
+<% controller.action_name == "new" || controller.action_name == "create"  ? method = :post : method = :put %>
 <% controller.action_name == "new" ? title = @new_title : title = @contract.title %>
 
 <%= form_for @contract, :url => { :action => action }, :method => method do |f| %>
   <%= f.hidden_field :project_id, :value => @project.id %>
   <div class="box tabular">
     <p>
-      <%= f.label :title %>
+      <%= f.label :title %> <%= span_required %>
       <%= f.text_field :title, :value => title, :size => 50 %>
     </p>
     <p>
@@ -14,27 +15,27 @@
       <%= f.text_area :description, { :cols => 50, :rows => 3 } %>
     </p>
     <p>
-      <%= f.label l(:field_agreement_date) %>
+      <%= f.label l(:field_agreement_date) %> <%= span_required %>
       <%= f.text_field :agreement_date, :size => 12 %>
       <%= calendar_for('contract_agreement_date') %>
     </p>
     <p>
-      <%= f.label l(:field_start_date) %>
+      <%= f.label l(:field_start_date) %> <%= span_required %>
       <%= f.text_field :start_date, :size => 12 %>
       <%= calendar_for('contract_start_date') %>
     </p>
     <p>
-      <%= f.label l(:field_end_date) %>
+      <%= f.label l(:field_end_date) %> <%= span_required %>
       <%= f.text_field :end_date, :size => 12 %>
       <%= calendar_for('contract_end_date') %>
     </p>
     <p>
-      <%= f.label l(:field_purchase_amount) %>
-      <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') == 0 %> <%= f.text_field :purchase_amount, :size => 10 %> <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') != 0 %>
+      <%= f.label l(:field_purchase_amount) %> <%= span_required %>
+      <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') == 0 %><%= f.text_field :purchase_amount, :size => 10 %> <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') != 0 %>
     </p>
     <p>
-      <%= f.label l(:field_hourly_rate) %>
-      <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') == 0 %> <%= f.text_field :hourly_rate, :size => 10 %> <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') != 0 %>
+      <%= f.label l(:field_hourly_rate) %> <%= span_required %>
+      <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') == 0 %><%= f.text_field :hourly_rate, :size => 10 %> <%= l('number.currency.format.unit') if l('number.currency.format.format').index('%u') != 0 %>
     </p>
     <p>
       <%= f.label l(:field_contract_url) %>
@@ -57,7 +58,7 @@
     </fieldset>
   <% end %>
   <div>
-    <% controller.action_name == "new" ? msg = l(:label_create_contract) : msg = l(:label_update_contract) %>
+    <% controller.action_name == "new" || controller.action_name == "create"  ? msg = l(:label_create_contract) : msg = l(:label_update_contract) %>
     <p><%= f.submit msg  %></p>
   </div>
 <% end %>

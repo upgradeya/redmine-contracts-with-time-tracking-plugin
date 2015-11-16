@@ -16,4 +16,8 @@ module ContractsHelper
     raw 'class="selected"'
   end
 
+  def span_required
+    raw '<span class="required"> *</span>'
+  end
+
 end

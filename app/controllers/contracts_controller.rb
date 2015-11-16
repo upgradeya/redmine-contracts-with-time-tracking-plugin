@@ -31,7 +31,7 @@ class ContractsController < ApplicationController
     @contract = Contract.new
     @project = Project.find(params[:project_id])
     @project.contracts.empty? ? num = "001" : num = ("%03d" % (@project.contracts.last.id + 1))
-    @new_title = @project.identifier + "_Dev_" + num
+    @new_title = @project.identifier + "_Dev#" + num
     load_contractors_and_rates
   end
 
@@ -54,7 +54,8 @@ class ContractsController < ApplicationController
       redirect_to :action => "show", :id => @contract.id
     else
       flash[:error] = "* " + @contract.errors.full_messages.join("</br>* ")
-      redirect_to :action => "new", :id => @contract.id
+      load_contractors_and_rates
+      render :new
     end
   end
 

@@ -47,8 +47,23 @@
           </thead>
           <tbody>
             <tr class="<%= cycle("odd", "even") %>">
-              <td><%= format_date(@contract.agreement_date)  %></td>
-              <td><%= format_date(@contract.start_date) %> - <%= format_date(@contract.end_date)  %></td>
+              <td>
+                <% if @contract.agreement_date != nil %>
+                  <%= format_date(@contract.agreement_date) %>
+                <% else %>
+                  <%= l(:text_agreement_pending) %>
+                <% end %>
+              </td>
+              <td>
+                <% if @contract.agreement_date != nil %>
+                  <%= format_date(@contract.start_date) %> -
+                  <% if @contract.end_date != nil %>
+                    <%= format_date(@contract.end_date) %>
+                  <% else %>
+                    <%= l(:text_no_end_date) %>
+                  <% end %>
+                <% end %>
+              </td>
               <% if User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate) %>
                 <td><%= number_to_currency(@contract.hourly_rate) %></td>
               <% end %>

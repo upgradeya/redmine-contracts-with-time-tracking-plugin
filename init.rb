@@ -14,6 +14,8 @@ Redmine::Plugin.register :contracts do
  
   menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? && User.current.allowed_to?(:view_all_contracts_for_project, nil, :global => true) } 
   menu :project_menu, :contracts, { :controller => :contracts, :action => :index }, :caption => :label_contracts, :param => :project_id
+  
+  settings :default => {'empty' => true}, :partial => 'settings/contract_settings'
 
   project_module :contracts do
     permission :view_all_contracts_for_project,       :contracts => :index
@@ -27,4 +29,5 @@ Redmine::Plugin.register :contracts do
     permission :delete_expenses,                      :expenses => :destroy
     permission :view_expenses,                        :contracts => :show
   end
+  
 end

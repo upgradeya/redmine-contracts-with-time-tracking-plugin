@@ -1,5 +1,0 @@
-<% @contracts = Contract.where(:project_id => @time_entry.project_id) %>
-<p>
-  <%= @f.label :label_contract %>
-  <%= @f.select :contract_id, options_from_collection_for_select(@contracts, :id, :title) %>
-</p>

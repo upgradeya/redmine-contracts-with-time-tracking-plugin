@@ -5,8 +5,7 @@ class Contract < ActiveRecord::Base
   has_many   :user_contract_rates
   has_many   :expenses
 
-  validates_presence_of :title, :start_date, :end_date, :agreement_date,
-                        :purchase_amount, :hourly_rate, :project_id
+  validates_presence_of :title, :start_date, :purchase_amount, :hourly_rate, :project_id
   validates :title, :uniqueness => { :case_sensitive => false }
   validates :end_date, :is_after_start_date => true
   before_destroy { |contract| contract.time_entries.clear }

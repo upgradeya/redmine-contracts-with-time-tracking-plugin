@@ -19,14 +19,17 @@ module Contracts
         # new contract.
         protected
         def time_not_exceed_contract
-          if contract_id != nil && hours != nil
+          previous_hours = (hours_was != nil) ? hours_was : 0 
+
+          if contract_id != nil
             if Setting.plugin_contracts['automatic_contract_creation']
-              if hours > (contract.hours_remaining + contract.hours_purchased)
+              if hours > (contract.hours_remaining + contract.hours_purchased + previous_hours)
                 errors.add :hours, "is invalid. The amount exceeds the time remaining plus the size of a new contract."
               end
             else
-              if hours > contract.hours_remaining
-                errors.add :hours, "is invalid. The contract " + contract.title + " only has " + contract.hours_remaining.to_s + " hours remaining."
+              if hours > (contract.hours_remaining + previous_hours)
+                errors.add :hours, "is invalid. The contract " + contract.title + " only has " + 
+                  (contract.hours_remaining + previous_hours).to_s + " hours remaining."
               end
             end
           end
@@ -36,7 +39,8 @@ module Contracts
         # Create new contract if the settings configuration is enabled and the hours exceed the current contract
         private
         def create_next_contract
-          if Setting.plugin_contracts['automatic_contract_creation'] && hours > contract.hours_remaining
+          previous_hours = (hours_was != nil) ? hours_was : 0
+          if Setting.plugin_contracts['automatic_contract_creation'] && hours > (contract.hours_remaining + previous_hours)
             new_contract = Contract.new
             new_contract.title = project.identifier + "_Dev#" + ("%03d" % (project.contracts.last.id + 1))
             new_contract.description = contract.description
@@ -63,19 +67,19 @@ module Contracts
 
             if new_contract.save
 
-              # split the time entry and save in the new contract
+              # split the time entry and save new entry in the new contract
               new_time_entry = TimeEntry.new
               new_time_entry.project_id = project_id
               new_time_entry.issue_id = issue_id
               new_time_entry.user_id = user.id
-              new_time_entry.hours = hours - contract.hours_remaining
+              new_time_entry.hours = hours - (contract.hours_remaining + previous_hours)
               new_time_entry.comments = comments
               new_time_entry.activity_id = activity_id
               new_time_entry.spent_on = spent_on
               new_time_entry.contract_id = new_contract.id
 
               if new_time_entry.save
-                self.hours = contract.hours_remaining
+                self.hours = contract.hours_remaining + previous_hours
               else
                 logger.error "Split time entry ran into errors"
                 logger.error new_time_entry.errors.full_messages.join("\n")

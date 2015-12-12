@@ -9,6 +9,8 @@ module Contracts
       if !@contracts.empty?
         if context[:time_entry].contract_id != nil
           selected_contract = context[:time_entry].contract_id
+        elsif !(@current_project.contracts.empty?)
+          selected_contract = @current_project.contracts.maximum(:id)
         elsif !(@contracts.empty?)
           selected_contract = @contracts.max_by(&:id).id
         else

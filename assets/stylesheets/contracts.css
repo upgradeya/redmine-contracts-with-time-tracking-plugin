@@ -46,3 +46,11 @@
 fieldset#contractor_rates { 
   width: 500px;
 }
+
+/***** Flash & error messages ****/
+div.flash.contract {
+  background: url(../images/true.png) 8px 5px no-repeat;
+  background-color: #dfffdf;
+  border-color: #9fcf9f;
+  color: #005f00;
+}

@@ -1,6 +1,5 @@
 module Contracts
   class ContractsHookListener < Redmine::Hook::ViewListener
-
   
     def view_timelog_edit_form_bottom(context={})
       @current_project = Project.find(context[:time_entry].project_id)

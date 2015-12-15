@@ -8,6 +8,8 @@ module Contracts
         belongs_to :contract
         safe_attributes 'contract_id'
 
+        attr_accessor :flash_time_entry_success, :flash_only_one_time_entry
+
         validate :time_not_exceed_contract
         before_save :create_next_contract
 
@@ -79,7 +81,13 @@ module Contracts
               new_time_entry.contract_id = new_contract.id
 
               if new_time_entry.save
+                self.flash_time_entry_success = true
                 self.hours = contract.hours_remaining + previous_hours
+
+                # @TODO This is not working correctly
+                if self.hours.to_d == 0
+                  self.flash_only_one_time_entry
+                end
               else
                 logger.error "Split time entry ran into errors"
                 logger.error new_time_entry.errors.full_messages.join("\n")

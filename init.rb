@@ -1,5 +1,6 @@
 require_dependency 'contracts/hooks/hooks'
 require_dependency 'contracts/patches/time_entry_patch'
+require_dependency 'contracts/patches/timelog_controller_patch'
 require_dependency 'contracts/patches/project_patch'
 require_dependency 'contracts/patches/user_patch'
 require_dependency 'contracts/validators/is_after_agreement_date_validator'

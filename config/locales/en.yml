@@ -70,6 +70,8 @@ en:
   text_contract_updated: Contract successfully updated!
   text_contract_deleted: Contract successfully deleted
   text_hours_over_contract: "You are now %{hours_over} over the contract's limit."
+  text_split_time_entry_saved: Your time entry has been split into two entries because it exceeded the remaining time on the selected contract. The second entry has been added to a new pending contract.
+  text_one_time_entry_saved: A new pending contract was created and your time entry was saved there because the contract you selected did not have any remaining time.
   text_invalid_rate: "Contractor rate must be zero or greater."
   text_invalid_issue_id: "is not a valid issue ID"
   text_expense_created: 'Expense was successfully created.'

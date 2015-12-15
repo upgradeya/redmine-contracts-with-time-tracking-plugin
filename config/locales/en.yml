@@ -72,8 +72,12 @@ en:
   text_hours_over_contract: "You are now %{hours_over} over the contract's limit."
   text_split_time_entry_saved: Your time entry has been split into two entries because it exceeded the remaining time on the selected contract. The second entry has been added to a new pending contract.
   text_one_time_entry_saved: A new pending contract was created and your time entry was saved there because the contract you selected did not have any remaining time.
+  text_hours_too_large: is invalid. The amount exceeds the time remaining plus the size of a new contract.
   text_invalid_rate: "Contractor rate must be zero or greater."
   text_invalid_issue_id: "is not a valid issue ID"
+  text_invalid_hours: "is invalid. The contract %{title} only has %{hours} remaining."
+  text_second_time_entry_failure: "something went wrong. The 2nd entry for this split time entry could not be saved. %{error}"
+  text_auto_contract_failure: "something went wrong. The new contract for this split time entry could not be saved. %{error}"
   text_expense_created: 'Expense was successfully created.'
   text_expense_updated: 'Expense was successfully updated.'
   text_agreement_pending: 'agreement pending'

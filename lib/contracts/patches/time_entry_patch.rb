@@ -26,12 +26,11 @@ module Contracts
           if contract_id != nil
             if Setting.plugin_contracts['automatic_contract_creation']
               if hours > (contract.hours_remaining + contract.hours_purchased + previous_hours)
-                errors.add :hours, "is invalid. The amount exceeds the time remaining plus the size of a new contract."
+                errors.add :hours, l(:text_hours_too_large)
               end
             else
               if hours > (contract.hours_remaining + previous_hours)
-                errors.add :hours, "is invalid. The contract " + contract.title + " only has " + 
-                  (contract.hours_remaining + previous_hours).to_s + " hours remaining."
+                errors.add :hours, l(:text_invalid_hours, :title => contract.title, :hours => l_hours(contract.hours_remaining + previous_hours))
               end
             end
           end
@@ -84,22 +83,21 @@ module Contracts
                 self.flash_time_entry_success = true
                 self.hours = contract.hours_remaining + previous_hours
 
-                # @TODO This is not working correctly
-                if self.hours.to_d == 0
+                # @TODO This is not working. Its supposed to create a different error message
+                # if there are zero remaining hours in the current contract
+                if self.hours <= 0.1 && self.hours >= -0.1
                   self.flash_only_one_time_entry
                 end
               else
                 logger.error "Split time entry ran into errors"
                 logger.error new_time_entry.errors.full_messages.join("\n")
-                errors.add :contract_id, "something went wrong. The 2nd entry for this split time entry could not be saved. " +
-                   new_time_entry.errors.full_messages.join("\n")
-                  return false
+                errors.add :contract_id, l(:text_second_time_entry_failure, :error => new_time_entry.errors.full_messages.join("\n"))
+                return false
               end
             else
               logger.error "New auto created contract ran into errors"
               logger.error new_contract.errors.full_messages.join("\n")
-              errors.add :contract_id, "something went wrong. The new contract for this split time entry could not be saved. " +
-                   new_contract.errors.full_messages.join("\n")
+              errors.add :contract_id, l(:text_auto_contract_failure, :error => new_contract.errors.full_messages.join("\n"))
               return false
             end
           else

@@ -1,11 +1,11 @@
 <div class="contextual">
-  <% if User.current.allowed_to?(:log_time, @project) %>
+  <% if !@contract.is_locked && User.current.allowed_to?(:log_time, @project) %>
     <%= link_to l(:button_log_time), new_project_time_entry_path(@project), :class => 'icon icon-time' %> &nbsp;&nbsp;&nbsp;
   <% end %>
-  <% if User.current.allowed_to?(:create_expenses, @project) %>
+  <% if !@contract.is_locked && User.current.allowed_to?(:create_expenses, @project) %>
     <%= link_to l(:label_add_expense), { :controller => 'expenses', :action => 'new', :project_id => @project.identifier }, :class => 'icon icon-add' %> &nbsp;&nbsp;&nbsp;
   <% end %>
-  <% if  has_project_permissions?(@project, :edit_contracts) %>
+  <% if  !@contract.is_locked && has_project_permissions?(@project, :edit_contracts) %>
     <%= link_to l(:label_add_time_entries), { :controller => 'contracts', :action => 'add_time_entries', :project_id => @project.identifier, :id => @contract.id }, :class => 'icon icon-issue' %>
   <% end %>
 </div>
@@ -13,11 +13,16 @@
 <h2>
   <%= @contract.title %>
   <% if User.current.allowed_to?(:edit_contracts, @project) %>
-    <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => @project.identifier, :id => @contract.id }, :title => l(:label_edit) %>
+    <% if @contract.is_locked %>
+      <%= link_to image_tag("unlock.png"), { :controller => 'contracts', :action => 'lock', :project_id => @project.identifier, :id => @contract.id, :lock => false }, :method => :put, :title => l(:label_unlock) %>
+    <% else %>
+      <%= link_to image_tag("locked.png"), { :controller => 'contracts', :action => 'lock', :project_id => @project.identifier, :id => @contract.id, :lock => true }, :method => :put, :title => l(:label_lock) %>
+      <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => @project.identifier, :id => @contract.id }, :title => l(:label_edit) %>
+    <% end %>
   <% end %>
-  <% if User.current.allowed_to?(:delete_contracts, @project) %>
+  <% if !@contract.is_locked && User.current.allowed_to?(:delete_contracts, @project) %>
     <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => @project.identifier, :id => @contract.id }, :method => :delete,
-      :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, @contract.title) %>
+    :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, @contract.title) %>
   <% end %>
 </h2>
 
@@ -106,7 +111,7 @@
               <td><%= format_hours(@time_entries.sum { |entry| entry.hours }) %></td>
               <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
                 <td></td>
-                <td><%= number_to_currency(@contract.billable_amount_total) %></td>
+                <td><%= number_to_currency(@contract.smart_billable_amount_total) %></td>
               <% end %>
             </tr>
           </tbody>

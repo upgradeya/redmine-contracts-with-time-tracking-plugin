@@ -7,11 +7,16 @@ module Contracts
         unloadable
         belongs_to :contract
         safe_attributes 'contract_id'
+        after_update :refresh_contract
+        after_destroy :refresh_contract
+        after_create :refresh_contract
 
         attr_accessor :flash_time_entry_success, :flash_only_one_time_entry
 
         validate :time_not_exceed_contract
         before_save :create_next_contract
+
+        base.send(:include, InstanceMethods)
 
         # Validate the "hours" input field
         #
@@ -104,6 +109,15 @@ module Contracts
             # Do nothing. Configuration is off or contract hours not exceeded.
           end
         end
+      end
+    end
+
+    module InstanceMethods
+
+      def refresh_contract
+        return if self.contract_id.nil?
+        the_contract = Contract.find(self.contract_id)
+        the_contract.reset_cache!
       end
     end
   end

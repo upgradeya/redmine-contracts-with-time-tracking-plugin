@@ -38,7 +38,7 @@ class ExpensesController < ApplicationController
   def destroy
     back_to = contract_urlpath(@expense)
     @expense.destroy
-    flash[:alert] = "Expense deleted."
+    flash[:notice] = l(:text_expense_deleted)
     respond_to do |format|
       format.html { redirect_to back_to }
     end
@@ -47,16 +47,19 @@ class ExpensesController < ApplicationController
   private
 
     def contract_urlpath(expense)
-      contract = expense.contract
-      "/projects/#{contract.project.identifier}/contracts/#{contract.id}?expenses=true"
+      url_for({ :controller => 'contracts', :action => 'show', :project_id => expense.contract.project.identifier, :id => expense.contract.id, :expenses => 'true'})
     end
     
     def expense_editpath(expense)
-      "/projects/#{expense.contract.project.identifier}/expenses/#{expense.id}/edit"
+      url_for({ :controller => 'expenses', :action => 'edit', :project_id => expense.contract.project.identifier, :id => expense.id })
     end
 
     def set_expense
       @expense = Expense.find(params[:id])
+      if @expense.contract.is_locked
+        flash[:error] = l(:text_expenses_uneditable)
+        redirect_to contract_urlpath(@expense)
+      end
     end
 
     def set_project
@@ -64,7 +67,7 @@ class ExpensesController < ApplicationController
     end
 
     def load_contracts
-      @contracts = Contract.order("start_date ASC").where(:project_id => @project.id)
+      @contracts = Contract.order("start_date ASC").where(:project_id => @project.id).where(:is_locked => false)
     end
 
 

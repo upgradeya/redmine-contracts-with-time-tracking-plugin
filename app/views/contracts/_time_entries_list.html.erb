@@ -20,12 +20,12 @@
       <td><%= time_entry.comments %></td>
       <td><%= time_entry.hours %></td>
       <td>
-        <% if User.current.allowed_to?(:edit_time_entries, @project) -%>
+        <% if !@contract.is_locked && User.current.allowed_to?(:edit_time_entries, @project) -%>
           <%= link_to image_tag("edit.png"), edit_time_entry_path(time_entry), :title => l(:label_edit) %>
         <% end %>
       </td>
       <td>
-        <% if User.current.allowed_to?(:edit_time_entries, @project) -%>
+        <% if !@contract.is_locked && User.current.allowed_to?(:edit_time_entries, @project) -%>
           <%= link_to image_tag("delete.png"), time_entry_path(time_entry), 
             :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_time_entry), :method => :delete %>
         <% end %>

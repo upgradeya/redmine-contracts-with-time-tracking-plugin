@@ -16,6 +16,21 @@ class Contract < ActiveRecord::Base
     self.purchase_amount / self.hourly_rate
   end
 
+  def reset_cache!
+    update_attributes(:hours_worked => nil, :billable_amount_total => nil)
+  end
+
+  def smart_hours_spent
+    if self.is_locked
+      if self.hours_worked.nil?
+        self.hours_worked = hours_spent
+        save!
+      end
+      return self.hours_worked
+    end
+    hours_spent
+  end
+
   def hours_spent
     self.time_entries.sum { |time_entry| time_entry.hours }
   end
@@ -27,14 +42,30 @@ class Contract < ActiveRecord::Base
   def billable_amount_for_user(user)
     member_hours = self.time_entries.select { |entry| entry.user == user }.sum { |entry| entry.hours }
     member_rate = self.user_contract_rate_or_default(user)
+    member_hours * member_rate
   end
 
-  def billable_amount_total
+  # IF the contract is locked
+  #  - check to see if the billable amount total is pre-calculcated, if so, return it
+  #  - if not, calculate and save the billable amount total, and return it
+  # ELSE return the calculated billable amount total
+  def smart_billable_amount_total
+    if self.is_locked
+      if self.billable_amount_total.nil?
+        self.billable_amount_total = calculate_billable_amount_total
+        save!
+      end
+      return self.billable_amount_total
+    end
+    calculate_billable_amount_total
+  end
+
+  def calculate_billable_amount_total
     members = members_with_entries
     return 0 if members.empty?
     total_billable_amount = 0
     members.each do |member|
-      member_hours = self.time_entries.select { |entry| entry.user == member }.sum { |entry| entry.hours }
+      member_hours = self.time_entries.select { |entry| entry.user_id == member.id }.sum { |entry| entry.hours }
       member_rate = self.user_contract_rate_or_default(member)
       billable_amount = member_hours * member_rate
       total_billable_amount += billable_amount
@@ -43,7 +74,7 @@ class Contract < ActiveRecord::Base
   end
 
   def amount_remaining
-    self.purchase_amount - self.billable_amount_total - self.expenses_total
+    self.purchase_amount - self.smart_billable_amount_total - self.expenses_total
   end
 
   def hours_remaining
@@ -91,9 +122,10 @@ class Contract < ActiveRecord::Base
   end
 
   def members_with_entries
-    return [] if self.time_entries.reload.empty?
-    uniq_members = self.time_entries.collect { |entry| entry.user.reload }.uniq
-    uniq_members.nil? ? [] : uniq_members
+    return [] if self.time_entries.empty?
+    uniq_user_ids = self.time_entries.collect { |entry| entry.user_id }.uniq
+    return [] if uniq_user_ids.nil?
+    User.find(uniq_user_ids)
   end
 
   def self.users_for_project_and_sub_projects(project)
@@ -118,8 +150,7 @@ class Contract < ActiveRecord::Base
   end
 
   def expenses_total
-    return 0.0 if self.expenses.empty?
-    self.expenses.sum { |expense| expense.amount }
+    expenses_sum = self.expenses.sum { |expense| expense.amount }
   end
 
   private

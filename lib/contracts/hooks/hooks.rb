@@ -15,15 +15,33 @@ module Contracts
         else
           selected_contract = ''
         end
+        contract_unselectable = false
+        if !selected_contract.blank?
+          # There is a selected contract. Check to see if it has been locked
+          selected_contract_obj = Contract.find(selected_contract)
+          if selected_contract_obj.is_locked
+            # Contract has been locked. Only list that contract in the drop-down
+            @contracts = [selected_contract_obj]
+            contract_unselectable = true
+          else
+            # Only show NON-locked contracts in the drop-down
+            @contracts = @current_project.unlocked_contracts_for_all_ancestor_projects
+          end
+        else
+          # There is NO selected contract. Only show NON-locked contracts in the drop-down
+          @contracts = @current_project.unlocked_contracts_for_all_ancestor_projects
+        end
         db_options = options_from_collection_for_select(@contracts, :id, :title, selected_contract)
         no_contract_option = "<option value=''>-- #{l(:label_contract_empty)} -- </option>\n".html_safe
-        all_options = no_contract_option << db_options
+        if !contract_unselectable
+          all_options = no_contract_option << db_options
+        else
+          # Contract selected has already been locked. Do not show the [Select Contract] label.
+          all_options = db_options
+        end
         select = context[:form].select :contract_id, all_options
-        result =  "<p>#{select}</p>"
-      else
-        result = ""
+        return "<p>#{select}</p>"
       end
-      result
     end
   end
 end

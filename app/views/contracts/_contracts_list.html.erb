@@ -1,3 +1,4 @@
+<h1> contract list</h1>
 <table class="contracts-list list">
   <thead>
     <tr>
@@ -14,6 +15,7 @@
       <th><%= l(:label_hours_left) %></th>
       <th><%= l(:label_contract) %></th>
       <th><%= l(:label_invoice) %></th>
+      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -45,7 +47,7 @@
       <% end %>
       <td><%= number_to_currency(contract.expenses_total) %></td>
       <td class="green"><%= number_to_currency(contract.amount_remaining) %></td>
-      <td><%= number_with_precision contract.hours_spent, :precision => 2 %></td>
+      <td><%= number_with_precision contract.smart_hours_spent, :precision => 2 %></td>
       <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
       <td>
         <% if !contract.contract_url.empty? %>
@@ -59,12 +61,21 @@
       </td>
       <td>
         <% if User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
-          <%= link_to image_tag("/images/edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => contract.project.identifier, :id => contract.id }, :title => l(:label_edit) %>
+          <% if contract.is_locked %>
+            <%= link_to image_tag("unlock.png"), { :controller => 'contracts', :action => 'lock', :project_id => contract.project.identifier, :id => contract.id, :lock => false, :view => 'index' }, :method => :put, :title => l(:label_unlock) %>
+          <% else %>
+            <%= link_to image_tag("locked.png"), { :controller => 'contracts', :action => 'lock', :project_id => contract.project.identifier, :id => contract.id, :lock => true, :view => 'index' }, :method => :put, :title => l(:label_lock) %>
+          <% end %>
+        <% end %>
+      </td>
+      <td>
+        <% if !contract.is_locked && User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
+          <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => contract.project.identifier, :id => contract.id }, :title => l(:label_edit) %>
       <% end %>
       </td>
       <td>
-        <% if User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
-            <%= link_to image_tag("/images/delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => contract.project.identifier, :id => contract.id }, :method => :delete, 
+        <% if !contract.is_locked && User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
+            <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => contract.project.identifier, :id => contract.id }, :method => :delete, 
             :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, contract.title) %>
         <% end %>
       </td>

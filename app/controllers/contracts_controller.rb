@@ -138,6 +138,27 @@ class ContractsController < ApplicationController
     redirect_to "/projects/#{@contract.project.id}/contracts/#{@contract.id}" 
   end
 
+  def lock
+    @contract = Contract.find(params[:id])
+    @lock = (params[:lock] == 'true')
+    if @lock
+      @contract.update_attribute(:is_locked, @lock)
+      flash[:notice] = l(:text_contract_locked)
+    else
+      @contract.is_locked = false
+      @contract.hours_worked = nil
+      @contract.billable_amount_total = nil
+      @contract.save!
+      flash[:notice] = l(:text_contract_unlocked)
+    end
+
+    if params[:view] == 'index'
+      redirect_to :action => "index", :project_id => params[:project_id]
+    else
+      redirect_to url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id })
+    end
+  end
+
   private
 
   def load_contractors_and_rates

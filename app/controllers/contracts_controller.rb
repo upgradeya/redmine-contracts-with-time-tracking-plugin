@@ -30,8 +30,7 @@ class ContractsController < ApplicationController
   def new
     @contract = Contract.new
     @project = Project.find(params[:project_id])
-    @project.contracts.empty? ? num = "001" : num = ("%03d" % (@project.contracts.last.id + 1))
-    @new_title = @project.identifier + "_Dev#" + num
+    @new_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
     load_contractors_and_rates
   end
 
@@ -49,6 +48,7 @@ class ContractsController < ApplicationController
       end
     end
     @contract.rates = rates
+    @contract.title = @project.identifier + "_Dev#" + ("%03d" % (@contract.project_contract_id))
     if @contract.save
       flash[:notice] = l(:text_contract_saved)
       redirect_to :action => "show", :id => @contract.id
@@ -91,6 +91,7 @@ class ContractsController < ApplicationController
         flash[:error] = l(:text_invalid_rate)
         redirect_to :action => "edit", :id => @contract.id
       else
+        @contract.title = @project.identifier + "_Dev#" + ("%03d" % (@contract.project_contract_id))
         @contract.save
         flash[:notice] = l(:text_contract_updated)
         redirect_to :action => "show", :id => @contract.id 

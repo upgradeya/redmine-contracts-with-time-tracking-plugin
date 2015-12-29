@@ -48,7 +48,9 @@ module Contracts
           previous_hours = (hours_was != nil) ? hours_was : 0
           if Setting.plugin_contracts['automatic_contract_creation'] && hours > (contract.hours_remaining + previous_hours)
             new_contract = Contract.new
-            new_contract.title = project.identifier + "_Dev#" + ("%03d" % (project.contracts.last.id + 1))
+            new_contract_id = project.contracts.last.project_contract_id + 1
+            new_contract.project_contract_id = new_contract_id
+            new_contract.title = project.identifier + "_Dev#" + ("%03d" % (new_contract_id))
             new_contract.description = contract.description
             new_contract.start_date = Time.new
             new_contract.hourly_rate = contract.hourly_rate

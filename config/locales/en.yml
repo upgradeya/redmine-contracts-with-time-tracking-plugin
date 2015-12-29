@@ -93,7 +93,7 @@ en:
   text_expense_deleted: Expense deleted.
 
   field_contract: Contract
-  field_title: Title
+  field_project_contract: Contract ID
   field_description: Description
   field_agreement_date: Agreement Date
   field_start_date: Start Date

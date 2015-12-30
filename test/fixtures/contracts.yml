@@ -1,0 +1,20 @@
+contract_one:
+  title: Contract One
+  project_contract_id: 1
+  description: Description for contract one
+  start_date: 2006-07-19 19:13:59 +02:00
+  hourly_rate: 25.00
+  purchase_amount: 625.00
+  contract_url: 
+  invoice_url: 
+  project_id: 6
+contract_two:
+  title: Contract Two
+  project_contract_id: 2
+  description: Description for contract two
+  start_date: 2006-07-19 19:13:59 +02:00
+  hourly_rate: 25.00
+  purchase_amount: 625.00
+  contract_url: 
+  invoice_url: 
+  project_id: 6

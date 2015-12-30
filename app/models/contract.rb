@@ -83,11 +83,6 @@ class Contract < ActiveRecord::Base
     self.amount_remaining / self.hourly_rate
   end
 
-  def exceeds_remaining_hours_by?(hours=0)
-    hours_over = hours - self.hours_remaining
-    hours_over > 0 ? hours_over : 0
-  end
-
   def user_contract_rate_by_user(user)
     self.user_contract_rates.select { |ucr| ucr.user_id == user.id}.first
   end

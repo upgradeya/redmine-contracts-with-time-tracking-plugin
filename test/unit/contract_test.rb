@@ -1,6 +1,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ContractTest < ActiveSupport::TestCase
+  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
   fixtures :contracts, :time_entries, :projects, :issues
 
   def setup
@@ -21,11 +22,38 @@ class ContractTest < ActiveSupport::TestCase
     assert !@contract.save
   end
 
-  test "title should be unique" do
+  test "should not save without project contract id" do
+    @contract.project_contract_id = nil
+    assert !@contract.save
+  end
+
+  test "contract title should be unique" do
     @contract2.title = @contract.title
     assert !@contract2.save
     @contract2.title = @contract.title.downcase
     assert !@contract2.save
+  end
+
+  test "project contract id should be unique" do
+    @contract2.project_contract_id = @contract.project_contract_id
+    assert !@contract2.save
+  end
+
+  test "project contract id should be more than 0" do
+    @contract2.project_contract_id = -1
+    assert !@contract2.save
+    @contract2.project_contract_id = 0
+    assert !@contract2.save
+  end
+
+  test "project contract id should be less than 1000" do
+    @contract2.project_contract_id = 1000
+    assert !@contract2.save
+  end
+
+  test "project contract id should be between 0 and 1000" do
+    @contract2.project_contract_id = 444
+    assert @contract2.save
   end
 
   test "should not save without start date" do
@@ -33,14 +61,14 @@ class ContractTest < ActiveSupport::TestCase
     assert !@contract.save
   end
 
-  test "should not save without end date" do
+  test "should save without end date" do
     @contract.end_date = nil
-    assert !@contract.save
+    assert @contract.save
   end
 
-  test "should not save without agreement date" do
+  test "should save without agreement date" do
     @contract.agreement_date = nil
-    assert !@contract.save
+    assert @contract.save
   end
 
   test "should not save without hourly rate" do
@@ -59,7 +87,7 @@ class ContractTest < ActiveSupport::TestCase
   end
 
   test "agreement date can come after start date" do
-    @contract.start_date = @contract.agreement_date - 7
+    @contract.agreement_date = @contract.start_date + 7
     assert @contract.save
   end
 
@@ -90,19 +118,14 @@ class ContractTest < ActiveSupport::TestCase
 
   test "should calculate the billable amount for a contract based upon contractor-specific rates" do
     billable = @time_entry.hours * @contract.user_project_rate_or_default(@time_entry.user)
+    @contract.billable_amount_total = @contract.calculate_billable_amount_total
     assert_equal billable, @contract.billable_amount_total
   end
 
   test "should calculate dollar amount remaining for contract" do
+    @contract.billable_amount_total = @contract.calculate_billable_amount_total
     amount_remaining = @contract.purchase_amount - (@contract.billable_amount_total)
     assert_equal @contract.amount_remaining, amount_remaining
-  end
-
-  test "should return message if time entry exceeds amount remaining" do
-    contract = contracts(:contract_three)
-    hours = (contract.amount_remaining / contract.hourly_rate) + 10
-    hours_over = contract.exceeds_remaining_hours_by?(hours)
-    assert_equal 10.0, hours_over
   end
 
   test "should set rates accessor" do
@@ -118,7 +141,8 @@ class ContractTest < ActiveSupport::TestCase
       rate_hash[user.id.to_s] = '25.00'
     end
     @contract.rates = rate_hash
-    @contract.save
+    @contract.project_id = @project.id
+    assert @contract.save
     @project.users.each do |user|
       assert_equal 25.00, @project.rate_for_user(user)
     end

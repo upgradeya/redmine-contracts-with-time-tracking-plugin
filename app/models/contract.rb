@@ -6,6 +6,7 @@ class Contract < ActiveRecord::Base
   has_many   :expenses
 
   validates_presence_of :title, :start_date, :purchase_amount, :hourly_rate, :project_id, :project_contract_id
+  validates :title, :uniqueness => { :case_sensitive => false }
   validates_uniqueness_of :project_contract_id, :scope => :project_id
   validates :project_contract_id, :numericality => { :greater_than_or_equal_to => 1, :less_than_or_equal_to => 999 }
   validates :end_date, :is_after_start_date => true

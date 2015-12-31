@@ -1,7 +1,8 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class UserContractRateTest < ActiveSupport::TestCase
-  fixtures :projects, :contracts, :time_entries
+  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
+  fixtures :projects, :contracts, :time_entries, :user_contract_rates
 
   def setup
     @project = projects(:projects_001)

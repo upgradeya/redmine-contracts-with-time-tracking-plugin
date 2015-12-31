@@ -18,11 +18,12 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ProjectTest < ActiveSupport::TestCase
-  fixtures :projects, :contracts, :time_entries
+  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
+  fixtures :projects, :contracts, :time_entries, :user_project_rates, :user_contract_rates
 
   def setup
     @project        = projects(:projects_001)
-    @subproject     = projects(:projects_003)
+    @parent_project     = projects(:projects_003)
     @sub_subproject = projects(:projects_004)
     @contract       = contracts(:contract_one)
     @contract2      = contracts(:contract_two)
@@ -33,7 +34,7 @@ class ProjectTest < ActiveSupport::TestCase
     @contract2.project_id = @project.id
     @contract.save
     @contract2.save
-    @sub_subproject.parent_id = @subproject.id
+    @sub_subproject.parent_id = @parent_project.id
     @sub_subproject.save
     @project.time_entries.clear
     @project.time_entries.append(@time_entry1)
@@ -64,9 +65,9 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "should get contracts for all ancestor projects" do
-    @contract2.project_id = @subproject.id
+    @contract2.project_id = @parent_project.id
     @contract2.save
-    assert_equal 3, @sub_subproject.contracts_for_all_ancestor_projects.count
+    assert_equal 2, @sub_subproject.contracts_for_all_ancestor_projects.count
   end
 
   test "should get all time entries for current project and all descendent projects" do
@@ -79,28 +80,26 @@ class ProjectTest < ActiveSupport::TestCase
 
   test "should have many user project rates" do
     assert_not_nil @user
-    assert_equal 0, @project.user_project_rates.size
-    upr = @project.user_project_rates.create!(:user_id => @user.id, :rate => 25.00)
-    assert_equal @user, upr.user
-    assert_equal 25.00, upr.rate
+    @project.set_user_rate(@user, 25.00)
+    assert_operator @project.user_project_rates.size, :>=, 1
   end
 
   test "should get a user project rate by user" do
     assert_not_nil @user
-    upr = @project.user_project_rates.create!(:user_id => @user.id, :rate => 25.00)
+    upr = @project.set_user_rate(@user, 25.00)
     assert_equal upr, @project.user_project_rate_by_user(@user)
   end
 
   test "should get a rate for a user" do
     assert_not_nil @user
-    @project.user_project_rates.create!(:user_id => @user.id, :rate => 25.00)
+    @project.set_user_rate(@user, 25.00)
     assert_equal 25.00, @project.rate_for_user(@user)
   end
 
   test "should set a user rate" do
     assert_not_nil @user
-    assert_equal 0, @project.user_project_rates.size
-    assert_nil @project.user_project_rate_by_user(@user)
+    # check the value is not already set
+    assert_not_equal 37.25, @project.rate_for_user(@user)
     @project.set_user_rate(@user, 37.25)
     assert_equal 37.25, @project.rate_for_user(@user)
   end

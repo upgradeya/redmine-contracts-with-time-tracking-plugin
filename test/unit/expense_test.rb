@@ -1,6 +1,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ExpenseTest < ActiveSupport::TestCase
+  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
   fixtures :contracts, :issues
 
   def setup

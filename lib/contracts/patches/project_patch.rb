@@ -32,6 +32,7 @@ module Contracts
           self.user_project_rates.create!(:user_id => user.id, :rate => rate)
         else
           upr.update_attribute(:rate, rate)
+          upr
         end
       end
 

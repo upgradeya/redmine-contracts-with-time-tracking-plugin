@@ -18,7 +18,8 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class UserTest < ActiveSupport::TestCase
-  fixtures :projects, :contracts, :time_entries
+  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
+  fixtures :projects, :contracts, :time_entries, :user_project_rates
 
   def setup
     @project        = projects(:projects_001)
@@ -38,7 +39,10 @@ class UserTest < ActiveSupport::TestCase
 
   test "should add a new user project rate" do
     assert_not_nil @user
-    assert_equal 0, @user.user_project_rates.size
+    if upr = @project.user_project_rate_by_user(@user)
+      upr.destroy
+    end
+    assert_nil @project.user_project_rate_by_user(@user)
     upr = @project.user_project_rates.create!(:user_id => @user.id, :rate => 25.00)
     assert_equal [upr], @project.user_project_rates
     assert_equal @user, upr.user

@@ -2,7 +2,7 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class ContractTest < ActiveSupport::TestCase
   self.fixture_path = File.expand_path('../../fixtures', __FILE__)
-  fixtures :contracts, :time_entries, :projects, :issues
+  fixtures :contracts, :time_entries, :projects, :issues, :user_contract_rates, :user_project_rates
 
   def setup
     @contract = contracts(:contract_one)

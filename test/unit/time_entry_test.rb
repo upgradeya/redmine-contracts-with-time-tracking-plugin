@@ -21,15 +21,31 @@ class TimeEntryTest < ActiveSupport::TestCase
   fixtures :issues, :projects, :users, :time_entries,
            :members, :roles, :member_roles,
            :trackers, :issue_statuses,
-           :projects_trackers,
            :journals, :journal_details,
            :issue_categories, :enumerations,
            :groups_users,
            :enabled_modules,
-           :workflows
+           :workflows,
+           :contracts
 
   test "should have a contract attribute" do
     time_entry = TimeEntry.new
     assert_respond_to time_entry, "contract"
+  end
+
+  test "should not save if exceeds remaining contract time" do
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
+    @project = projects(:projects_001)
+    @user = users(:users_004)
+    @contract = contracts(:contract_one)
+    new_time_entry = TimeEntry.new
+    new_time_entry.project_id = @project.id
+    new_time_entry.user_id = @user.id
+    new_time_entry.hours = @contract.hours_remaining + 5
+    new_time_entry.contract_id = @contract.id
+    assert !new_time_entry.save, "Saved the entry exceeding the remaining contract time"
+    assert_match /is invalid. The contract Contract One only has #{"%.2f" % @contract.hours_remaining} hours remaining./, new_time_entry.errors.messages[:hours].to_s
   end
 end

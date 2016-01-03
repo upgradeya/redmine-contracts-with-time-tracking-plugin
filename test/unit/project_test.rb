@@ -18,10 +18,13 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ProjectTest < ActiveSupport::TestCase
-  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
-  fixtures :projects, :contracts, :time_entries, :user_project_rates, :user_contract_rates
+  fixtures  :projects, :contracts, :time_entries, :user_project_rates, 
+            :user_contract_rates, :users, :members, :enabled_modules
 
   def setup
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @project        = projects(:projects_001)
     @parent_project     = projects(:projects_003)
     @sub_subproject = projects(:projects_004)
@@ -49,25 +52,25 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "should calculate amount purchased across all contracts" do
-    assert_equal @project.total_amount_purchased, Contract.all.sum { |contract| contract.purchase_amount }
+    assert_equal @project.total_amount_purchased, @project.contracts.sum { |contract| contract.purchase_amount }
   end
 
   test "should calculate approximate hours purchased across all contracts" do
-    assert_equal @project.total_hours_purchased, Contract.all.sum { |contract| contract.hours_purchased }
+    assert_equal @project.total_hours_purchased, @project.contracts.sum { |contract| contract.hours_purchased }
   end
 
   test "should calculate amount remaining across all contracts" do
-    assert_equal @project.total_amount_remaining, Contract.all.sum { |contract| contract.amount_remaining }
+    assert_equal @project.total_amount_remaining, @project.contracts.sum { |contract| contract.amount_remaining }
   end
 
   test "should calculate hours remaining across all contracts" do
-    assert_equal @project.total_hours_remaining, Contract.all.sum { |contract| contract.hours_remaining }
+    assert_equal @project.total_hours_remaining, @project.contracts.sum { |contract| contract.hours_remaining }
   end
 
   test "should get contracts for all ancestor projects" do
     @contract2.project_id = @parent_project.id
     @contract2.save
-    assert_equal 2, @sub_subproject.contracts_for_all_ancestor_projects.count
+    assert_equal 3, @sub_subproject.contracts_for_all_ancestor_projects.count
   end
 
   test "should get all time entries for current project and all descendent projects" do

@@ -42,10 +42,10 @@
                 <th><%= l(:field_hourly_rate) %></th>
               <% end %>
               <th><%= l(:label_amount_purchased) %></th>
-              <% if !@contract.contract_url.empty? %>
+              <% if !@contract.contract_url.blank? %>
                 <th><%= l(:label_contract) %></th>
               <% end %>
-              <% if !@contract.invoice_url.empty? %>
+              <% if !@contract.invoice_url.blank? %>
                 <th><%= l(:label_invoice) %></th>
               <% end %>
             </tr>
@@ -73,10 +73,10 @@
                 <td><%= number_to_currency(@contract.hourly_rate) %></td>
               <% end %>
               <td><%= number_to_currency(@contract.purchase_amount) %></td>
-              <% if !@contract.contract_url.empty? %>
+              <% if !@contract.contract_url.blank? %>
                   <td><%= link_to l(:label_view_contract), @contract.contract_url %></td>
               <% end %>
-              <% if !@contract.invoice_url.empty? %>
+              <% if !@contract.invoice_url.blank? %>
                   <td><%= link_to l(:label_view_invoice), @contract.invoice_url %></td>
               <% end %>
             </tr>

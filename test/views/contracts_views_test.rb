@@ -1,10 +1,14 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ContractsControllerTest < ActionController::TestCase
+  include Redmine::I18n
   include ActionView::Helpers::NumberHelper
   fixtures :contracts, :projects, :users, :time_entries
 
   def setup
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @contract       = contracts(:contract_one)
     @project      = projects(:projects_001)
     @user         = users(:users_004)
@@ -17,6 +21,8 @@ class ContractsControllerTest < ActionController::TestCase
 
   test "index view without 'view hourly rate', 'create contracts', and 'delete contracts' permissions" do
     Role.find(4).add_permission! :view_all_contracts_for_project
+    Role.find(4).remove_permission! :create_contracts
+    Role.find(4).remove_permission! :edit_contracts
     get :index, :project_id => @project.id
     assert_response :success
 
@@ -26,10 +32,10 @@ class ContractsControllerTest < ActionController::TestCase
     assert_tag :tag => "h3", :content => "Total Purchased for All Contracts"
     assert_tag :tag => "h3", :content => "Total Remaining for All Contracts"
     assert_tag :tag => "p", :attributes => { :class => "bigbold" }, :content => "#{number_to_currency(@project.total_amount_purchased)}"
-    assert_tag :tag => "p", :attributes => { :class => "bigbold" }, :content => "~#{@project.total_hours_purchased.round(2)} hours"
+    assert_tag :tag => "p", :attributes => { :class => "bigbold" }, :content => /~#{"%.2f" % @project.total_hours_purchased.to_f} hours/
     assert_tag :tag => "p", :attributes => { :class => "green bigbold" }, :content => "#{number_to_currency(@project.total_amount_remaining)}"
 
-    assert_tag :tag => "p", :attributes => { :class => "blue bigbold" }, :content => "~#{@project.total_hours_remaining.round(2)} hours"
+    assert_tag :tag => "p", :attributes => { :class => "blue bigbold" }, :content => /~#{"%.2f" % @project.total_hours_remaining} hours/
     assert_tag :tag => "table", :attributes => { :class => "contracts-list list" }
     assert_tag :tag => "th", :content => "Name"
     assert_tag :tag => "th", :content => "Agreed On"
@@ -40,7 +46,7 @@ class ContractsControllerTest < ActionController::TestCase
     assert_tag :tag => "th", :content => "Remaining"
     assert_tag :tag => "th", :content => "Contract"
     assert_tag :tag => "th", :content => "Invoice"
-    assert_tag :tag => "a", :content => "Sample Contract"
+    assert_tag :tag => "a", :content => "Contract One"
 
     assert_no_tag :tag => "a", :content => "New Contract"
     assert_no_tag :tag => "th", :content => "Hourly Rate"
@@ -88,11 +94,11 @@ class ContractsControllerTest < ActionController::TestCase
     assert_template :partial => "_form"
 
     assert_tag :tag => "form", :attributes => { :class => "new_contract" }
-    assert_tag :tag => "input", :attributes => { :id => "contract_title" }
+    assert_tag :tag => "input", :attributes => { :id => "contract_project_contract_id" }
     assert_tag :tag => "textarea", :attributes => { :id => "contract_description" }
-    assert_tag :tag => "select", :attributes => { :id => "contract_agreement_date_1i" }
-    assert_tag :tag => "select", :attributes => { :id => "contract_start_date_1i" }
-    assert_tag :tag => "select", :attributes => { :id => "contract_end_date_1i" }
+    assert_tag :tag => "input", :attributes => { :id => "contract_agreement_date" }
+    assert_tag :tag => "input", :attributes => { :id => "contract_start_date" }
+    assert_tag :tag => "input", :attributes => { :id => "contract_end_date" }
     assert_tag :tag => "input", :attributes => { :id => "contract_purchase_amount" }
     assert_tag :tag => "input", :attributes => { :id => "contract_hourly_rate" }
     assert_tag :tag => "input", :attributes => { :id => "contract_project_id" }

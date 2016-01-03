@@ -35,37 +35,62 @@ class TimelogControllerTest < ActionController::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     @contract   = contracts(:contract_three)
+    @contract2  = contracts(:contract_two)
   end
 
-  test "should warn user if time entry exceeds contract's amount remaining" do
+  test "should create time entry if hours is under amount remaining" do
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @request.session[:user_id] = 3
-    hours_over = 7.3 - @contract.hours_remaining
-    hours_left = @contract.hours_remaining
     post :create, :project_id => 1,
                   :time_entry => {:comments => 'Some work on TimelogControllerTest',
                                 # Not the default activity
                                 :activity_id => '11',
-                                :spent_on => '2008-03-14',
+                                :spent_on => '2015-03-14',
                                 :issue_id => '1',
-                                :hours => '7.3',
+                                :hours => 1,
                                 :contract_id => @contract.id}
-    hours_over_str = l_hours(hours_over)
-    hours_left_str = l_hours(hours_left)
-    assert_match "time entry exceeded", flash[:error]
-    assert_match "by #{hours_over_str}", flash[:error]
-    assert_match "please edit the time entry", flash[:error]
-    assert_match "no more than #{hours_left_str}", flash[:error]
+    assert_response 302
+    assert_equal "Successful creation.", flash[:notice]
   end
 
-  #def test_update
-  #  entry = TimeEntry.find(1)
-  #  assert_equal 1, entry.issue_id
-  #  assert_equal 2, entry.user_id
+  test "should not create time entry if hours is over amount remaining" do
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
+    entry_hours = @contract.hours_remaining + 1
+    @request.session[:user_id] = 3
+    post :create, :project_id => 1,
+                  :time_entry => {:comments => 'Some work on TimelogControllerTest',
+                                # Not the default activity
+                                :activity_id => '11',
+                                :spent_on => '2015-03-14',
+                                :issue_id => '1',
+                                :hours => entry_hours,
+                                :contract_id => @contract.id}
+    assert_response 200
+    assert_tag :tag => "div", :attributes => { :id => "errorExplanation" }, :content => /Hours is invalid. The contract/
+  end
 
-  #  @request.session[:user_id] = 1
-  #  put :update, :id => 1,
-  #              :time_entry => {:issue_id => '2',
-  #                              :hours => '8'}
-  #  assert_redirected_to :action => 'index', :project_id => 'ecookbook'
-  #end
+  test "a new contract is created automatically" do
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => true
+    }
+    @contract.project_contract_id = 10;
+    @contract.save
+    @request.session[:user_id] = 3
+    entry_hours = @contract.hours_remaining + 1
+    post :create, :project_id => 1,
+                  :time_entry => {:comments => 'Some work on TimelogControllerTest',
+                                # Not the default activity
+                                :activity_id => '11',
+                                :spent_on => '2015-03-14',
+                                :issue_id => '1',
+                                :hours => entry_hours,
+                                :contract_id => @contract.id}
+    assert_response 302
+    assert_equal "Successful creation.", flash[:notice]
+    assert_match /Your time entry has been split into two entries/, flash[:contract]
+  end
 end

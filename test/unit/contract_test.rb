@@ -1,10 +1,14 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class ContractTest < ActiveSupport::TestCase
-  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
-  fixtures :contracts, :time_entries, :projects, :issues, :user_contract_rates, :user_project_rates
+  fixtures  :contracts, :time_entries, :projects, :issues, 
+            :user_contract_rates, :user_project_rates, 
+            :users, :members, :member_roles
 
   def setup
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @contract = contracts(:contract_one)
     @contract2 = contracts(:contract_two)
     @project = projects(:projects_001)
@@ -35,6 +39,7 @@ class ContractTest < ActiveSupport::TestCase
   end
 
   test "project contract id should be unique" do
+    @contract2.project_id = @contract.project_id
     @contract2.project_contract_id = @contract.project_contract_id
     assert !@contract2.save
   end

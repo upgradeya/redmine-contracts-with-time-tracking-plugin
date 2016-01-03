@@ -13,6 +13,9 @@ class TimelogControllerTest < ActionController::TestCase
   include Redmine::I18n
 
   def setup
+  	Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @controller = TimelogController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

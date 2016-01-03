@@ -50,12 +50,12 @@
       <td><%= number_with_precision contract.smart_hours_spent, :precision => 2 %></td>
       <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
       <td>
-        <% if !contract.contract_url.empty? %>
+        <% if !contract.contract_url.blank? %>
           <%= link_to image_tag("/images/files/text.png"), contract.contract_url %>
         <% end %>
       </td>
       <td>
-        <% if !contract.invoice_url.empty? %>
+        <% if !contract.invoice_url.blank? %>
           <%= link_to image_tag("/images/files/text.png"), contract.invoice_url %>
         <% end %>
       </td>

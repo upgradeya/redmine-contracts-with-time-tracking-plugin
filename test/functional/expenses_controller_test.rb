@@ -5,6 +5,9 @@ class ExpensesControllerTest < ActionController::TestCase
   fixtures :contracts, :projects, :users
 
   def setup
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @contract = contracts(:contract_one)
     @project = projects(:projects_001)
     @user = users(:users_004)

@@ -18,10 +18,12 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class UserTest < ActiveSupport::TestCase
-  self.fixture_path = File.expand_path('../../fixtures', __FILE__)
   fixtures :projects, :contracts, :time_entries, :user_project_rates
 
   def setup
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @project        = projects(:projects_001)
     @contract       = contracts(:contract_one)
     @contract.project_id = @project.id

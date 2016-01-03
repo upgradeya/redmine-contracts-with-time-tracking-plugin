@@ -2,9 +2,21 @@ require File.expand_path('../../test_helper', __FILE__)
 
 class ContractsControllerTest < ActionController::TestCase
   include Redmine::I18n
-  fixtures :contracts, :projects, :users, :time_entries
+  
+  fixtures :issues, :projects, :users, :time_entries,
+           :members, :roles, :member_roles,
+           :trackers, :issue_statuses,
+           :journals, :journal_details,
+           :issue_categories, :enumerations,
+           :groups_users,
+           :enabled_modules,
+           :workflows,
+           :contracts, :user_contract_rates, :user_project_rates
 
   def setup
+    Setting.plugin_contracts = {
+      'automatic_contract_creation' => false
+    }
     @contract = contracts(:contract_one)
     @project = projects(:projects_001)
     @user = users(:users_004)
@@ -51,12 +63,11 @@ test "should create new contract with permission" do
       post :create, :project_id => @project.identifier,
                    :contract => { :title => "New Title",
                                   :description => @contract.description,
-                                  :agreement_date => @contract.agreement_date,
                                   :start_date => @contract.start_date,
-                                  :end_date => @contract.end_date,
                                   :purchase_amount => @contract.purchase_amount,
                                   :hourly_rate => @contract.hourly_rate,
-                                  :project_id => @project.id
+                                  :project_id => @project.id,
+                                  :project_contract_id => @contract.project_contract_id + 12
                                 }
     end
     assert_not_nil assigns(:contract)
@@ -190,25 +201,14 @@ test "should create new contract with permission" do
 
   test "should be able to associate time entries with contracts with permission" do
     Role.find(4).add_permission! :edit_contracts
-    put :assoc_time_entries_with_contract, :project_id => @project.id, :id => @contract.id,
+    put :assoc_time_entries_with_contract, :project_id => @contract.project_id, :id => @contract.id,
           :time_entries => [[@time_entry.id]]
-    assert_redirected_to :action => "show", :project_id => @project.id, :id => @contract.id
+    assert_redirected_to :action => "show", :project_id => @contract.project_id, :id => @contract.id
   end
 
   test "should not be able to associate time entries with contracts without permission" do
     put :assoc_time_entries_with_contract, :project_id => @project.id, :id => @contract.id,
           :time_entries => [[@time_entry.id]]
     assert_response 403
-  end
-
-
-  test "should warn user if time entry exceeds contract's amount remaining" do
-    Role.find(4).add_permission! :edit_contracts
-    hours_over = @time_entry.hours - @contract.hours_remaining
-    put :assoc_time_entries_with_contract, :project_id => @project.id, :id => @contract.id,
-          :time_entries => [[@time_entry.id]]
-    assert_response 302
-    hours_over_str = l_hours(hours_over)
-    assert_match "now #{hours_over_str} over", flash[:error]
   end
 end

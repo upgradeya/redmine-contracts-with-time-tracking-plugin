@@ -11,12 +11,13 @@ This plugin allows you to:
 Installation
 ------------ 
 
-Easiest way to get this plugin: 
+1. go to your redmine plugins directory (eg cd /opt/redmine/plugins)
+2. run git clone for the project (eg git clone https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin.git plugins/contracts or git clone https://github.com/Sam-R/redmine-contracts-with-time-tracking-plugin.git )
+3. Rename the checked out project to contracts ( mv redmine-contracts-with-time-tracking-plugin contracts )
+4. go to your Redmine root directory ( eg cd /opt/redmine )
+5. run 'rake redmine:plugins:migrate RAILS_ENV=production'
+6. Restart your webserver ( eg service apache2 restart )
 
-1. run 'git submodule add https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin.git plugins/contracts' from your redmine root directory
-Note : use the git clone instead of git submodule add if your install folder is not part of a git project. 
-
-2. run 'rake redmine:plugins:migrate RAILS_ENV=production' from your redmine root directory 
 
 Screenshots
 -----------

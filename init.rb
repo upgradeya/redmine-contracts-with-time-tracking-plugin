@@ -1,3 +1,7 @@
+
+# If using dev mode require redmine?
+require 'redmine'
+
 require_dependency 'contracts/hooks/hooks'
 require_dependency 'contracts/patches/time_entry_patch'
 require_dependency 'contracts/patches/timelog_controller_patch'
@@ -15,7 +19,8 @@ Redmine::Plugin.register :contracts do
 
   requires_redmine :version => '2.0'..'2.9'
  
-  menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? && User.current.allowed_to?(:view_all_contracts_for_project, nil, :global => true) } 
+  # This seems to be broken in the current plugin with Redmine 2.5
+  #menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? && User.current.allowed_to?(:view_all_contracts_for_project, nil, :global => true) } 
   menu :project_menu, :contracts, { :controller => :contracts, :action => :index }, :caption => :label_contracts, :param => :project_id
 
   settings :default => {'empty' => true}, :partial => 'settings/contract_settings'

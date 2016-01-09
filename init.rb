@@ -1,19 +1,20 @@
 require_dependency 'contracts/hooks/hooks'
 require_dependency 'contracts/patches/time_entry_patch'
 require_dependency 'contracts/patches/timelog_controller_patch'
-require_dependency 'contracts/patches/project_patch'
 require_dependency 'contracts/patches/user_patch'
+require_dependency 'contracts/patches/project_patch'
 require_dependency 'contracts/validators/is_after_agreement_date_validator'
 require_dependency 'contracts/validators/is_after_start_date_validator'
+
 
 Redmine::Plugin.register :contracts do
   name 'Redmine Contracts With Time Tracking'
   author 'Ben Syzek, Shanti Braford, Wesley Jones'
   description 'A Redmine plugin that allows you to manage contracts and associate time-entries with those contracts.'
-  version '1.3.1'
-  url 'https://github.com/bsyzek/redmine-contracts-with-time-tracking-plugin'
+  version '2.0.0'
+  url 'https://github.com/upgradeya/redmine-contracts-with-time-tracking-plugin.git'
 
-  requires_redmine :version => '2.0'..'2.9'
+  requires_redmine :version => '3.0'..'3.2'
  
   menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? && User.current.allowed_to?(:view_all_contracts_for_project, nil, :global => true) } 
   menu :project_menu, :contracts, { :controller => :contracts, :action => :index }, :caption => :label_contracts, :param => :project_id
@@ -32,4 +33,12 @@ Redmine::Plugin.register :contracts do
     permission :delete_expenses,                      :expenses => :destroy
     permission :view_expenses,                        :expenses => :show
   end
+end
+
+# Load your patches from contracts/lib/contracts/patches/
+ActionDispatch::Callbacks.to_prepare do
+  Project.send(:include, Contracts::ProjectPatch)
+  TimeEntry.send(:include, Contracts::TimeEntryPatch)
+  TimelogController.send(:include, Contracts::TimelogControllerPatch)
+  User.send(:include, Contracts::UserPatch)
 end

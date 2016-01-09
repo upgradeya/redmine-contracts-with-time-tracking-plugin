@@ -1,10 +1,11 @@
+require_dependency 'time_entry'
+
 module Contracts
-  require_dependency 'time_entry'
 
   module TimeEntryPatch
     def self.included(base)
-      base.class_eval do 
-        unloadable
+      base.send(:include, InstanceMethods)
+      base.class_eval do
         belongs_to :contract
         safe_attributes 'contract_id'
         after_update :refresh_contract
@@ -15,8 +16,6 @@ module Contracts
 
         validate :time_not_exceed_contract
         before_save :create_next_contract
-
-        base.send(:include, InstanceMethods)
 
         # Validate the "hours" input field
         #
@@ -50,7 +49,7 @@ module Contracts
             new_contract = Contract.new
             new_contract_id = project.contracts.last.project_contract_id + 1
             new_contract.project_contract_id = new_contract_id
-            new_contract.title = project.identifier + "_Dev#" + ("%03d" % (new_contract_id))
+            new_contract.title = project.identifier + Contract.mid_title + ("%03d" % (new_contract_id))
             new_contract.description = contract.description
             new_contract.start_date = Time.new
             new_contract.hourly_rate = contract.hourly_rate
@@ -123,6 +122,5 @@ module Contracts
       end
     end
   end
-  TimeEntry.send(:include, TimeEntryPatch)
 end
 

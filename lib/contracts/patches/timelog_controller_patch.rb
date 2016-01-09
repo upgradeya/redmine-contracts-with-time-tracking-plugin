@@ -1,10 +1,10 @@
+require_dependency 'timelog_controller'
+
 module Contracts
-	require_dependency 'timelog_controller'
 
 	module TimelogControllerPatch
 		def self.included(base)
 	  		base.class_eval do
-	  			unloadable
 	  			after_filter :check_flash_messages, :only => [:create, :update]
 
 	  			def check_flash_messages
@@ -17,5 +17,4 @@ module Contracts
 	  		end
 	 	end
 	end
-	TimelogController.send(:include, TimelogControllerPatch)
 end

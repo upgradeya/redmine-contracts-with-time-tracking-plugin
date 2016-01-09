@@ -1,5 +1,4 @@
 class Contract < ActiveRecord::Base
-  unloadable
   belongs_to :project
   has_many   :time_entries
   has_many   :user_contract_rates
@@ -34,15 +33,15 @@ class Contract < ActiveRecord::Base
   end
 
   def hours_spent
-    self.time_entries.sum { |time_entry| time_entry.hours }
+    self.time_entries.map(&:hours).inject(0, &:+)
   end
 
   def hours_spent_by_user(user)
-    self.time_entries.select { |entry| entry.user == user }.sum { |entry| entry.hours }
+    self.time_entries.select { |entry| entry.user == user }.map(&:hours).inject(0, &:+)
   end
 
   def billable_amount_for_user(user)
-    member_hours = self.time_entries.select { |entry| entry.user == user }.sum { |entry| entry.hours }
+    member_hours = self.time_entries.select { |entry| entry.user == user }.map(&:hours).inject(0, &:+)
     member_rate = self.user_contract_rate_or_default(user)
     member_hours * member_rate
   end
@@ -67,7 +66,7 @@ class Contract < ActiveRecord::Base
     return 0 if members.empty?
     total_billable_amount = 0
     members.each do |member|
-      member_hours = self.time_entries.select { |entry| entry.user_id == member.id }.sum { |entry| entry.hours }
+      member_hours = self.time_entries.select { |entry| entry.user_id == member.id }.map(&:hours).inject(0, &:+)
       member_rate = self.user_contract_rate_or_default(member)
       billable_amount = member_hours * member_rate
       total_billable_amount += billable_amount
@@ -147,7 +146,11 @@ class Contract < ActiveRecord::Base
   end
 
   def expenses_total
-    expenses_sum = self.expenses.sum { |expense| expense.amount }
+    expenses_sum = self.expenses.map(&:amount).inject(0, &:+)
+  end
+
+  def self.mid_title
+    '_Contract#'
   end
 
   private

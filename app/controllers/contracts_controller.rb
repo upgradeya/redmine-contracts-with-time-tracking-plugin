@@ -1,5 +1,4 @@
 class ContractsController < ApplicationController
-  unloadable
   before_filter :find_project, :authorize, :only => [:index, :show, :new, :create, :edit, :update, :destroy, 
                                                      :add_time_entries, :assoc_time_entries_with_contract]
   
@@ -35,7 +34,7 @@ class ContractsController < ApplicationController
   end
 
   def create
-    @contract = Contract.new(params[:contract])
+    @contract = Contract.new(contract_params)
     rates = params[:rates]
     # Ensure only positive-value rates are entered
     if !rates.nil?
@@ -48,7 +47,7 @@ class ContractsController < ApplicationController
       end
     end
     @contract.rates = rates
-    @contract.title = @project.identifier + "_Dev#" + ("%03d" % (@contract.project_contract_id))
+    @contract.title = @project.identifier + Contract.mid_title + ("%03d" % (@contract.project_contract_id))
     if @contract.save
       flash[:notice] = l(:text_contract_saved)
       redirect_to :action => "show", :id => @contract.id
@@ -78,7 +77,7 @@ class ContractsController < ApplicationController
 
   def update
     @contract = Contract.find(params[:id])
-    if @contract.update_attributes(params[:contract])
+    if @contract.update_attributes(contract_params)
       @rate_error = false
       rates = params[:rates]
       @contract.rates = params[:rates]
@@ -91,7 +90,7 @@ class ContractsController < ApplicationController
         flash[:error] = l(:text_invalid_rate)
         redirect_to :action => "edit", :id => @contract.id
       else
-        @contract.title = @project.identifier + "_Dev#" + ("%03d" % (@contract.project_contract_id))
+        @contract.title = @project.identifier + Contract.mid_title + ("%03d" % (@contract.project_contract_id))
         @contract.save
         flash[:notice] = l(:text_contract_updated)
         redirect_to :action => "show", :id => @contract.id 
@@ -178,6 +177,12 @@ class ContractsController < ApplicationController
   def find_project
     #@project variable must be set before calling the authorize filter
     @project = Project.find(params[:project_id]) 
+  end
+
+  private
+
+  def contract_params
+    params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url, :invoice_url, :project_id, :project_contract_id, :purchase_amount, :hourly_rate)
   end
 
 end

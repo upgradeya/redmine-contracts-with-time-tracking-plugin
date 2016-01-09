@@ -1,5 +1,4 @@
 class Expense < ActiveRecord::Base
-  unloadable
   belongs_to :contract
   belongs_to :issue
   validates_presence_of :name, :expense_date, :amount, :contract_id

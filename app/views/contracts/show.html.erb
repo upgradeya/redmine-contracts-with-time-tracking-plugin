@@ -108,7 +108,7 @@
             <% end %>
             <tr class="total-hours">
               <td></td>
-              <td><%= format_hours(@time_entries.sum { |entry| entry.hours }) %></td>
+              <td><%= format_hours(@time_entries.map(&:hours).inject(0, &:+)) %></td>
               <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
                 <td></td>
                 <td><%= number_to_currency(@contract.smart_billable_amount_total) %></td>

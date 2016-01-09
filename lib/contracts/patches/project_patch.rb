@@ -1,13 +1,12 @@
-module Contracts
-  require_dependency 'project'
+require_dependency 'project'
 
+module Contracts
   module ProjectPatch
     def self.included(base)
+      base.send(:include, InstanceMethods)
       base.class_eval do
-        unloadable
         has_many :contracts
         has_many :user_project_rates
-        base.send(:include, InstanceMethods)
       end
     end
 
@@ -37,19 +36,19 @@ module Contracts
       end
 
       def total_amount_purchased
-        self.contracts.sum { |contract| contract.purchase_amount }
+        self.contracts.map(&:purchase_amount).inject(0, &:+)
       end
 
       def total_hours_purchased
-        self.contracts.sum { |contract| contract.hours_purchased }
+        self.contracts.map(&:hours_purchased).inject(0, &:+)
       end
 
       def total_amount_remaining
-        self.contracts.sum { |contract| contract.amount_remaining }
+        self.contracts.map(&:amount_remaining).inject(0, &:+)
       end
 
       def total_hours_remaining
-        self.contracts.sum { |contract| contract.hours_remaining }
+        self.contracts.map(&:hours_remaining).inject(0, &:+)
       end
 
       def contracts_for_all_ancestor_projects(contracts=self.contracts)
@@ -75,8 +74,6 @@ module Contracts
         return time_entries
       end
     end
-
   end
-  Project.send(:include, ProjectPatch)
 end
 

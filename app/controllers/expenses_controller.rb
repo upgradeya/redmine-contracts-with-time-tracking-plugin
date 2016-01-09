@@ -12,7 +12,7 @@ class ExpensesController < ApplicationController
   end
 
   def create
-    @expense = Expense.new(params[:expense])
+    @expense = Expense.new(expense_params)
 
     respond_to do |format|
       if @expense.save
@@ -26,8 +26,8 @@ class ExpensesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @expense.update_attributes(params[:expense])
-        format.html { redirect_to expense_editpath(@expense), notice: l(:text_expense_updated) }
+      if @expense.update_attributes(expense_params)
+        format.html { redirect_to contract_urlpath(@expense), notice: l(:text_expense_updated) }
       else
         load_contracts
         format.html { render action: 'edit' }
@@ -49,10 +49,6 @@ class ExpensesController < ApplicationController
     def contract_urlpath(expense)
       url_for({ :controller => 'contracts', :action => 'show', :project_id => expense.contract.project.identifier, :id => expense.contract.id, :expenses => 'true'})
     end
-    
-    def expense_editpath(expense)
-      url_for({ :controller => 'expenses', :action => 'edit', :project_id => expense.contract.project.identifier, :id => expense.id })
-    end
 
     def set_expense
       @expense = Expense.find(params[:id])
@@ -70,5 +66,10 @@ class ExpensesController < ApplicationController
       @contracts = Contract.order("start_date ASC").where(:project_id => @project.id).where(:is_locked => false)
     end
 
+    private
+
+    def expense_params
+      params.require(:expense).permit(:name, :expense_date, :amount, :contract_id, :issue_id, :description)
+    end
 
 end

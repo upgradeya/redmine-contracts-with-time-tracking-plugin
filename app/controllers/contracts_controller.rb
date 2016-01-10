@@ -13,9 +13,7 @@ class ContractsController < ApplicationController
 
   def all
     @user = User.current
-    @projects = @user.projects.select { |project| @user.roles_for_project(project).
-                                                        first.permissions.
-                                                        include?(:view_all_contracts_for_project) }
+    @projects = @user.projects.select { |project| @user.allowed_to?(:view_all_contracts_for_project, project) }
     @contracts = @projects.collect { |project| project.contracts.order("start_date ASC") }
     @contracts.flatten!
     @total_purchased_dollars = @contracts.sum { |contract| contract.purchase_amount }

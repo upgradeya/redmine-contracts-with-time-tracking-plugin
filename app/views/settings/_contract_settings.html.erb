@@ -1,4 +1,4 @@
 <p>
-  <label>Automatically create new contract when time log entry exceeds current contract:</label>
   <%= check_box_tag "settings[automatic_contract_creation]", true, @settings['automatic_contract_creation'] %>
+  <%= label_tag('settings_automatic_contract_creation', "Automatically create new contract when time log entry exceeds current contract: ") %>
 </p>

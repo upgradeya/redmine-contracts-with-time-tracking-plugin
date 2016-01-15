@@ -4,10 +4,6 @@ module ContractsHelper
     { :controller => 'expenses', :action => 'edit', :project_id => contract.project.identifier, :id => expense.id }
   end
 
-  def has_project_permissions?(project, permission)
-    User.current.roles_for_project(project).first.permissions.include?(permission)
-  end
-
   def format_hours(hours)
     format("%#.2f", hours)
   end

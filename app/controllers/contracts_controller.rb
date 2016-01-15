@@ -9,19 +9,22 @@ class ContractsController < ApplicationController
     @total_purchased_hours   = @project.total_hours_purchased
     @total_remaining_dollars = @project.total_amount_remaining
     @total_remaining_hours   = @project.total_hours_remaining
+
+    set_contract_visibility
+
   end
 
   def all
     @user = User.current
-    @projects = @user.projects.select { |project| @user.roles_for_project(project).
-                                                        first.permissions.
-                                                        include?(:view_all_contracts_for_project) }
+    @projects = @user.projects.select { |project| @user.allowed_to?(:view_all_contracts_for_project, project) }
     @contracts = @projects.collect { |project| project.contracts.order("start_date ASC") }
     @contracts.flatten!
     @total_purchased_dollars = @contracts.sum { |contract| contract.purchase_amount }
     @total_purchased_hours   = @contracts.sum { |contract| contract.hours_purchased }
     @total_remaining_dollars = @contracts.sum { |contract| contract.amount_remaining }
     @total_remaining_hours   = @contracts.sum { |contract| contract.hours_remaining }
+
+    set_contract_visibility
     
     render "index"
   end
@@ -179,10 +182,23 @@ class ContractsController < ApplicationController
     @project = Project.find(params[:project_id]) 
   end
 
-  private
-
   def contract_params
     params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url, :invoice_url, :project_id, :project_contract_id, :purchase_amount, :hourly_rate)
+  end
+
+  # Allows the user to hide or show locked contracts on contract list pages
+  def set_contract_visibility
+    # set session variable to the boolean true and false instead of using the string parameter
+    if params[:contract_list].present?
+      if params[:contract_list][:show_locked_contracts] == "true"
+        session[:show_locked_contracts] = true
+      else
+        session[:show_locked_contracts] = false
+      end
+    elsif session[:show_locked_contracts].nil?
+      # set session variable for first time guests
+      session[:show_locked_contracts] = false
+    end
   end
 
 end

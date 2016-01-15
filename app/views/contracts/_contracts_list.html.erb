@@ -1,4 +1,11 @@
 <h1> contract list</h1>
+
+<%= form_tag({ :controller => 'contracts', :action => (controller.action_name == "index" ? "index" : "all"), :project_id => (controller.action_name == "index" ? @project : "") }, :method => :get) do %>
+  <%= label_tag('contract_list_show_locked_contracts', "Show locked contracts") %>
+  <%= check_box 'contract_list', :show_locked_contracts, {:checked => session[:show_locked_contracts]}, "true", "false" %>
+  <%= submit_tag("Apply") %>
+<% end %>
+
 <table class="contracts-list list">
   <thead>
     <tr>
@@ -6,7 +13,7 @@
       <th><%= l(:label_agreed_on) %></th>
       <th><%= l(:label_date_period) %></th>
       <th><%= l(:label_purchased) %></th>
-      <% if (@project != nil) && (User.current.roles_for_project(@project).first.permissions.include?(:view_hourly_rate)) %>
+      <% if (@project != nil) && (User.current.allowed_to?(:view_hourly_rate, @project)) %>
         <th><%= l(:field_hourly_rate) %></th>
       <% end %>
       <th><%= l(:label_expenses) %></th>
@@ -20,66 +27,69 @@
       <th></th>
     </tr>
   </thead>
+
   <% @contracts.each do |contract| %>
-    <tr class="<%= cycle("odd", "even") %>">
-      <td>
-        <%= link_to contract.title, { :controller => 'contracts', :action => 'show', :project_id => contract.project.identifier, :id => contract.id } %>
-      </td>
-      <td>
-        <% if contract.agreement_date != nil %>
-          <%= format_date(contract.agreement_date) %>
-        <% else %><%= l(:text_agreement_pending) %>
-        <% end %>
-      </td>
-      <td>
-        <% if contract.agreement_date != nil %>
-          <%= format_date(contract.start_date) + " - " %>
-          <% if contract.end_date != nil %>
-            <%= format_date(contract.end_date) %>
-          <% else %>
-            <%= l(:text_no_end_date) %>
+    <% if !contract.is_locked || session[:show_locked_contracts] %>
+      <tr class="<%= cycle("odd", "even") %>">
+        <td>
+          <%= link_to contract.title, { :controller => 'contracts', :action => 'show', :project_id => contract.project.identifier, :id => contract.id } %>
+        </td>
+        <td>
+          <% if contract.agreement_date != nil %>
+            <%= format_date(contract.agreement_date) %>
+          <% else %><%= l(:text_agreement_pending) %>
           <% end %>
-        <% end %>
-      </td>
-      <td><%= number_to_currency(contract.purchase_amount) %></td>
-      <% if (@project != nil) && (User.current.roles_for_project(contract.project).first.permissions.include?(:view_hourly_rate)) %>
-        <td><%= number_to_currency(contract.hourly_rate) %></td>
-      <% end %>
-      <td><%= number_to_currency(contract.expenses_total) %></td>
-      <td class="green"><%= number_to_currency(contract.amount_remaining) %></td>
-      <td><%= number_with_precision contract.smart_hours_spent, :precision => 2 %></td>
-      <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
-      <td>
-        <% if !contract.contract_url.blank? %>
-          <%= link_to image_tag("/images/files/text.png"), contract.contract_url %>
-        <% end %>
-      </td>
-      <td>
-        <% if !contract.invoice_url.blank? %>
-          <%= link_to image_tag("/images/files/text.png"), contract.invoice_url %>
-        <% end %>
-      </td>
-      <td>
-        <% if User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
-          <% if contract.is_locked %>
-            <%= link_to image_tag("unlock.png"), { :controller => 'contracts', :action => 'lock', :project_id => contract.project.identifier, :id => contract.id, :lock => false, :view => 'index' }, :method => :put, :title => l(:label_unlock) %>
-          <% else %>
-            <%= link_to image_tag("locked.png"), { :controller => 'contracts', :action => 'lock', :project_id => contract.project.identifier, :id => contract.id, :lock => true, :view => 'index' }, :method => :put, :title => l(:label_lock) %>
+        </td>
+        <td>
+          <% if contract.agreement_date != nil %>
+            <%= format_date(contract.start_date) + " - " %>
+            <% if contract.end_date != nil %>
+              <%= format_date(contract.end_date) %>
+            <% else %>
+              <%= l(:text_no_end_date) %>
+            <% end %>
           <% end %>
+        </td>
+        <td><%= number_to_currency(contract.purchase_amount) %></td>
+        <% if (@project != nil) && (User.current.allowed_to?(:view_hourly_rate, contract.project)) %>
+          <td><%= number_to_currency(contract.hourly_rate) %></td>
         <% end %>
-      </td>
-      <td>
-        <% if !contract.is_locked && User.current.roles_for_project(contract.project).first.permissions.include?(:edit_contracts) %>
-          <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => contract.project.identifier, :id => contract.id }, :title => l(:label_edit) %>
-      <% end %>
-      </td>
-      <td>
-        <% if !contract.is_locked && User.current.roles_for_project(contract.project).first.permissions.include?(:delete_contracts) %>
-            <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => contract.project.identifier, :id => contract.id }, :method => :delete, 
-            :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, contract.title) %>
+        <td><%= number_to_currency(contract.expenses_total) %></td>
+        <td class="green"><%= number_to_currency(contract.amount_remaining) %></td>
+        <td><%= number_with_precision contract.smart_hours_spent, :precision => 2 %></td>
+        <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
+        <td>
+          <% if !contract.contract_url.blank? %>
+            <%= link_to image_tag("/images/files/text.png"), contract.contract_url %>
+          <% end %>
+        </td>
+        <td>
+          <% if !contract.invoice_url.blank? %>
+            <%= link_to image_tag("/images/files/text.png"), contract.invoice_url %>
+          <% end %>
+        </td>
+        <td>
+          <% if (User.current.allowed_to?(:edit_contracts, contract.project)) %>
+            <% if contract.is_locked %>
+              <%= link_to image_tag("unlock.png"), { :controller => 'contracts', :action => 'lock', :project_id => contract.project.identifier, :id => contract.id, :lock => false, :view => 'index' }, :method => :put, :title => l(:label_unlock) %>
+            <% else %>
+              <%= link_to image_tag("locked.png"), { :controller => 'contracts', :action => 'lock', :project_id => contract.project.identifier, :id => contract.id, :lock => true, :view => 'index' }, :method => :put, :title => l(:label_lock) %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <% if !contract.is_locked && User.current.allowed_to?(:edit_contracts, contract.project) %>
+            <%= link_to image_tag("edit.png"), { :controller => 'contracts', :action => 'edit', :project_id => contract.project.identifier, :id => contract.id }, :title => l(:label_edit) %>
         <% end %>
-      </td>
-    </tr>
+        </td>
+        <td>
+          <% if !contract.is_locked && (User.current.allowed_to?(:delete_contracts, contract.project)) %>
+              <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => contract.project.identifier, :id => contract.id }, :method => :delete, 
+              :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, contract.title) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
   <% end %>
 </table>
 

@@ -1,6 +1,7 @@
 class ProjectContractId < ActiveRecord::Migration
   def change
     add_column :contracts, :project_contract_id, :integer, :default => 1
+    Contract.reset_column_information
     Project.all.each do |project|
       # loop thru each project assigning ids to each contract
       id = 1;

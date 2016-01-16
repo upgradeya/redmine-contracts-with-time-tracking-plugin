@@ -25,6 +25,7 @@ module Contracts
         # new contract.
         protected
         def time_not_exceed_contract
+          return if hours.blank?
           previous_hours = (hours_was != nil) ? hours_was : 0 
 
           if contract_id != nil

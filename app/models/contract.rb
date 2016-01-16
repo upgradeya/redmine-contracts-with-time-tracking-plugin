@@ -3,9 +3,9 @@ class Contract < ActiveRecord::Base
   has_many   :time_entries
   has_many   :user_contract_rates
   has_many   :expenses
+  belongs_to :category, :class_name => 'ContractCategory'
 
-  validates_presence_of :title, :start_date, :purchase_amount, :hourly_rate, :project_id, :project_contract_id
-  validates :title, :uniqueness => { :case_sensitive => false }
+  validates_presence_of :start_date, :purchase_amount, :hourly_rate, :project_id
   validates_uniqueness_of :project_contract_id, :scope => :project_id
   validates :project_contract_id, :numericality => { :greater_than_or_equal_to => 1, :less_than_or_equal_to => 999 }
   validates :end_date, :is_after_start_date => true
@@ -149,25 +149,30 @@ class Contract < ActiveRecord::Base
     expenses_sum = self.expenses.map(&:amount).inject(0, &:+)
   end
 
-  def self.mid_title
-    '_Contract#'
+  def title
+    if self.category_id.blank?
+      category = 'Contract'
+    else
+      category = ContractCategory.find(self.category_id).name
+    end
+    Project.find(self.project_id).identifier + "_" + category + "#" + ("%03d" % (self.project_contract_id))
   end
 
   private
 
-    def apply_rates
-      return unless @rates
-      @rates.each_pair do |user_id, rate|
-        user = User.find(user_id)
-        self.project.set_user_rate(user, rate)
-        self.set_user_contract_rate(user, rate)
-      end
+  def apply_rates
+    return unless @rates
+    @rates.each_pair do |user_id, rate|
+      user = User.find(user_id)
+      self.project.set_user_rate(user, rate)
+      self.set_user_contract_rate(user, rate)
     end
+  end
 
-    def remove_contract_id_from_associated_time_entries
-      self.time_entries.each do |time_entry|
-        time_entry.contract_id = nil
-        time_entry.save
-      end
+  def remove_contract_id_from_associated_time_entries
+    self.time_entries.each do |time_entry|
+      time_entry.contract_id = nil
+      time_entry.save
     end
+  end
 end

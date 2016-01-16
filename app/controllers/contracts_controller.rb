@@ -33,12 +33,14 @@ class ContractsController < ApplicationController
     @contract = Contract.new
     @project = Project.find(params[:project_id])
     @new_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
+    @previous_id = @project.contracts.empty? ? nil : @project.contracts.last.project_contract_id
     load_contractors_and_rates
   end
 
   def create
     @contract = Contract.new(contract_params)
     rates = params[:rates]
+
     # Ensure only positive-value rates are entered
     if !rates.nil?
       rates.each_pair do |user_id, rate|
@@ -49,13 +51,15 @@ class ContractsController < ApplicationController
         end
       end
     end
+
     @contract.rates = rates
-    @contract.title = @project.identifier + Contract.mid_title + ("%03d" % (@contract.project_contract_id))
     if @contract.save
       flash[:notice] = l(:text_contract_saved)
       redirect_to :action => "show", :id => @contract.id
     else
       flash[:error] = "* " + @contract.errors.full_messages.join("</br>* ")
+      @previous_id = @project.contracts.empty? ? nil : @project.contracts.last.project_contract_id
+      @new_id = @contract.project_contract_id
       load_contractors_and_rates
       render :new
     end
@@ -75,6 +79,7 @@ class ContractsController < ApplicationController
   def edit
     @contract = Contract.find(params[:id])
     @projects = Project.all
+    @new_id = @contract.project_contract_id
     load_contractors_and_rates
   end
 
@@ -93,7 +98,6 @@ class ContractsController < ApplicationController
         flash[:error] = l(:text_invalid_rate)
         redirect_to :action => "edit", :id => @contract.id
       else
-        @contract.title = @project.identifier + Contract.mid_title + ("%03d" % (@contract.project_contract_id))
         @contract.save
         flash[:notice] = l(:text_contract_updated)
         redirect_to :action => "show", :id => @contract.id 
@@ -183,7 +187,8 @@ class ContractsController < ApplicationController
   end
 
   def contract_params
-    params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url, :invoice_url, :project_id, :project_contract_id, :purchase_amount, :hourly_rate)
+    params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url,
+      :invoice_url, :project_id, :project_contract_id, :purchase_amount, :hourly_rate, :category_id)
   end
 
   # Allows the user to hide or show locked contracts on contract list pages

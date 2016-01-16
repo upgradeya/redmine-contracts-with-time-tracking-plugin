@@ -108,3 +108,5 @@ en:
   field_amount: Amount
   field_expense_contract: Contract
   field_issue: Issue (ID)
+
+  enumeration_contract_categories: Contract categories

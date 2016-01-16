@@ -50,7 +50,7 @@ module Contracts
             new_contract = Contract.new
             new_contract_id = project.contracts.last.project_contract_id + 1
             new_contract.project_contract_id = new_contract_id
-            new_contract.title = project.identifier + Contract.mid_title + ("%03d" % (new_contract_id))
+            new_contract.category_id = contract.category_id
             new_contract.description = contract.description
             new_contract.start_date = Time.new
             new_contract.hourly_rate = contract.hourly_rate

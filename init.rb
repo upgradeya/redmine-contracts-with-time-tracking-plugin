@@ -41,4 +41,5 @@ ActionDispatch::Callbacks.to_prepare do
   TimeEntry.send(:include, Contracts::TimeEntryPatch)
   TimelogController.send(:include, Contracts::TimelogControllerPatch)
   User.send(:include, Contracts::UserPatch)
+  require_dependency 'contract_category'
 end

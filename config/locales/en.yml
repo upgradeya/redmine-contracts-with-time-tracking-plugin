@@ -78,7 +78,7 @@ en:
   text_hours_too_large: is invalid. The amount exceeds the time remaining plus the size of a new contract.
   text_invalid_rate: "Contractor rate must be zero or greater."
   text_invalid_issue_id: "is not a valid issue ID"
-  text_invalid_hours: "is invalid. The contract %{title} only has %{hours} remaining."
+  text_invalid_hours: "is invalid. The contract %{title} only has %{hours} remaining. Ask your administrator to enable auto contract creation in contract settings."
   text_second_time_entry_failure: "something went wrong. The 2nd entry for this split time entry could not be saved. %{error}"
   text_auto_contract_failure: "something went wrong. The new contract for this split time entry could not be saved. %{error}"
   text_expense_created: 'Expense was successfully created.'

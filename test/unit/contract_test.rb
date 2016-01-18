@@ -21,21 +21,9 @@ class ContractTest < ActiveSupport::TestCase
     @user = @project.users.first
   end
 
-  test "should not save without title" do
-    @contract.title = ''
-    assert !@contract.save
-  end
-
   test "should not save without project contract id" do
     @contract.project_contract_id = nil
     assert !@contract.save
-  end
-
-  test "contract title should be unique" do
-    @contract2.title = @contract.title
-    assert !@contract2.save
-    @contract2.title = @contract.title.downcase
-    assert !@contract2.save
   end
 
   test "project contract id should be unique" do

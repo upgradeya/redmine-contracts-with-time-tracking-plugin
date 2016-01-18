@@ -70,7 +70,7 @@ class TimelogControllerTest < ActionController::TestCase
                                 :hours => entry_hours,
                                 :contract_id => @contract.id}
     assert_response 200
-    assert_tag :tag => "div", :attributes => { :id => "errorExplanation" }, :content => /Hours is invalid. The contract/
+    assert_select("div#errorExplanation", /Hours is invalid. The contract/)
   end
 
   test "a new contract is created automatically" do

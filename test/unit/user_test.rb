@@ -18,7 +18,7 @@
 require File.expand_path('../../test_helper', __FILE__)
 
 class UserTest < ActiveSupport::TestCase
-  fixtures :projects, :contracts, :time_entries, :user_project_rates
+  fixtures :projects, :contracts, :time_entries, :user_project_rates, :users
 
   def setup
     Setting.plugin_contracts = {

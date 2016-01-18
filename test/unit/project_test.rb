@@ -52,19 +52,19 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "should calculate amount purchased across all contracts" do
-    assert_equal @project.total_amount_purchased, @project.contracts.sum { |contract| contract.purchase_amount }
+    assert_equal @project.total_amount_purchased, @project.contracts.map(&:purchase_amount).inject(0, &:+)
   end
 
   test "should calculate approximate hours purchased across all contracts" do
-    assert_equal @project.total_hours_purchased, @project.contracts.sum { |contract| contract.hours_purchased }
+    assert_equal @project.total_hours_purchased, @project.contracts.map(&:hours_purchased).inject(0, &:+)
   end
 
   test "should calculate amount remaining across all contracts" do
-    assert_equal @project.total_amount_remaining, @project.contracts.sum { |contract| contract.amount_remaining }
+    assert_equal @project.total_amount_remaining, @project.contracts.map(&:amount_remaining).inject(0, &:+)
   end
 
   test "should calculate hours remaining across all contracts" do
-    assert_equal @project.total_hours_remaining, @project.contracts.sum { |contract| contract.hours_remaining }
+    assert_equal @project.total_hours_remaining, @project.contracts.map(&:hours_remaining).inject(0, &:+)
   end
 
   test "should get contracts for all ancestor projects" do

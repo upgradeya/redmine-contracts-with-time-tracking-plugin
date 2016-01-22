@@ -1,0 +1,94 @@
+pt-BR:
+  project_module_contratos: Contratos
+  permission_view_all_contratos_for_project: Visualizar todos contratos do projeto
+  permission_view_contract_details: Exibir detalhes do contrato
+  permission_edit_contratos: Editar contratos
+  permission_create_contratos: Criar contratos
+  permission_delete_contratos: Excluir contratos
+  permission_view_hourly_rate: Visualizar taxa por hora
+  permission_create_despesas: Inserir despesas
+  permission_edit_despesas: Editar despesas
+  permission_delete_despesas: Excluir despesas
+  permission_view_despesas: Visualizar despesas
+
+  contracts: Contratos
+  label_contracts: Contratos
+  label_contract: Contrato
+  label_new_contract: Novo Contrato
+  label_editing_contract: Editando Contrato
+  label_add_time_entries: Inserir Registro de Tempo
+  label_add_time_entries: Atribuir Registros de Tempo em Massa
+  label_add_expense: Inserir Despesa
+  label_log_time: Registro de Tempo
+  label_edit: Editar
+  label_delete: Excluir
+  label_view_contract: Visualizar Contrato
+  label_view_invoice: Visualizar Fatura
+  label_date_period: Período
+  label_amount_purchased: Valor Negociado
+  label_invoice: Fatura
+  label_members: Membros
+  label_hours: Horas
+  label_contractor_rate: Contratoor Taxa
+  label_billable_amount: Valor Faturado
+  label_time_entries: Registros de Tempo
+  label_add_to_contract: Inserir to Contrato
+  label_date: Data
+  label_current_contract: Contrato Atual
+  label_member: Membro
+  label_activity: Atividade
+  label_issue: Tarefa
+  label_comments: Comentários
+  label_apply: Aplicar
+  label_name: Nome
+  label_agreed_on: Aceite Em
+  label_purchased: Vendido
+  label_remaining: Disponível
+  label_hours_worked: Horas Trabalhadas
+  label_hours_left: "~Horas Disponíveis"
+  label_total_purchased: Total Negociado para Todos Contratos
+  label_total_remaining: Total Disponível para Todos Contratos
+  label_or: "-ou-"
+  label_create_contract: Inserir Contrato
+  label_update_contract: Atualizar Contrato
+  label_contract_empty: Sem Contrato
+  label_select_contract: "[Selecione um contrato]"
+  label_save_expense: Gravar Despesa
+  label_expenses: Despesas
+  label_description: Descrição
+  label_amount: Valor
+  label_edit_expense: Editar Despesa
+  label_new_expense: Novo Despesa
+
+  text_are_you_sure_delete_title: "Você tem certeza que deseja excluir %{value}?"
+  text_are_you_sure_delete_time_entry: "Você tem certeza que deseja excluir este registro de tempo?"
+  text_are_you_sure_delete_expense: "Você tem certeza que deseja excluir esta despesa?"
+  text_time_exceeded_time_remaining: "Este registro de tempo excedeu o total de horas disponíveis para o contrato em %{hours_over} horas.\nPara existir uma coerência com o contrato, por favor edite o registro de tempo de forma que não seja superior a %{hours_remaining} horas."
+  text_must_come_after_agreement_date: tem que ser igual ou posterior à Data de Aceite
+  text_must_come_after_start_date: tem que ser posterior à Data de Início
+  text_contract_saved: Contrato gravado com sucesso!
+  text_contract_updated: Contrato atualizado com sucesso!
+  text_contract_deleted: Contrato excluído com sucesso
+  text_hours_over_contract: "Você está com um desvio de %{hours_over} horas acima do número de horas contradas."
+  text_invalid_rate: "Taxa por Hora deve ser não pode ser negativa ou nula."
+  text_invalid_issue_id: "não é um ID válido de Tarefa"
+  text_expense_created: 'Despesa criada com sucesso.'
+  text_expense_updated: 'Despesa atualizada com sucesso.'
+  text_na: 'N/A'
+
+  field_contract: Contrato
+  field_title: Título
+  field_description: Descrição
+  field_agreement_date: Data Aceite Contrato
+  field_start_date: Data Início
+  field_end_date: Data Término
+  field_purchase_amount: Valor Vendido
+  field_hourly_rate: Taxa por Hora
+  field_contract_url: Contrato URL
+  field_invoice_url: Fatura URL
+
+  field_expense_name: Nome
+  field_expense_date: Data Despesa
+  field_amount: Valor
+  field_expense_contract: Contrato
+  field_issue: Tarefa (ID)

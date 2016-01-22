@@ -1,9 +1,9 @@
-<h1> contract list</h1>
+<h1><%= l(:text_contract_list) %></h1>
 
 <%= form_tag({ :controller => 'contracts', :action => (controller.action_name == "index" ? "index" : "all"), :project_id => (controller.action_name == "index" ? @project : "") }, :method => :get) do %>
-  <%= label_tag('contract_list_show_locked_contracts', "Show locked contracts") %>
+  <%= label_tag('contract_list_show_locked_contracts', l(:label_show_locked_contracts)) %>
   <%= check_box 'contract_list', :show_locked_contracts, {:checked => session[:show_locked_contracts]}, "true", "false" %>
-  <%= submit_tag("Apply") %>
+  <%= submit_tag(l(:text_apply)) %>
 <% end %>
 
 <table class="contracts-list list">

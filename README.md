@@ -42,7 +42,7 @@ Changelog
 ---------
 Contracts v2.1 2016-3-5
 -----------------------
-- Renamed the expenses datbase table name to prevent conflicts with other redmine plugins
+- Renamed the expenses database table name to prevent conflicts with other redmine plugins
 
 Contracts v2.0 2016-1-9
 -----------------------

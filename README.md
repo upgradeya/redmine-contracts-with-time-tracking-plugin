@@ -13,7 +13,7 @@ Installation
 Option  1 - Download zip
 
 1. Download the zip (for Redmine 2 you will need to download the v1.3.1 zip from the github releases page)
-1. Unzip the redmine-contracts-with-time-tracking-plugin-master folder and place it in the redmine plugins folder.
+1. Unzip the redmine-contracts-with-time-tracking-plugin-master folder, rename it to contracts, and place it in the redmine plugins folder.
 1. run 'rake redmine:plugins:migrate RAILS_ENV=production' from your redmine root directory
 
 Option 2 - Git clone

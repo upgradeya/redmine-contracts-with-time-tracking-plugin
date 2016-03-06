@@ -1,9 +1,9 @@
-class ExpensesController < ApplicationController
+class ContractsExpensesController < ApplicationController
   before_filter :set_project, :authorize, only: [:new, :edit, :update, :create, :destroy]
   before_filter :set_expense, only: [:edit, :update, :destroy]
 
   def new
-    @expense = Expense.new
+    @contracts_expense = ContractsExpense.new
     load_contracts
   end
 
@@ -12,11 +12,11 @@ class ExpensesController < ApplicationController
   end
 
   def create
-    @expense = Expense.new(expense_params)
+    @contracts_expense = ContractsExpense.new(expense_params)
 
     respond_to do |format|
-      if @expense.save
-        format.html { redirect_to contract_urlpath(@expense), notice: l(:text_expense_created) }
+      if @contracts_expense.save
+        format.html { redirect_to contract_urlpath(@contracts_expense), notice: l(:text_expense_created) }
       else
         load_contracts
         format.html { render action: 'new' }
@@ -26,8 +26,8 @@ class ExpensesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @expense.update_attributes(expense_params)
-        format.html { redirect_to contract_urlpath(@expense), notice: l(:text_expense_updated) }
+      if @contracts_expense.update_attributes(expense_params)
+        format.html { redirect_to contract_urlpath(@contracts_expense), notice: l(:text_expense_updated) }
       else
         load_contracts
         format.html { render action: 'edit' }
@@ -36,8 +36,8 @@ class ExpensesController < ApplicationController
   end
 
   def destroy
-    back_to = contract_urlpath(@expense)
-    @expense.destroy
+    back_to = contract_urlpath(@contracts_expense)
+    @contracts_expense.destroy
     flash[:notice] = l(:text_expense_deleted)
     respond_to do |format|
       format.html { redirect_to back_to }
@@ -47,14 +47,14 @@ class ExpensesController < ApplicationController
   private
 
     def contract_urlpath(expense)
-      url_for({ :controller => 'contracts', :action => 'show', :project_id => expense.contract.project.identifier, :id => expense.contract.id, :expenses => 'true'})
+      url_for({ :controller => 'contracts', :action => 'show', :project_id => expense.contract.project.identifier, :id => expense.contract.id, :contracts_expenses => 'true'})
     end
 
     def set_expense
-      @expense = Expense.find(params[:id])
-      if @expense.contract.is_locked
+      @contracts_expense = ContractsExpense.find(params[:id])
+      if @contracts_expense.contract.is_locked
         flash[:error] = l(:text_expenses_uneditable)
-        redirect_to contract_urlpath(@expense)
+        redirect_to contract_urlpath(@contracts_expense)
       end
     end
 
@@ -69,7 +69,7 @@ class ExpensesController < ApplicationController
     private
 
     def expense_params
-      params.require(:expense).permit(:name, :expense_date, :amount, :contract_id, :issue_id, :description)
+      params.require(:contracts_expense).permit(:name, :expense_date, :amount, :contract_id, :issue_id, :description)
     end
 
 end

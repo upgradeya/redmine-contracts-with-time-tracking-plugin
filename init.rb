@@ -11,7 +11,7 @@ Redmine::Plugin.register :contracts do
   name 'Redmine Contracts With Time Tracking'
   author 'Ben Syzek, Shanti Braford, Wesley Jones'
   description 'A Redmine plugin that allows you to manage contracts and associate time-entries with those contracts.'
-  version '2.0.1'
+  version '2.1.0'
   url 'https://github.com/upgradeya/redmine-contracts-with-time-tracking-plugin.git'
 
   requires_redmine :version => '3.0'..'3.2'
@@ -28,10 +28,10 @@ Redmine::Plugin.register :contracts do
     permission :create_contracts,                     :contracts => [:new, :create]
     permission :delete_contracts,                     :contracts => :destroy
     permission :view_hourly_rate,                     :contracts => :view_hourly_rate #view_hourly_rate is a fake action!
-    permission :create_expenses,                      :expenses => [:new, :create]
-    permission :edit_expenses,                        :expenses => [:edit, :update]
-    permission :delete_expenses,                      :expenses => :destroy
-    permission :view_expenses,                        :expenses => :show
+    permission :create_expenses,                      :contracts_expenses => [:new, :create]
+    permission :edit_expenses,                        :contracts_expenses => [:edit, :update]
+    permission :delete_expenses,                      :contracts_expenses => :destroy
+    permission :view_expenses,                        :contracts_expenses => :show
   end
 end
 

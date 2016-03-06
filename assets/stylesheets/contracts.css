@@ -2,7 +2,6 @@
   background: #EEE;
   padding: 10px;
   border: 1px solid #E4E4E4;
-  text-align: center;
 }
 
 .contracts-summary h3{
@@ -11,10 +10,6 @@
 
 .contracts-list, .time-entries-for-contract-list {
   width: 100%;
-}
-
-.contracts-list th, .time-entries-for-contract-list th, .bulk-time-entries th {
-  text-align: left;
 }
 
 .bigbold{
@@ -37,10 +32,6 @@
 
 .hours-summary-td {
 	width: 35%;
-}
-
-.contract-summary th,  .hours-summary th {
-	text-align: left;	
 }
 
 fieldset#contractor_rates { 

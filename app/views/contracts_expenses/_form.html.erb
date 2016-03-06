@@ -1,0 +1,44 @@
+<%
+if @contracts_expense.new_record?
+  url = url_for({ :controller => 'contracts_expenses', :action => 'create', :project_id => @project.identifier})
+  method = :post
+else
+  url = url_for({ :controller => 'contracts_expenses', :action => 'update', :project_id => @project.identifier})
+  method = :put
+end
+%>
+<%= labelled_form_for @contracts_expense, :url => url, :method => method do |f| %>
+  <% if @contracts_expense.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@contracts_expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+
+      <ul>
+      <% @contracts_expense.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="box tabular">
+    <p><%= f.text_field :name, :required => true %></p>
+    <p>
+      <%= f.text_field :expense_date, :size => 12, :required => true %>
+      <%= calendar_for('contracts_expense_expense_date') %>
+    </p>
+    <p><%= f.text_field :amount, :size => 6, :required => true %></p>
+    <p>
+      <label for="contracts_expense_contract_id"><%= l(:field_expense_contract) %><%= span_required %></label>
+      <%-# If no default contract, then it indicates this is a new expense. Populate dropdown with last created contract -%>
+      <% if @contracts_expense.contract_id == nil %>
+        <% @contracts_expense.contract_id = @project.contracts.maximum(:id) %>
+      <% end %>
+      <% @contracts = @project.contracts_for_all_ancestor_projects %>
+      <%= select("contracts_expense", "contract_id", @contracts.collect { |c| [ c.title, c.id ] }, {:include_blank => l(:label_select_contract)}) %>
+    </p>
+    <p><%= f.text_field :issue_id, :size => 5 %></p>
+    <p><%= f.text_field :description, :size => 50 %></p>
+  </div>
+  <%= f.submit l(:label_save_expense) %>
+
+<% end %>

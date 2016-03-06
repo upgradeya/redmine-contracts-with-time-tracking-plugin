@@ -19,9 +19,9 @@ match 'projects/:project_id/contracts/:id/assoc_time_entries_with_contract' =>
         :via => :put
 
 # Expenses
-match 'projects/:project_id/expenses/new'                   => 'expenses#new',   :via => :get
-match 'projects/:project_id/expenses/:id/edit'              => 'expenses#edit',   :via => :get
-match 'projects/:project_id/expenses/create'                => 'expenses#create',   :via => :post
-match 'projects/:project_id/expenses/update/:id'            => 'expenses#update',   :via => :put
-match 'projects/:project_id/expenses/destroy/:id'           => 'expenses#destroy',   :via => :delete
+match 'projects/:project_id/expenses/new'                   => 'contracts_expenses#new',   :via => :get
+match 'projects/:project_id/expenses/:id/edit'              => 'contracts_expenses#edit',   :via => :get
+match 'projects/:project_id/expenses/create'                => 'contracts_expenses#create',   :via => :post
+match 'projects/:project_id/expenses/update/:id'            => 'contracts_expenses#update',   :via => :put
+match 'projects/:project_id/expenses/destroy/:id'           => 'contracts_expenses#destroy',   :via => :delete
 

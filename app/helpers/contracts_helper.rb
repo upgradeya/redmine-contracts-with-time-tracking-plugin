@@ -1,7 +1,7 @@
 module ContractsHelper
 
   def expense_edit_urlpath(contract, expense)
-    { :controller => 'expenses', :action => 'edit', :project_id => contract.project.identifier, :id => expense.id }
+    { :controller => 'contracts_expenses', :action => 'edit', :project_id => contract.project.identifier, :id => expense.id }
   end
 
   def format_hours(hours)

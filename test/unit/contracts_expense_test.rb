@@ -1,6 +1,6 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-class ExpenseTest < ActiveSupport::TestCase
+class ContractsExpenseTest < ActiveSupport::TestCase
   fixtures :contracts, :issues
 
   def setup
@@ -46,6 +46,6 @@ class ExpenseTest < ActiveSupport::TestCase
   end
 
   def build_valid_expense
-    Expense.new(:name => 'Domain name purchase', :expense_date => Date.today, :amount => 12.98, :contract_id => @contract.id)
+    ContractsExpense.new(:name => 'Domain name purchase', :expense_date => Date.today, :amount => 12.98, :contract_id => @contract.id)
   end
 end

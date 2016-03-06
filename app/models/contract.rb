@@ -2,7 +2,7 @@ class Contract < ActiveRecord::Base
   belongs_to :project
   has_many   :time_entries
   has_many   :user_contract_rates
-  has_many   :expenses
+  has_many   :contracts_expenses
   belongs_to :category, :class_name => 'ContractCategory'
 
   validates_presence_of :start_date, :purchase_amount, :hourly_rate, :project_id
@@ -146,7 +146,7 @@ class Contract < ActiveRecord::Base
   end
 
   def expenses_total
-    expenses_sum = self.expenses.map(&:amount).inject(0, &:+)
+    expenses_sum = self.contracts_expenses.map(&:amount).inject(0, &:+)
   end
 
   def title

@@ -70,9 +70,9 @@ class ContractsController < ApplicationController
     @time_entries = @contract.time_entries.order("spent_on DESC")
     @members = []
     @time_entries.each { |entry| @members.append(entry.user) unless @members.include?(entry.user) }
-    @expenses_tab = (params[:expenses] == 'true')
+    @expenses_tab = (params[:contracts_expenses] == 'true')
     if @expenses_tab
-      @expenses = @contract.expenses
+      @expenses = @contract.contracts_expenses
     end
   end
 

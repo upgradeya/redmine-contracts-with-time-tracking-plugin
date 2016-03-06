@@ -26,7 +26,8 @@
       </td>
       <td>
         <% if !@contract.is_locked && User.current.allowed_to?(:delete_expenses, @project) %>
-          <%= link_to image_tag("delete.png"), { :controller => 'expenses', :action => 'destroy', :project_id => @contract.project.identifier, :id => expense.id }, 
+          <%= link_to image_tag("delete.png"), { :controller => 'contracts_expenses', :action => 'destroy',
+            :project_id => @contract.project.identifier, :id => expense.id },
             :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_expense), :method => :delete %>
         <% end %>
       </td>

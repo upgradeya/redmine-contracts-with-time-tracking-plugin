@@ -1,4 +1,4 @@
-class Expense < ActiveRecord::Base
+class ContractsExpense < ActiveRecord::Base
   belongs_to :contract
   belongs_to :issue
   validates_presence_of :name, :expense_date, :amount, :contract_id

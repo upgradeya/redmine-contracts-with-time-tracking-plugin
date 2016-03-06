@@ -171,12 +171,12 @@ class ContractTest < ActiveSupport::TestCase
   end
 
   test "should get a sum of contract expenses" do
-    assert_equal 0, @contract.expenses.size
+    assert_equal 0, @contract.contracts_expenses.size
     assert_equal 0.0, @contract.expenses_total
     2.times do
-      Expense.create!(:name => 'Foo', :expense_date => '2013-05-15', :amount => 1.11, :contract_id => @contract.id)
+      ContractsExpense.create!(:name => 'Foo', :expense_date => '2013-05-15', :amount => 1.11, :contract_id => @contract.id)
     end
-    assert_equal 2, @contract.expenses.reload.size
+    assert_equal 2, @contract.contracts_expenses.reload.size
     assert_equal 2.22, @contract.expenses_total
   end
 

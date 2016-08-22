@@ -14,7 +14,7 @@ Redmine::Plugin.register :contracts do
   version '2.1.0'
   url 'https://github.com/upgradeya/redmine-contracts-with-time-tracking-plugin.git'
 
-  requires_redmine :version => '3.0'..'3.2'
+  requires_redmine :version_or_higher => '3.0'
  
   menu :application_menu, :contracts, { :controller => :contracts, :action => :all }, :caption => :label_contracts, :if => Proc.new { User.current.logged? && User.current.allowed_to?(:view_all_contracts_for_project, nil, :global => true) } 
   menu :project_menu, :contracts, { :controller => :contracts, :action => :index }, :caption => :label_contracts, :param => :project_id

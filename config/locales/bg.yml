@@ -1,0 +1,94 @@
+bg:
+  project_module_contracts: Договори
+  permission_view_all_contracts_for_project: Достъп до всички договори по проекта
+  permission_view_contract_details: Достъп до детайли на договор
+  permission_edit_contracts: Достъп до редактиране на договор
+  permission_create_contracts: Право за създаване на договор
+  permission_delete_contracts: Право за изтриване на договор
+  permission_view_hourly_rate: Достъпо до тарифи
+  permission_create_expenses: Право за създаване на разход
+  permission_edit_expenses: Право за редакция на разход
+  permission_delete_expenses: Право за изтриване на разход
+  permission_view_expenses: Достъпо до разходи
+
+  contracts: Договори
+  label_contracts: Договори
+  label_contract: Договор
+  label_new_contract: Нов договор
+  label_editing_contract: Редакция на договор
+  label_add_time_entries: Въвеждане на време
+  label_add_time_entries: Въвеждане на време (масово)
+  label_add_expense: Добавяне на разход
+  label_log_time: Добави време
+  label_edit: Редакция
+  label_delete: Изтриване
+  label_view_contract: Виж договор
+  label_view_invoice: Виж фактура
+  label_date_period: Срок на валидност
+  label_amount_purchased: Стойност на договора
+  label_invoice: Фактури
+  label_members: Членове
+  label_hours: Часове
+  label_contractor_rate: Тарифи
+  label_billable_amount: Платима сума
+  label_time_entries: Вписвания на време
+  label_add_to_contract: Добави към договор
+  label_date: Дата
+  label_current_contract: Текущ договор
+  label_member: Изпълнител
+  label_activity: Дейност
+  label_issue: Задача
+  label_comments: Коментари
+  label_apply: Приложи
+  label_name: Име
+  label_agreed_on: Дата на договора 
+  label_purchased: Обща сума
+  label_remaining: Оставащ
+  label_hours_worked: Изработени часове
+  label_hours_left: "~ Оставащи часове"
+  label_total_purchased: Обща стойност на всички договори
+  label_total_remaining: Общо оставащо за всички договори
+  label_or: "-или-"
+  label_create_contract: Създай договор
+  label_update_contract: Промени договор
+  label_contract_empty: Няма договор
+  label_select_contract: "[Избери договор]"
+  label_save_expense: Запази разход
+  label_expenses: Разходи
+  label_description: Описание
+  label_amount: Количество
+  label_edit_expense: Редактирай разход
+  label_new_expense: Нов разход
+
+  text_are_you_sure_delete_title: "Сигурни ли сте, че искате да изтриете %{value}?"
+  text_are_you_sure_delete_time_entry: "Сигурни ли сре, че искате да изтриете това време?"
+  text_are_you_sure_delete_expense: "Сигурни ли сте, че искате да изтриете този разход?"
+  text_time_exceeded_time_remaining: "Въведеното време надвишава оставащото време в настоящия договор с %{hours_over} часа.\nЗа да може да въведете време, моля въведете стойност по-малка от %{hours_remaining}."
+  text_must_come_after_agreement_date: Тряба да е след датата на споразумението
+  text_must_come_after_start_date: Трябва да е след началната дата
+  text_contract_saved: Договорът е успешно запазен!
+  text_contract_updated: Договорът беше променен успешно!
+  text_contract_deleted: Договорът беше изтрит успешно
+  text_hours_over_contract: "В момента надвишаване договореният лимит с %{hours_over} часа."
+  text_invalid_rate: "Тарифата трябва да е 0 или по-висока."
+  text_invalid_issue_id: "Невалиден ID"
+  text_expense_created: 'Разходът беше създаден успешно.'
+  text_expense_updated: 'Разходът беше променен успешно.'
+  text_na: 'N/A'
+
+  field_contract: Договор
+  field_title: Заглавие
+  field_description: Описание
+  field_agreement_date: Дата на договора
+  field_start_date: Начална дата
+  field_end_date: Крайна дата
+  field_purchase_amount: Закупено количество
+  field_hourly_rate: Цена на час
+  field_contract_url: URL на договора
+  field_invoice_url:  URL на фактурата
+
+  field_expense_name: Име
+  field_expense_date: Дата на разхода
+  field_amount: Сума
+  field_expense_contract: Договор
+  field_issue: Задача (ID)

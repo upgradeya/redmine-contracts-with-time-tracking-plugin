@@ -1,12 +1,12 @@
+=begin
+ This file used to create the expenses table
+ but it was in conflict with several other
+ plugins that also had an expense table.
+ The create expenses table migration has
+ moved to 010_rename_expenses.rb and the
+ table name is now contracts_expenses.
+=end
+
 class CreateExpenses < ActiveRecord::Migration
-  def change
-    create_table :expenses do |t|
-      t.string :name
-      t.date :expense_date
-      t.float :amount, :length => 8, :decimals => 2
-      t.integer :contract_id
-      t.integer :issue_id
-      t.string :description
-    end
-  end
+
 end

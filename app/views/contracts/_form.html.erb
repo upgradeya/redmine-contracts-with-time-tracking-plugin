@@ -21,7 +21,7 @@
     <p><%= f.text_field :invoice_url, :size => 50 %></p>
   </div>
   <% if !@contractors.nil? && !@contractors.empty? %>
-    <fieldset id="contractor_rates" class="box tabular"><legend>Contractor Rates</legend>
+    <fieldset id="contractor_rates" class="box tabular"><legend><%= l(:label_contractors_rates) %></legend>
       <% @contractors.each do |contractor| %>
         <% rate = @contractor_rates[contractor.id] %>
         <p>

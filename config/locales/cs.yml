@@ -1,0 +1,118 @@
+# encoding: utf-8
+cs:
+  project_module_contracts: Objednávky
+  permission_view_all_contracts_for_project: Zobrazit všechny objednávky pro projekt
+  permission_view_contract_details: Zobrazit detail objednávky
+  permission_edit_contracts: Updavit objednávky
+  permission_create_contracts: Vytvořit objednávky
+  permission_delete_contracts: Smazat objednávky
+  permission_view_hourly_rate: Ukázat hodinovou sazbu
+  permission_create_expenses: Vytvořit náklady
+  permission_edit_expenses: Updavit náklady
+  permission_delete_expenses: Smazat náklady
+  permission_view_expenses: Ukázat náklady
+
+  contracts: Objednávky
+  label_contracts: Objednávky
+  label_contract: Objednávky
+  label_new_contract: Nová objednávka
+  label_editing_contract: Editovat objednávku
+  label_add_time_entries: Přidat časový záznam
+  label_add_time_entries: Přidat časový záznam hromadně
+  label_add_expense: Přidat náklad
+  label_log_time: Přidat čas
+  label_edit: Upravit
+  label_delete: Smazat
+  label_view_contract: Ukázat objednávku
+  label_view_invoice: Ukázat fakturu
+  label_date_period: Časový rozsah
+  label_amount_purchased: Suma objednávky
+  label_invoice: Faktura
+  label_members: Členové
+  label_hours: Hodiny
+  label_contractor_rate: Sazba vývojáře
+  label_contractors_rates: Sazby vývojářů
+  label_billable_amount: Účtovatelná částka
+  label_time_entries: Časové záznamy
+  label_add_to_contract: Přidat ke smlouvě
+  label_date: Datum
+  label_current_contract: Aktuální objednávka
+  label_member: Člen
+  label_activity: Aktivita
+  label_issue: Úkol
+  label_comments: Komentáře
+  label_apply: Aplikovat
+  label_name: Název
+  label_agreed_on: Odsouhlaseno
+  label_purchased: Objednáno
+  label_remaining: Zbývá
+  label_hours_worked: hodin odpracováno
+  label_hours_left: "~hodin zbývá"
+  label_total_purchased: Celkem všechny objednávky
+  label_total_remaining: Celkem zbývá u všech objednávek
+  label_or: "-nebo-"
+  label_create_contract: Vytvořit objednávku
+  label_update_contract: Upravit objednávku
+  label_contract_empty: Žádná objednávka
+  label_select_contract: "[Vyberte objednávku]"
+  label_save_expense: Uložit náklad
+  label_expenses: Náklady
+  label_description: Popis
+  label_amount: Suma
+  label_edit_expense: Upravit náklad
+  label_new_expense: Nový náklad
+  label_lock: Uzamknout
+  label_unlock: Odemknout
+  label_show_locked_contracts: Ukázat uzamčené obednávky
+
+  text_contract_list: Seznam objednávek
+  text_are_you_sure_delete_title: "Opravdu chcete smazat %{value}?"
+  text_are_you_sure_delete_time_entry: "Opravdu chcete smazat časový záznam?"
+  text_are_you_sure_delete_expense: "Opravdu chcete smazat tento náklad?"
+  text_time_exceeded_time_remaining: "Tento časový záznam přesáhl čas přípustný pro objednávku: %{hours_over} hodin.\nAbyste se vlezli do objednávky, upravte čas, aby nepřesahoval více než %{hours_remaining} hodin."
+  text_must_come_after_agreement_date: musí být až po datu odsouhlasení
+  text_must_come_after_start_date: musí být až po datu zahájení
+  text_contract_saved: Objednávka úspěšně uložena!
+  text_contract_updated: Objednávka úspěšně aktualizována!
+  text_contract_deleted: Objednávka úspěšně smazána!
+  text_hours_over_contract: "Nyní jste %{hours_over} hodin přes limit objednávky."
+  text_split_time_entry_saved: Váš zadaný čas byl rozdělený na 2 objednávky. Druhá část byla přiřazena nově založené čekající smlouvě.
+  text_one_time_entry_saved: "Byla založena nová objednávka a váš čas byl přiřazen k ní, protože už se nevešel do původní dohody o času objednávky."
+  text_hours_too_large: není platný. Hodnota převyšuje čas objednávky a nevleze se ani do nové objednávky.
+  text_invalid_rate: "Hodinová sazba vývojáře musí být kladné číslo."
+  text_invalid_issue_id: "není platné ID úkolu."
+  text_invalid_hours: "není platné. Objednávka %{title} má jen %{hours} zbývajících hodin. Poproste správce o povolení automatického založení nové objednávky při přesáhnutí času."
+  text_second_time_entry_failure: "něco se nepovedlo, druhý záznam po rozdělení času se nepovedlo zaspsat. %{error}"
+  text_auto_contract_failure: "něco se nepovedlo. Nová objednávka po rozdělení času nebyla uložena. %{error}"
+  text_expense_created: 'Náklad přidán.'
+  text_expense_updated: 'Náklad aktualizován.'
+  text_agreement_pending: 'očekává se schválení'
+  text_no_end_date: 'nemá datum dokončení'
+  text_na: 'N/A'
+  text_contract_locked: Objednávka byla úspěšně uzamčena.
+  text_contract_unlocked: Objednávka byla úspěšně odemčena.
+  text_locked_contract_cache_updated: Tento záznam patří k uzamčené objednávce. Hodnoty byly aktualizovány a objednávka upravena.
+  text_expenses_uneditable: "Nelze editovate náklady objednávky, ta je uzamčena."
+  text_expense_deleted: Náklad smazán.
+  text_apply: Uložit
+  text_previous_id: "Poslední objednávka v tomto projektu měla číslo %{previous_id}"
+  text_contract_category_helper: "[Volitelné] Používá se k přehlednější identifikaci objednávky. Spravuje se přes enumeraci."
+
+  field_contract: Objednávka
+  field_project_contract: ID Objednávky
+  field_description: Popis
+  field_agreement_date: Datum odsouhlasení
+  field_start_date: Datum zahájení
+  field_end_date: Datum ukončení
+  field_purchase_amount: Suma objednávky
+  field_hourly_rate: Hodinová sazba
+  field_contract_url: URL smlouvy
+  field_invoice_url: URL faktury
+
+  field_expense_name: Název
+  field_expense_date: Datum
+  field_amount: Suma
+  field_expense_contract: Objednávka
+  field_issue: Úkol (ID)
+
+  enumeration_contract_categories: Kategorie objednávek

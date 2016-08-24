@@ -1,0 +1,95 @@
+# Norwegian bokmål strings go here for Rails i18n
+"no":
+  project_module_contracts: Kontrakter
+  permission_view_all_contracts_for_project: Vis alle kontrakter for prosjektet
+  permission_view_contract_details: Vis kontraktdetaljer
+  permission_edit_contracts: Endre kontrakter
+  permission_create_contracts: Lag kontrakter
+  permission_delete_contracts: Slett kontrakter
+  permission_view_hourly_rate: Vis timepris
+  permission_create_expenses: Lag utgifter
+  permission_edit_expenses: Endre utgifter
+  permission_delete_expenses: Slett utgifter
+  permission_view_expenses: Vis utgifter
+
+  contracts: Kontrakter
+  label_contracts: Kontrakter
+  label_contract: Kontrakt
+  label_new_contract: Ny kontrakt
+  label_editing_contract: Endre kontrakt
+  label_add_time_entries: Legg til tid brukt
+  label_add_time_entries: Legg til flere tilfeller av tid brukt
+  label_add_expense: Legg til utgift
+  label_log_time: Logg tid
+  label_edit: Endre
+  label_delete: Slett
+  label_view_contract: Vis kontrakt
+  label_view_invoice: Vis faktura
+  label_date_period: Dato-område
+  label_amount_purchased: Beløp kjøpt
+  label_invoice: Faktura
+  label_members: Medlemmer
+  label_hours: Timer
+  label_contractor_rate: Kontraktørens timepris
+  label_billable_amount: Fakturerbart beløp
+  label_time_entries: Tid brukt
+  label_add_to_contract: Legg til i kontrakt
+  label_date: Dato
+  label_current_contract: Gjeldende kontrakt
+  label_member: Medlem
+  label_activity: Aktivitet
+  label_issue: Sak
+  label_comments: Kommentarer
+  label_apply: Bruk
+  label_name: Navn
+  label_agreed_on: Avtalt
+  label_purchased: Kjøpt
+  label_remaining: Gjenstår
+  label_hours_worked: Timer arbeidet
+  label_hours_left: "~Timer igjen"
+  label_total_purchased: Totalt kjøpt for alle kontrakter
+  label_total_remaining: Totalt gjenstående for alle kontrakter
+  label_or: "-eller-"
+  label_create_contract: Lag kontrakt
+  label_update_contract: Oppdater kontrakt
+  label_contract_empty: Ingen kontrakt
+  label_select_contract: "[Velg kontrakt]"
+  label_save_expense: Lagre utgift
+  label_expenses: Utgifter
+  label_description: Beskrivelse
+  label_amount: Beløp
+  label_edit_expense: Endre utgift
+  label_new_expense: Ny utgift
+
+  text_are_you_sure_delete_title: "Er du sikker på at du vil slette %{value}?"
+  text_are_you_sure_delete_time_entry: "Er du sikker på at du vil slette denne tidsregistreringen?"
+  text_are_you_sure_delete_expense: "Er du sikker på at du vil slette denne utgiften?"
+  text_time_exceeded_time_remaining: "Denne tidsregistreringen overgår gjenstående tid for denne kontrakten med %{hours_over}.\nFor å være innenfor kontrakt, vennligst endre tidsregistreringen til ikke mer enn %{hours_remaining}."
+  text_must_come_after_agreement_date: må komme på eller etter avtalt dato
+  text_must_come_after_start_date: må komme etter startdatoen
+  text_contract_saved: Kontrakten er lagret!
+  text_contract_updated: Kontrakten er oppdatert!
+  text_contract_deleted: Kontrakten er slettet
+  text_hours_over_contract: "Du er nå %{hours_over} over kontraktens grense."
+  text_invalid_rate: "Kontraktørens timepris må være null eller større."
+  text_invalid_issue_id: "er ikke en gyldig saks-ID"
+  text_expense_created: 'Utgiften er laget.'
+  text_expense_updated: 'Utgiften er oppdatert.'
+  text_na: 'Ikke tilgjengelig'
+
+  field_contract: Kontrakt
+  field_title: Tittel
+  field_description: Beskrivelse
+  field_agreement_date: Avtaledato
+  field_start_date: Startdato
+  field_end_date: Sluttdato
+  field_purchase_amount: Kjøpsbeløp
+  field_hourly_rate: Timepris
+  field_contract_url: Kontrakt URL
+  field_invoice_url: Faktura URL
+
+  field_expense_name: Navn
+  field_expense_date: Utgiftsdato
+  field_amount: Beløp
+  field_expense_contract: Kontrakt
+  field_issue: Sak (ID)

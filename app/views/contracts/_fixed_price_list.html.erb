@@ -11,13 +11,9 @@
       <th><%= l(:label_agreed_on) %></th>
       <th><%= l(:label_date_period) %></th>
       <th><%= l(:label_purchased) %></th>
-      <% if (@project != nil) && (User.current.allowed_to?(:view_hourly_rate, @project)) %>
-        <th><%= l(:field_hourly_rate) %></th>
-      <% end %>
       <th><%= l(:label_expenses) %></th>
-      <th><%= l(:label_remaining) %></th>
       <th><%= l(:label_hours_worked) %></th>
-      <th><%= l(:label_hours_left) %></th>
+      <th><%= l(:label_effective_rate) %></th>
       <th><%= l(:label_contract) %></th>
       <th><%= l(:label_invoice) %></th>
       <th></th>
@@ -49,13 +45,9 @@
           <% end %>
         </td>
         <td><%= number_to_currency(contract.purchase_amount) %></td>
-        <% if (@project != nil) && (User.current.allowed_to?(:view_hourly_rate, contract.project)) %>
-          <td><%= number_to_currency(contract.hourly_rate) %></td>
-        <% end %>
         <td><%= number_to_currency(contract.expenses_total) %></td>
-        <td class="green"><%= number_to_currency(contract.amount_remaining) %></td>
         <td><%= number_with_precision contract.smart_hours_spent, :precision => 2 %></td>
-        <td class="blue"><%= number_with_precision contract.hours_remaining, :precision => 2 %></td>
+        <td><%= number_to_currency((contract.purchase_amount - contract.expenses_total) / contract.smart_hours_spent) %></td>
         <td>
           <% if !contract.contract_url.blank? %>
             <%= link_to image_tag("/images/files/text.png"), contract.contract_url %>

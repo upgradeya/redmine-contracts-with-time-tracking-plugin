@@ -7,7 +7,22 @@
 <h2><%= l(:label_contracts) %></h2>
 
 <%= render 'contracts_summary' %>
-<%= render 'contracts_list' %>
+<div class="tabs">
+  <ul>
+    <li>
+      <a href="<%= url_for({ :controller => 'contracts', :action => 'index', :project_id => @project.identifier }) %>" <%= tab_selected unless @fixed_price_tab %>><%= l(:label_hourly_priced_contracts) %></a>
+    </li>
+    <li>
+      <a href="<%= url_for({ :controller => 'contracts', :action => 'index', :project_id => @project.identifier, :fixed_price_contracts => 'true' }) %>" <%= tab_selected if @fixed_price_tab %>><%= l(:label_fixed_priced_contracts) %></a>
+    </li>
+  </ul>
+</div>
+<% if @fixed_price_tab %>
+  <%= render 'fixed_price_list' %>
+<% else %>
+  <%= render 'contracts_list' %>
+<% end %>
+
 
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>

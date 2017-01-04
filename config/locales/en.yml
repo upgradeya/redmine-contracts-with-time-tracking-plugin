@@ -34,9 +34,6 @@ en:
   label_contractor_rate: Contractor Rate
   label_billable_amount: Billable Amount
   label_time_entries: Time Entries
-  label_hourly_priced_contracts: Hourly Contracts
-  label_effective_rate: Effective Rate
-  label_fixed_priced_contracts: Fixed Price Contracts
   label_add_to_contract: Add to Contract
   label_date: Date
   label_current_contract: Current Contract
@@ -111,7 +108,6 @@ en:
   field_hourly_rate: Hourly Rate
   field_contract_url: Contract URL
   field_invoice_url: Invoice URL
-  field_is_fixed_price: Fixed Price
 
   field_expense_name: Name
   field_expense_date: Expense Date

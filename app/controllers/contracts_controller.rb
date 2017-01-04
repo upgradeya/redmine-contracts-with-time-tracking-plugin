@@ -4,13 +4,7 @@ class ContractsController < ApplicationController
   
   def index
     @project = Project.find(params[:project_id])
-    @fixed_price_tab = (params[:fixed_price_contracts] == 'true')
-    if @fixed_price_tab
-      @contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '1')
-    else
-      @contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '0')
-    end
-    
+    @contracts = Contract.order("start_date ASC").where(:project_id => @project.id)
     @total_purchased_dollars = @project.total_amount_purchased
     @total_purchased_hours   = @project.total_hours_purchased
     @total_remaining_dollars = @project.total_amount_remaining
@@ -194,7 +188,7 @@ class ContractsController < ApplicationController
 
   def contract_params
     params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url,
-      :invoice_url, :project_id, :project_contract_id, :purchase_amount, :hourly_rate, :category_id, :is_fixed_price)
+      :invoice_url, :project_id, :project_contract_id, :purchase_amount, :hourly_rate, :category_id)
   end
 
   # Allows the user to hide or show locked contracts on contract list pages

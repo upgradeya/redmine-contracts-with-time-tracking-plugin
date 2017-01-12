@@ -74,7 +74,7 @@
               <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
                 <td><%= number_to_currency(@contract.hourly_rate) %></td>
               <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.is_fixed_price) %>
-                <td><%= number_to_currency((@contract.purchase_amount - @contract.expenses_total) / @contract.smart_hours_spent) %></td>
+                <td><%= number_to_currency((@contract.purchase_amount - @contract.expenses_total) / @contract.smart_hours_spent) + " / " + l(:text_hour) %></td>
               <% end %>
               <td><%= number_to_currency(@contract.purchase_amount) %></td>
               <% if !@contract.contract_url.blank? %>

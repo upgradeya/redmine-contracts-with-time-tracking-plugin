@@ -53,6 +53,9 @@ en:
   label_hours_left: "~Hours Left"
   label_total_purchased: Total Purchased for All Contracts
   label_total_remaining: Total Remaining for All Contracts
+  label_total_fixed: Total Purchased for Fixed Contracts
+  label_total_hourly: Total Purchased for Hourly Contracts
+  label_remaining_hourly: Total Remaining for Hourly Contracts
   label_or: "-or-"
   label_create_contract: Create Contract
   label_update_contract: Update Contract
@@ -100,6 +103,7 @@ en:
   text_apply: Apply
   text_previous_id: "The last contract created for this project used ID %{previous_id}"
   text_contract_category_helper: "[Optional] Used to identify contracts easier by differentiating their title. These are managed by enumerations."
+  text_hour: hr
 
   field_contract: Contract
   field_project_contract: Contract ID

@@ -5,30 +5,49 @@ class ContractsController < ApplicationController
   def index
     @project = Project.find(params[:project_id])
     @fixed_price_tab = (params[:fixed_price_contracts] == 'true')
+
+    fixed_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '1')
+    hourly_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '0')
+
     if @fixed_price_tab
-      @contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '1')
+      @contracts = fixed_contracts
     else
-      @contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '0')
+      @contracts = hourly_contracts
     end
     
     @total_purchased_dollars = @project.total_amount_purchased
-    @total_purchased_hours   = @project.total_hours_purchased
-    @total_remaining_dollars = @project.total_amount_remaining
-    @total_remaining_hours   = @project.total_hours_remaining
+    @total_purchased_fixed = fixed_contracts.map(&:purchase_amount).inject(0, &:+)
+    @total_purchased_hourly = hourly_contracts.map(&:purchase_amount).inject(0, &:+)
+    @total_amount_remaining_hourly = hourly_contracts.map(&:amount_remaining).inject(0, &:+)
+    @total_remaining_hours = hourly_contracts.map(&:hours_remaining).inject(0, &:+)
 
     set_contract_visibility
 
   end
 
   def all
-    @user = User.current
-    @projects = @user.projects.select { |project| @user.allowed_to?(:view_all_contracts_for_project, project) }
-    @contracts = @projects.collect { |project| project.contracts.order("start_date ASC") }
-    @contracts.flatten!
-    @total_purchased_dollars = @contracts.sum { |contract| contract.purchase_amount }
-    @total_purchased_hours   = @contracts.sum { |contract| contract.hours_purchased }
-    @total_remaining_dollars = @contracts.sum { |contract| contract.amount_remaining }
-    @total_remaining_hours   = @contracts.sum { |contract| contract.hours_remaining }
+    user = User.current
+    @fixed_price_tab = (params[:fixed_price_contracts] == 'true')
+    projects = user.projects.select { |project| user.allowed_to?(:view_all_contracts_for_project, project) }
+
+    fixed_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:is_fixed_price => '1') }
+    fixed_contracts.flatten!
+    hourly_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:is_fixed_price => '0') }
+    hourly_contracts.flatten!
+    all_contracts = projects.collect { |project| project.contracts.order("start_date ASC") }
+    all_contracts.flatten!
+
+    @total_purchased_dollars = all_contracts.sum { |contract| contract.purchase_amount }
+    @total_purchased_fixed   = fixed_contracts.sum { |contract| contract.purchase_amount }
+    @total_purchased_hourly = hourly_contracts.sum { |contract| contract.purchase_amount }
+    @total_amount_remaining_hourly = hourly_contracts.sum { |contract| contract.amount_remaining }
+    @total_remaining_hours = hourly_contracts.sum { |contract| contract.hours_remaining }
+
+    if @fixed_price_tab
+      @contracts = fixed_contracts
+    else
+      @contracts = hourly_contracts
+    end
 
     set_contract_visibility
     

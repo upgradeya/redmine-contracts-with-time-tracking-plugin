@@ -4,20 +4,30 @@ class ContractsController < ApplicationController
   
   def index
     @project = Project.find(params[:project_id])
-    @fixed_price_tab = (params[:fixed_price_contracts] == 'true')
 
     fixed_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '1')
     hourly_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '0')
 
-    if @fixed_price_tab
+    # Show the tabs only if there are hourly and fixed contracts within the same project.
+    if fixed_contracts.size > 0 && hourly_contracts.size > 0
+      @show_tabs = true
+    end
+
+    # Show fixed contracts if the fixed tab is selected or if there aren't any hourly contracts.
+    @show_fixed_contracts = (fixed_contracts.size > 0 && hourly_contracts.size == 0) || params[:fixed_tab_active] == 'true'
+
+    # Set @contracts to the fixed our hourly array of contracts to be displayed.
+    if @show_fixed_contracts
       @contracts = fixed_contracts
     else
       @contracts = hourly_contracts
     end
     
+    # Calculate metrics for display.
     @total_purchased_dollars = @project.total_amount_purchased
     @total_purchased_fixed = fixed_contracts.map(&:purchase_amount).inject(0, &:+)
     @total_purchased_hourly = hourly_contracts.map(&:purchase_amount).inject(0, &:+)
+    @total_purchased_hourly_hours = hourly_contracts.map(&:hours_purchased).inject(0, &:+)
     @total_amount_remaining_hourly = hourly_contracts.map(&:amount_remaining).inject(0, &:+)
     @total_remaining_hours = hourly_contracts.map(&:hours_remaining).inject(0, &:+)
 
@@ -27,7 +37,6 @@ class ContractsController < ApplicationController
 
   def all
     user = User.current
-    @fixed_price_tab = (params[:fixed_price_contracts] == 'true')
     projects = user.projects.select { |project| user.allowed_to?(:view_all_contracts_for_project, project) }
 
     fixed_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:is_fixed_price => '1') }
@@ -37,17 +46,26 @@ class ContractsController < ApplicationController
     all_contracts = projects.collect { |project| project.contracts.order("start_date ASC") }
     all_contracts.flatten!
 
-    @total_purchased_dollars = all_contracts.sum { |contract| contract.purchase_amount }
-    @total_purchased_fixed   = fixed_contracts.sum { |contract| contract.purchase_amount }
-    @total_purchased_hourly = hourly_contracts.sum { |contract| contract.purchase_amount }
-    @total_amount_remaining_hourly = hourly_contracts.sum { |contract| contract.amount_remaining }
-    @total_remaining_hours = hourly_contracts.sum { |contract| contract.hours_remaining }
+    # Show the tabs only if there are hourly and fixed contracts within the same project.
+    if fixed_contracts.size > 0 && hourly_contracts.size > 0
+      @show_tabs = true
+    end
 
-    if @fixed_price_tab
+    # Show fixed contracts if the fixed tab is selected or if there aren't any hourly contracts.
+    @show_fixed_contracts = (fixed_contracts.size > 0 && hourly_contracts.size == 0) || params[:fixed_tab_active] == 'true'
+
+    if @show_fixed_contracts
       @contracts = fixed_contracts
     else
       @contracts = hourly_contracts
     end
+
+    @total_purchased_dollars = all_contracts.sum { |contract| contract.purchase_amount }
+    @total_purchased_fixed = fixed_contracts.sum { |contract| contract.purchase_amount }
+    @total_purchased_hourly = hourly_contracts.sum { |contract| contract.purchase_amount }
+    @total_purchased_hourly_hours = hourly_contracts.sum { |contract| contract.hours_purchased }
+    @total_amount_remaining_hourly = hourly_contracts.sum { |contract| contract.amount_remaining }
+    @total_remaining_hours = hourly_contracts.sum { |contract| contract.hours_remaining }
 
     set_contract_visibility
     

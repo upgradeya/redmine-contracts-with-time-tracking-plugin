@@ -40,7 +40,7 @@
               <th><%= l(:label_date_period) %></th>
               <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
                 <th><%= l(:field_hourly_rate) %></th>
-              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.is_fixed_price) %>
+              <% elsif (User.current.allowed_to?(:view_time_entries, @project) && @contract.is_fixed_price) %>
                 <th><%= l(:label_effective_rate) %></th>
               <% end %>
               <th><%= l(:label_amount_purchased) %></th>
@@ -73,8 +73,8 @@
               </td>
               <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
                 <td><%= number_to_currency(@contract.hourly_rate) %></td>
-              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.is_fixed_price) %>
-                <td><%= number_to_currency((@contract.purchase_amount - @contract.expenses_total) / @contract.smart_hours_spent) + " / " + l(:text_hour) %></td>
+              <% elsif (User.current.allowed_to?(:view_time_entries, @project) && @contract.is_fixed_price) %>
+                <td><%= @contract.smart_hours_spent >= 1 ? number_to_currency((@contract.purchase_amount - @contract.expenses_total) / @contract.smart_hours_spent) : number_to_currency(@contract.purchase_amount) %><%=  l(:text_hour) %></td>
               <% end %>
               <td><%= number_to_currency(@contract.purchase_amount) %></td>
               <% if !@contract.contract_url.blank? %>
@@ -87,40 +87,42 @@
           </tbody>
         </table>
       </td>
-      <td class="hours-summary-td">
-        <table class="hours-summary list">
-          <thead>
-            <tr>
-              <th><%= l(:label_members) %></th>
-              <th><%= l(:label_hours) %></th>
-              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
-                <th><%= l(:label_contractor_rate) %></th>
-                <th><%= l(:label_billable_amount) %></th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <% @members.each do |member| %>
-              <tr class="<%= cycle("odd", "even") %>">
-                <td><%= member.name %></td>
-                <td><%= format_hours(@contract.hours_spent_by_user(member)) %></td>
+      <% if User.current.allowed_to?(:view_time_entries, @project) %>
+        <td class="hours-summary-td">
+          <table class="hours-summary list">
+            <thead>
+              <tr>
+                <th><%= l(:label_members) %></th>
+                <th><%= l(:label_hours) %></th>
                 <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
-                  <td><%= number_to_currency(@contract.user_contract_rate_or_default(member)) %></td>
-                  <td><%= number_to_currency(@contract.billable_amount_for_user(member)) %></td>
+                  <th><%= l(:label_contractor_rate) %></th>
+                  <th><%= l(:label_billable_amount) %></th>
                 <% end %>
               </tr>
-            <% end %>
-            <tr class="total-hours">
-              <td></td>
-              <td><%= format_hours(@time_entries.map(&:hours).inject(0, &:+)) %></td>
-              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
-                <td></td>
-                <td><%= number_to_currency(@contract.smart_billable_amount_total) %></td>
+            </thead>
+            <tbody>
+              <% @members.each do |member| %>
+                <tr class="<%= cycle("odd", "even") %>">
+                  <td><%= member.name %></td>
+                  <td><%= format_hours(@contract.hours_spent_by_user(member)) %></td>
+                  <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                    <td><%= number_to_currency(@contract.user_contract_rate_or_default(member)) %></td>
+                    <td><%= number_to_currency(@contract.billable_amount_for_user(member)) %></td>
+                  <% end %>
+                </tr>
               <% end %>
-            </tr>
-          </tbody>
-        </table>
-      </td>
+              <tr class="total-hours">
+                <td></td>
+                <td><%= format_hours(@time_entries.map(&:hours).inject(0, &:+)) %></td>
+                <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                  <td></td>
+                  <td><%= number_to_currency(@contract.smart_billable_amount_total) %></td>
+                <% end %>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      <% end %>
     </tr>
   </table>
 </div>

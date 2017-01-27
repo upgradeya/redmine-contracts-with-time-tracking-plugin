@@ -103,7 +103,7 @@ en:
   text_apply: Apply
   text_previous_id: "The last contract created for this project used ID %{previous_id}"
   text_contract_category_helper: "[Optional] Used to identify contracts easier by differentiating their title. These are managed by enumerations."
-  text_hour: hr
+  text_hour: / hr
 
   field_contract: Contract
   field_project_contract: Contract ID

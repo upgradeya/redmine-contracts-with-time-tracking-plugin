@@ -17,15 +17,16 @@ module Contracts
         validate :time_not_exceed_contract
         before_save :create_next_contract
 
-        # Validate the "hours" input field
+        # Validate the "hours" input field for hourly contracts.
         #
-        # Validate that the hours entered do not exceed the hours remaining on a contract
+        # Validate that the hours entered do not exceed the hours remaining on a contract.
         # If "auto create new contract" settings option is enabled, use this validation to
         # ensure the hours entered does not exceed the hours remaining plus the size of a
         # new contract.
         protected
         def time_not_exceed_contract
           return if hours.blank?
+          return if contract.is_fixed_price
           previous_hours = (hours_was != nil) ? hours_was : 0 
 
           if contract_id != nil
@@ -42,9 +43,11 @@ module Contracts
         end
 
 
-        # Create new contract if the settings configuration is enabled and the hours exceed the current contract
+        # Create new contract if it is an hourly contract, and the settings configuration
+        # is enabled and the hours exceed the current contract.
         private
         def create_next_contract
+          return if contract.is_fixed_price
           previous_hours = (hours_was != nil) ? hours_was : 0
           if Setting.plugin_contracts['automatic_contract_creation'] && hours > (contract.hours_remaining + previous_hours)
             new_contract = Contract.new

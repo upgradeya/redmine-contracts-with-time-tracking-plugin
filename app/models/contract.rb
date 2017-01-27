@@ -40,6 +40,19 @@ class Contract < ActiveRecord::Base
     self.time_entries.select { |entry| entry.user == user }.map(&:hours).inject(0, &:+)
   end
 
+  def hours_spent_on_issue(issue)
+    self.time_entries.select { |entry| entry.issue == issue }.map(&:hours).inject(0, &:+)
+  end
+
+  def amount_spent_on_issue(issue)
+    time_entries = self.time_entries.select { |entry| entry.issue == issue }
+    total_amount = 0
+    time_entries.each do |entry|
+      total_amount += entry.hours * self.user_contract_rate_or_default(entry.user)
+    end
+    return total_amount
+  end
+
   def billable_amount_for_user(user)
     member_hours = self.time_entries.select { |entry| entry.user == user }.map(&:hours).inject(0, &:+)
     member_rate = self.user_contract_rate_or_default(user)

@@ -111,6 +111,8 @@ class ContractsController < ApplicationController
   def show
     @contract = Contract.find(params[:id])
     @time_entries = @contract.time_entries.order("spent_on DESC")
+    @issues = []
+    @time_entries.each { |entry| @issues.append(entry.issue) unless @issues.include?(entry.issue) }
     @members = []
     @time_entries.each { |entry| @members.append(entry.user) unless @members.include?(entry.user) }
     @expenses_tab = (params[:contracts_expenses] == 'true')

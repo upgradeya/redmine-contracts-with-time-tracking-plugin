@@ -43,6 +43,7 @@ en:
   label_member: Member
   label_activity: Activity
   label_issue: Issue
+  label_cost: Cost
   label_comments: Comments
   label_apply: Apply
   label_name: Name

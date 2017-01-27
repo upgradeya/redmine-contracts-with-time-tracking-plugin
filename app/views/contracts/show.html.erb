@@ -124,6 +124,34 @@
         </td>
       <% end %>
     </tr>
+    <tr>
+      <% if User.current.allowed_to?(:view_time_entries, @project) %>
+        <td class="issues-summary-td">
+          <table class="issues-summary list">
+            <thead>
+              <tr>
+                <th><%= l(:label_issue) %></th>
+                <th><%= l(:label_hours) %></th>
+                <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                  <th><%= l(:label_cost) %></th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody>
+              <% @issues.each do |issue| %>
+                <tr class="<%= cycle("odd", "even") %>">
+                  <td><%= issue.subject if issue.present? %></td>
+                  <td><%= format_hours(@contract.hours_spent_on_issue(issue)) %></td>
+                  <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                    <td><%= number_to_currency(@contract.amount_spent_on_issue(issue)) %></td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </td>
+      <% end %>
+    </tr>
   </table>
 </div>
 

@@ -87,7 +87,7 @@
           </tbody>
         </table>
       </td>
-      <% if User.current.allowed_to?(:view_time_entries, @project) %>
+      <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
         <td class="hours-summary-td">
           <table class="hours-summary list">
             <thead>
@@ -125,7 +125,7 @@
       <% end %>
     </tr>
     <tr>
-      <% if User.current.allowed_to?(:view_time_entries, @project) %>
+      <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
         <td class="issues-summary-td">
           <table class="issues-summary list">
             <thead>

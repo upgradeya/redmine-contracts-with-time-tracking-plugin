@@ -140,7 +140,7 @@
             <tbody>
               <% @issues.each do |issue| %>
                 <tr class="<%= cycle("odd", "even") %>">
-                  <td><%= issue.subject if issue.present? %></td>
+                  <td><%= link_to issue, issue_path(issue) if issue.present? %></td>
                   <td><%= format_hours(@contract.hours_spent_on_issue(issue)) %></td>
                   <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
                     <td><%= number_to_currency(@contract.amount_spent_on_issue(issue)) %></td>
@@ -160,13 +160,17 @@
     <li>
       <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id }) %>" <%= tab_selected unless @expenses_tab %>><%= l(:label_time_entries) %></a>
     </li>
-    <li>
-      <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contracts_expenses => 'true' }) %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
-    </li>
+    <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+      <li>
+        <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contracts_expenses => 'true' }) %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
+      </li>
+    <% end %>
   </ul>
 </div>
 <% if @expenses_tab %>
-  <%= render 'expenses_list' %>
+  <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+    <%= render 'expenses_list' %>
+  <% end %>
 <% else %>
   <%= render 'time_entries_list' %>
 <% end %>

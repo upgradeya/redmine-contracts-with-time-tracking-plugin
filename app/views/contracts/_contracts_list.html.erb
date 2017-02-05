@@ -83,7 +83,7 @@
         <td>
           <% if !contract.is_locked && (User.current.allowed_to?(:delete_contracts, contract.project)) %>
               <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => contract.project.identifier, :id => contract.id }, :method => :delete, 
-              :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, contract.title) %>
+              :title => l(:label_delete), :data => {:confirm => l(:text_are_you_sure_delete_title, contract.title)} %>
           <% end %>
         </td>
       </tr>

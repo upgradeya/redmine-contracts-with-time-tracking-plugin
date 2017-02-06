@@ -64,6 +64,7 @@ en:
   label_select_contract: "[Select a contract]"
   label_save_expense: Save Expense
   label_expenses: Expenses
+  label_summary: Summary
   label_description: Description
   label_amount: Amount
   label_edit_expense: Edit Expense

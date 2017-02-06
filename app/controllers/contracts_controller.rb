@@ -111,14 +111,19 @@ class ContractsController < ApplicationController
   def show
     @contract = Contract.find(params[:id])
     @time_entries = @contract.time_entries.order("spent_on DESC")
-    @issues = []
-    @time_entries.each { |entry| @issues.append(entry.issue) unless @issues.include?(entry.issue) }
     @members = []
     @time_entries.each { |entry| @members.append(entry.user) unless @members.include?(entry.user) }
     @expenses_tab = (params[:contracts_expenses] == 'true')
+    @summary_tab = (params[:contract_summary] == 'true')
     if @expenses_tab
       @expenses = @contract.contracts_expenses
     end
+    if @summary_tab
+      @issues = []
+      @time_entries.each { |entry| @issues.append(entry.issue) unless @issues.include?(entry.issue) }
+      @issues.sort! { |a,b| @contract.amount_spent_on_issue(b) <=> @contract.amount_spent_on_issue(a)}
+    end
+
   end
 
   def edit

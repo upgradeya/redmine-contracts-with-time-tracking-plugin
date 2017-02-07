@@ -1,13 +1,45 @@
 <div class="contextual">
-  <% if (@project != nil) %>
+  <% if @project != nil && @contracts.size > 0 %>
     <%= link_to_if_authorized l(:label_new_contract), { :controller => 'contracts', :action => 'new', :project_id => @project.identifier }, :class => 'icon icon-add' %>
   <% end %>
 </div>
 
 <h2><%= l(:label_contracts) %></h2>
+<% if @contracts.size > 0 %>
+  <%= render 'contracts_summary' %>
 
-<%= render 'contracts_summary' %>
-<%= render 'contracts_list' %>
+  <% if @show_tabs %>
+    <div class="tabs">
+      <ul>
+        <li>
+          <% if (@project != nil) %>
+            <a href="<%= url_for({ :controller => 'contracts', :action => 'index', :project_id => @project.identifier }) %>" <%= tab_selected unless @show_fixed_contracts %>><%= l(:label_hourly_priced_contracts) %></a>
+            <% else %>
+              <a href="<%= url_for({ :controller => 'contracts', :action => 'all' }) %>" <%= tab_selected unless @show_fixed_contracts %>><%= l(:label_hourly_priced_contracts) %></a>
+            <% end %>
+        </li>
+        <li>
+          <% if @project != nil %>
+            <a href="<%= url_for({ :controller => 'contracts', :action => 'index', :project_id => @project.identifier, :fixed_tab_active => 'true' }) %>" <%= tab_selected if @show_fixed_contracts %>><%= l(:label_fixed_priced_contracts) %></a>
+          <% else %>
+            <a href="<%= url_for({ :controller => 'contracts', :action => 'all', :fixed_tab_active => 'true' }) %>" <%= tab_selected if @show_fixed_contracts %>><%= l(:label_fixed_priced_contracts) %></a>
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @show_fixed_contracts %>
+    <%= render 'fixed_price_list' %>
+  <% else %>
+    <%= render 'contracts_list' %>
+  <% end %>
+<% else %>
+  <% if @project != nil %>
+    <%= link_to_if_authorized l(:label_new_contract), { :controller => 'contracts', :action => 'new', :project_id => @project.identifier }, :class => 'icon icon-add' %>
+  <% end %>
+<% end %>
+
 
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>

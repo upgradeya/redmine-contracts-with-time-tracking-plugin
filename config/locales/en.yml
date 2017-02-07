@@ -34,12 +34,16 @@ en:
   label_contractor_rate: Contractor Rate
   label_billable_amount: Billable Amount
   label_time_entries: Time Entries
+  label_hourly_priced_contracts: Hourly Contracts
+  label_effective_rate: Effective Rate
+  label_fixed_priced_contracts: Fixed Price Contracts
   label_add_to_contract: Add to Contract
   label_date: Date
   label_current_contract: Current Contract
   label_member: Member
   label_activity: Activity
   label_issue: Issue
+  label_cost: Cost
   label_comments: Comments
   label_apply: Apply
   label_name: Name
@@ -50,6 +54,9 @@ en:
   label_hours_left: "~Hours Left"
   label_total_purchased: Total Purchased for All Contracts
   label_total_remaining: Total Remaining for All Contracts
+  label_total_fixed: Total Purchased for Fixed Contracts
+  label_total_hourly: Total Purchased for Hourly Contracts
+  label_remaining_hourly: Total Remaining for Hourly Contracts
   label_or: "-or-"
   label_create_contract: Create Contract
   label_update_contract: Update Contract
@@ -57,6 +64,7 @@ en:
   label_select_contract: "[Select a contract]"
   label_save_expense: Save Expense
   label_expenses: Expenses
+  label_summary: Summary
   label_description: Description
   label_amount: Amount
   label_edit_expense: Edit Expense
@@ -97,6 +105,7 @@ en:
   text_apply: Apply
   text_previous_id: "The last contract created for this project used ID %{previous_id}"
   text_contract_category_helper: "[Optional] Used to identify contracts easier by differentiating their title. These are managed by enumerations."
+  text_hour: / hr
 
   field_contract: Contract
   field_project_contract: Contract ID
@@ -108,6 +117,7 @@ en:
   field_hourly_rate: Hourly Rate
   field_contract_url: Contract URL
   field_invoice_url: Invoice URL
+  field_is_fixed_price: Fixed Price
 
   field_expense_name: Name
   field_expense_date: Expense Date

@@ -1,17 +1,33 @@
 <table class="contracts-summary" >
-  <tr>
-    <td>
-      <h3><%= l(:label_total_purchased) %></h3>
-      <p class="bigbold"><%= number_to_currency(@total_purchased_dollars) %></p>
-      <p><%= l(:label_or) %></p>
-      <p class="bigbold">~<%= l_hours @total_purchased_hours %></p>
-    </td>
-    <td>
-      <h3><%= l(:label_total_remaining) %></h3>
-      <p class="green bigbold"><%= number_to_currency(@total_remaining_dollars) %></p>
-      <p><%= l(:label_or) %></p>
-      <p class="blue bigbold">~<%= l_hours @total_remaining_hours %></p>
-    </td>
-  </tr>
+  <% if @show_fixed_contracts || @show_tabs %>
+    <tr>
+      <% if @show_tabs %>
+        <td>
+          <h3><%= l(:label_total_purchased) %></h3>
+          <p class="bigbold"><%= number_to_currency(@total_purchased_dollars) %></p>
+        </td>
+      <% end %>
+      <td>
+        <h3><%= l(:label_total_fixed) %></h3>
+        <p class="bigbold"><%= number_to_currency(@total_purchased_fixed) %></p>
+      </td>
+    </tr>
+  <% end %>
+  <% if @show_tabs || @show_fixed_contracts == false %>
+    <tr>
+      <td>
+        <h3><%= l(:label_total_hourly) %></h3>
+        <p class="bigbold"><%= number_to_currency(@total_purchased_hourly) %></p>
+        <p><%= l(:label_or) %></p>
+        <p class="bigbold">~<%= l_hours @total_purchased_hourly_hours %></p>
+      </td>
+      <td>
+        <h3><%= l(:label_remaining_hourly) %></h3>
+        <p class="green bigbold"><%= number_to_currency(@total_amount_remaining_hourly) %></p>
+        <p><%= l(:label_or) %></p>
+        <p class="blue bigbold">~<%= l_hours @total_remaining_hours %></p>
+      </td>
+    </tr>
+  <% end %>
 </table>
 <br />

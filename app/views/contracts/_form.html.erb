@@ -15,13 +15,14 @@
     <p><%= f.text_field :agreement_date, :size => 12 %><%= calendar_for('contract_agreement_date') %></p>
     <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
     <p><%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
-    <p><%= f.text_field :purchase_amount, :size => 10, :required => true %></p>
-    <p><%= f.text_field :hourly_rate, :size => 10, :required => true %></p>
     <p><%= f.text_field :contract_url, :size => 50 %></p>
     <p><%= f.text_field :invoice_url, :size => 50 %></p>
+    <p><%= f.text_field :purchase_amount, :size => 10, :required => true %></p>
+    <p><%= f.check_box :is_fixed_price %></p>
+    <p id="hourly_rate_details" style="display: <%= @contract.is_fixed_price ? "none" : "block"; %>;"><%= f.text_field :hourly_rate, :size => 10, :required => true %></p>
   </div>
   <% if !@contractors.nil? && !@contractors.empty? %>
-    <fieldset id="contractor_rates" class="box tabular"><legend><%= l(:label_contractors_rates) %></legend>
+    <fieldset id="contractor_rates" class="box tabular" style="display: <%= @contract.is_fixed_price ? "none" : "block"; %>;"><legend><%= l(:label_contractors_rates) %></legend>
       <% @contractors.each do |contractor| %>
         <% rate = @contractor_rates[contractor.id] %>
         <p>
@@ -36,3 +37,16 @@
     <p><%= f.submit msg  %></p>
   </div>
 <% end %>
+
+<!--<script type="text/javascript">
+  var checkbox = document.getElementById('contract_is_fixed_price');
+  var hourly_details = document.getElementById('hourly_rate_details');
+  checkbox.onchange = function() {
+     if (this.checked) {
+       hourly_details.style['display'] = 'none';
+     } 
+     else {
+       hourly_details.style['display'] = 'block';
+     }
+  };
+</script>-->

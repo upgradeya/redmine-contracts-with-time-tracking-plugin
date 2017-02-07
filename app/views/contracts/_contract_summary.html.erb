@@ -1,0 +1,22 @@
+<table class="time-entries-for-contract-list list">
+  <thead>
+    <tr>
+      <th class="comments"><%= l(:label_issue) %></th>
+      <th><%= l(:label_hours) %></th>
+      <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+        <th><%= l(:label_cost) %></th>
+      <% end %>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @issues.each do |issue| %>
+    <tr class="<%= cycle("odd", "even") %>">
+      <td class="comments"><%= link_to issue, issue_path(issue) if issue.present? %></td>
+      <td><%= format_hours(@contract.hours_spent_on_issue(issue)) %></td>
+      <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+        <td><%= number_to_currency(@contract.amount_spent_on_issue(issue)) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

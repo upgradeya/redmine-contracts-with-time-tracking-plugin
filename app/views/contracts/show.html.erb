@@ -22,7 +22,7 @@
   <% end %>
   <% if !@contract.is_locked && User.current.allowed_to?(:delete_contracts, @project) %>
     <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => @project.identifier, :id => @contract.id }, :method => :delete,
-    :title => l(:label_delete), :confirm => l(:text_are_you_sure_delete_title, @contract.title) %>
+    :title => l(:label_delete), :data => {:confirm => l(:text_are_you_sure_delete_title, @contract.title)} %>
   <% end %>
 </h2>
 
@@ -38,8 +38,10 @@
             <tr>
               <th><%= l(:field_agreement_date) %></th>
               <th><%= l(:label_date_period) %></th>
-              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+              <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
                 <th><%= l(:field_hourly_rate) %></th>
+              <% elsif (User.current.allowed_to?(:view_time_entries, @project) && @contract.is_fixed_price) %>
+                <th><%= l(:label_effective_rate) %></th>
               <% end %>
               <th><%= l(:label_amount_purchased) %></th>
               <% if !@contract.contract_url.blank? %>
@@ -69,8 +71,10 @@
                   <% end %>
                 <% end %>
               </td>
-              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+              <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
                 <td><%= number_to_currency(@contract.hourly_rate) %></td>
+              <% elsif (User.current.allowed_to?(:view_time_entries, @project) && @contract.is_fixed_price) %>
+                <td><%= @contract.smart_hours_spent >= 1 ? number_to_currency((@contract.purchase_amount - @contract.expenses_total) / @contract.smart_hours_spent) : number_to_currency(@contract.purchase_amount) %><%=  l(:text_hour) %></td>
               <% end %>
               <td><%= number_to_currency(@contract.purchase_amount) %></td>
               <% if !@contract.contract_url.blank? %>
@@ -83,60 +87,68 @@
           </tbody>
         </table>
       </td>
-      <td class="hours-summary-td">
-        <table class="hours-summary list">
-          <thead>
-            <tr>
-              <th><%= l(:label_members) %></th>
-              <th><%= l(:label_hours) %></th>
-              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
-                <th><%= l(:label_contractor_rate) %></th>
-                <th><%= l(:label_billable_amount) %></th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <% @members.each do |member| %>
-              <tr class="<%= cycle("odd", "even") %>">
-                <td><%= member.name %></td>
-                <td><%= format_hours(@contract.hours_spent_by_user(member)) %></td>
+      <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+        <td class="hours-summary-td">
+          <table class="hours-summary list">
+            <thead>
+              <tr>
+                <th><%= l(:label_members) %></th>
+                <th><%= l(:label_hours) %></th>
                 <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
-                  <td><%= number_to_currency(@contract.user_contract_rate_or_default(member)) %></td>
-                  <td><%= number_to_currency(@contract.billable_amount_for_user(member)) %></td>
+                  <th><%= l(:label_contractor_rate) %></th>
+                  <th><%= l(:label_billable_amount) %></th>
                 <% end %>
               </tr>
-            <% end %>
-            <tr class="total-hours">
-              <td></td>
-              <td><%= format_hours(@time_entries.map(&:hours).inject(0, &:+)) %></td>
-              <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
-                <td></td>
-                <td><%= number_to_currency(@contract.smart_billable_amount_total) %></td>
+            </thead>
+            <tbody>
+              <% @members.each do |member| %>
+                <tr class="<%= cycle("odd", "even") %>">
+                  <td><%= member.name %></td>
+                  <td><%= format_hours(@contract.hours_spent_by_user(member)) %></td>
+                  <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                    <td><%= number_to_currency(@contract.user_contract_rate_or_default(member)) %></td>
+                    <td><%= number_to_currency(@contract.billable_amount_for_user(member)) %></td>
+                  <% end %>
+                </tr>
               <% end %>
-            </tr>
-          </tbody>
-        </table>
-      </td>
+              <tr class="total-hours">
+                <td></td>
+                <td><%= format_hours(@time_entries.map(&:hours).inject(0, &:+)) %></td>
+                <% if User.current.allowed_to?(:view_hourly_rate, @project) %>
+                  <td></td>
+                  <td><%= number_to_currency(@contract.smart_billable_amount_total) %></td>
+                <% end %>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      <% end %>
     </tr>
   </table>
 </div>
 
-<div class="tabs">
-  <ul>
-    <li>
-      <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id }) %>" <%= tab_selected unless @expenses_tab %>><%= l(:label_time_entries) %></a>
-    </li>
-    <li>
-      <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contracts_expenses => 'true' }) %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
-    </li>
-  </ul>
-</div>
-<% if @expenses_tab %>
-  <%= render 'expenses_list' %>
-<% else %>
-  <%= render 'time_entries_list' %>
+<% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+  <div class="tabs">
+    <ul>
+      <li>
+        <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id }) %>" <%= tab_selected unless @expenses_tab or @summary_tab %>><%= l(:label_time_entries) %></a>
+      </li>
+      <li>
+        <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contracts_expenses => 'true' }) %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
+      </li>
+      <li>
+        <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contract_summary => 'true' }) %>" <%= tab_selected if @summary_tab %>><%= l(:label_summary) %></a>
+      </li>
+    </ul>
+  </div>
+  <% if @expenses_tab %>
+    <%= render 'expenses_list' %>
+  <% elsif @summary_tab %>
+    <%= render 'contract_summary' %>
+  <% else %>
+    <%= render 'time_entries_list' %>
+  <% end %>
 <% end %>
-
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>
 <% end %>

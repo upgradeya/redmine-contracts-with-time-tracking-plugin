@@ -40,6 +40,12 @@ Screenshots
 
 Changelog
 ---------
+Contracts v2.2 2017-2-7
+-----------------------
+- Added a 'Fixed Price' contract type that calculates your effective rate hides hourly information from your client (in permissions uncheck 'View spent time ').
+- Added a summary tab that shows the cummulative time spent on each issue within that contract.
+- Fixed the no confirmation for deletion bug.
+
 Contracts v2.1 2016-3-5
 -----------------------
 - Renamed the expenses database table name to prevent conflicts with other redmine plugins

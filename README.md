@@ -43,7 +43,7 @@ Changelog
 Contracts v2.2 2017-2-7
 -----------------------
 - Added a 'Fixed Price' contract type that calculates your effective rate and hides hourly information from your client (in permissions uncheck 'View spent time ').
-- Added a summary tab that shows the cummulative time spent on each issue within that contract.
+- Added a summary tab that shows the cumulative time spent on each issue within that contract.
 - Fixed the no confirmation for deletion bug.
 
 Contracts v2.1 2016-3-5

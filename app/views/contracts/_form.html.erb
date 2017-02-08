@@ -22,7 +22,7 @@
     <p id="hourly_rate_details" style="display: <%= @contract.is_fixed_price ? "none" : "block"; %>;"><%= f.text_field :hourly_rate, :size => 10, :required => true %></p>
   </div>
   <% if !@contractors.nil? && !@contractors.empty? %>
-    <fieldset id="contractor_rates" class="box tabular" style="display: <%= @contract.is_fixed_price ? "none" : "block"; %>;"><legend><%= l(:label_contractors_rates) %></legend>
+    <fieldset id="contractor_rates" class="box tabular"><legend><%= l(:label_contractors_rates) %></legend>
       <% @contractors.each do |contractor| %>
         <% rate = @contractor_rates[contractor.id] %>
         <p>

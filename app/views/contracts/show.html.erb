@@ -126,29 +126,29 @@
     </tr>
   </table>
 </div>
-
-<% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
-  <div class="tabs">
-    <ul>
-      <li>
-        <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id }) %>" <%= tab_selected unless @expenses_tab or @summary_tab %>><%= l(:label_time_entries) %></a>
-      </li>
+<div class="tabs">
+  <ul>
+    <li>
+      <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id }) %>" <%= tab_selected unless @expenses_tab or @summary_tab %>><%= l(:label_time_entries) %></a>
+    </li>
+    <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
       <li>
         <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contracts_expenses => 'true' }) %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
       </li>
       <li>
         <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contract_summary => 'true' }) %>" <%= tab_selected if @summary_tab %>><%= l(:label_summary) %></a>
       </li>
-    </ul>
-  </div>
-  <% if @expenses_tab %>
-    <%= render 'expenses_list' %>
-  <% elsif @summary_tab %>
-    <%= render 'contract_summary' %>
-  <% else %>
-    <%= render 'time_entries_list' %>
-  <% end %>
+    <% end %>
+  </ul>
+</div>
+<% if @expenses_tab && (User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price)) %>
+  <%= render 'expenses_list' %>
+<% elsif @summary_tab && (User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price)) %>
+  <%= render 'contract_summary' %>
+<% else %>
+  <%= render 'time_entries_list' %>
 <% end %>
+
 <% content_for :header_tags do %>
   <%= stylesheet_link_tag 'contracts', :plugin => 'contracts' %>
 <% end %>

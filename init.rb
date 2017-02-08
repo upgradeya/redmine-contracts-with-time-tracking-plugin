@@ -11,7 +11,7 @@ Redmine::Plugin.register :contracts do
   name 'Redmine Contracts With Time Tracking'
   author 'Ben Syzek, Shanti Braford, Wesley Jones'
   description 'A Redmine plugin that allows you to manage contracts and associate time-entries with those contracts.'
-  version '2.2'
+  version '2.2.1'
   url 'https://github.com/upgradeya/redmine-contracts-with-time-tracking-plugin.git'
 
   requires_redmine :version_or_higher => '3.0'

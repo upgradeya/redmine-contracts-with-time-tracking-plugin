@@ -163,6 +163,7 @@ class Contract < ActiveRecord::Base
   end
 
   def title
+    return self[:title] if self[:title].present? || self.id.nil?
     if self.category_id.blank?
       category = 'Contract'
     else

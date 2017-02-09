@@ -75,8 +75,6 @@ class ContractsController < ApplicationController
   def new
     @contract = Contract.new
     @project = Project.find(params[:project_id])
-    @new_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
-    @previous_id = @project.contracts.empty? ? nil : @project.contracts.last.project_contract_id
     load_contractors_and_rates
   end
 
@@ -96,13 +94,13 @@ class ContractsController < ApplicationController
     end
 
     @contract.rates = rates
+    @contract.project_contract_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
+
     if @contract.save
       flash[:notice] = l(:text_contract_saved)
       redirect_to :action => "show", :id => @contract.id
     else
       flash[:error] = "* " + @contract.errors.full_messages.join("</br>* ")
-      @previous_id = @project.contracts.empty? ? nil : @project.contracts.last.project_contract_id
-      @new_id = @contract.project_contract_id
       load_contractors_and_rates
       render :new
     end
@@ -129,7 +127,6 @@ class ContractsController < ApplicationController
   def edit
     @contract = Contract.find(params[:id])
     @projects = Project.all
-    @new_id = @contract.project_contract_id
     load_contractors_and_rates
   end
 
@@ -238,7 +235,7 @@ class ContractsController < ApplicationController
 
   def contract_params
     params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url,
-      :invoice_url, :project_id, :project_contract_id, :purchase_amount, :hourly_rate, :category_id, :is_fixed_price)
+      :invoice_url, :project_id, :purchase_amount, :hourly_rate, :category_id, :is_fixed_price, :title)
   end
 
   # Allows the user to hide or show locked contracts on contract list pages

@@ -4,22 +4,19 @@
 <%= labelled_form_for @contract, :url => { :action => action }, :method => method do |f| %>
   <%= f.hidden_field :project_id, :value => @project.id %>
   <div class="box tabular">
-    <p><%= f.text_field :project_contract_id, :value => @new_id, :size => 10, :required => true %>
-      <% if @previous_id.present? %>
-      <small><%= l(:text_previous_id, :previous_id => @previous_id) %></small>
-      <% end %>
-    </p>
+    <p><%= f.check_box :is_fixed_price %></p>
+    <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
+    <p><%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
+    <p><%= f.text_field :agreement_date, :size => 12 %><%= calendar_for('contract_agreement_date') %></p>
+    <p><%= f.text_field :purchase_amount, :size => 10, :required => true %></p>
+    <p><%= f.text_field :hourly_rate, :size => 10, :required => true %></p>
+    <p><%= f.text_field :title, :size => 25, :required => false %>
+      <small><%= l(:text_contract_title_helper) %></small></p>
     <p><%= f.select :category_id, contract_category_collection_for_select_options(@contract), :required => false %>
       <small><%= l(:text_contract_category_helper) %></small></p>
     <p><%= f.text_area :description, { :cols => 50, :rows => 3 } %></p>
-    <p><%= f.text_field :agreement_date, :size => 12 %><%= calendar_for('contract_agreement_date') %></p>
-    <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
-    <p><%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
     <p><%= f.text_field :contract_url, :size => 50 %></p>
     <p><%= f.text_field :invoice_url, :size => 50 %></p>
-    <p><%= f.text_field :purchase_amount, :size => 10, :required => true %></p>
-    <p><%= f.check_box :is_fixed_price %></p>
-    <p><%= f.text_field :hourly_rate, :size => 10, :required => true %></p>
   </div>
   <% if !@contractors.nil? && !@contractors.empty? %>
     <fieldset id="contractor_rates" class="box tabular"><legend><%= l(:label_contractors_rates) %></legend>

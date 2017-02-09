@@ -104,7 +104,8 @@ en:
   text_expense_deleted: Expense deleted.
   text_apply: Apply
   text_previous_id: "The last contract created for this project used ID %{previous_id}"
-  text_contract_category_helper: "[Optional] Used to identify contracts easier by differentiating their title. These are managed by enumerations."
+  text_contract_category_helper: "[Optional] If title is not provided, the default title will use this category. These are managed by enumerations."
+  text_contract_title_helper: "[Optional] Used to override the default title."
   text_hour: / hr
 
   field_contract: Contract

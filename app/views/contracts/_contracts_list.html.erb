@@ -39,7 +39,7 @@
           <% end %>
         </td>
         <td>
-          <% if contract.agreement_date != nil %>
+          <% if contract.start_date != nil %>
             <%= format_date(contract.start_date) + " - " %>
             <% if contract.end_date != nil %>
               <%= format_date(contract.end_date) %>

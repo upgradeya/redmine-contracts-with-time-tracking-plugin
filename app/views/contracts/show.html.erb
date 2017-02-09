@@ -40,7 +40,7 @@
               <th><%= l(:label_date_period) %></th>
               <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
                 <th><%= l(:field_hourly_rate) %></th>
-              <% elsif (User.current.allowed_to?(:view_time_entries, @project) && @contract.is_fixed_price) %>
+              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.is_fixed_price) %>
                 <th><%= l(:label_effective_rate) %></th>
               <% end %>
               <th><%= l(:label_amount_purchased) %></th>
@@ -73,7 +73,7 @@
               </td>
               <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
                 <td><%= number_to_currency(@contract.hourly_rate) %></td>
-              <% elsif (User.current.allowed_to?(:view_time_entries, @project) && @contract.is_fixed_price) %>
+              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.is_fixed_price) %>
                 <td><%= @contract.smart_hours_spent >= 1 ? number_to_currency((@contract.purchase_amount - @contract.expenses_total) / @contract.smart_hours_spent) : number_to_currency(@contract.purchase_amount) %><%=  l(:text_hour) %></td>
               <% end %>
               <td><%= number_to_currency(@contract.purchase_amount) %></td>

@@ -1,0 +1,129 @@
+# Simplified Chinese strings go here for Rails i18n
+zh:
+  project_module_contracts: 合同
+  permission_view_all_contracts_for_project: 查看项目的所有合同
+  permission_view_contract_details: 查看合同明细
+  permission_edit_contracts: 编辑合同
+  permission_create_contracts: 添加合同
+  permission_delete_contracts: 删除合同
+  permission_view_hourly_rate: 查看每小时费率
+  permission_create_expenses: 添加费用
+  permission_edit_expenses: 编辑费用
+  permission_delete_expenses: 删除费用
+  permission_view_expenses: 查看费用
+
+  contracts: 合同
+  label_contracts: 合同
+  label_contract: 合同
+  label_contractors_rates: 承包商费用
+  label_new_contract: 添加合同
+  label_editing_contract: 编辑合同
+  label_add_time_entries: 登记工时
+  label_add_time_entries: 批量登记工时
+  label_add_expense: 添加费用
+  label_log_time: 登记时间
+  label_edit: 编辑
+  label_delete: 删除
+  label_view_contract: 查看合同
+  label_view_invoice: 查看票据
+  label_date_period: 日期范围
+  label_amount_purchased: 采购量
+  label_invoice: Invoice
+  label_members: 成员
+  label_hours: 小时
+  label_contractor_rate: 承包商费率
+  label_billable_amount: 计费金额
+  label_time_entries: 登记工时
+  label_hourly_priced_contracts: 按小时合同
+  label_effective_rate: Effective Rate
+  label_fixed_priced_contracts: 固定价格合同
+  label_add_to_contract: 添加到合同
+  label_date: 日期
+  label_current_contract: 当前合同
+  label_member: 成员
+  label_activity: 活动
+  label_issue: 问题
+  label_cost: 成本
+  label_comments: 批注
+  label_apply: 应用
+  label_name: 名称
+  label_agreed_on: 签订于
+  label_purchased: 购买总额
+  label_remaining: 剩余
+  label_hours_worked: 已用工时
+  label_hours_left: "~剩余工时"
+  label_total_purchased: 所有合同的购买总额
+  label_total_remaining: 所有合同的剩余总额
+  label_total_fixed: 固定价格合同的购买总额
+  label_total_hourly: 按小时合同的购买总额
+  label_remaining_hourly: 按小时合同的剩余总额
+  label_or: "-or-"
+  label_create_contract: 添加合同
+  label_update_contract: 更新合同
+  label_contract_empty: 无合同信息
+  label_select_contract: "[选择合同]"
+  label_save_expense: 保存费用
+  label_expenses: 费用
+  label_summary: 汇总
+  label_description: 描述
+  label_amount: Amount
+  label_edit_expense: 编辑费用
+  label_new_expense: 添加费用
+  label_lock: 锁定
+  label_unlock: 解锁
+  label_show_locked_contracts: 显示已锁定的合同
+
+  text_contract_list: 合同列表
+  text_are_you_sure_delete_title: "确认删除 %{value}？"
+  text_are_you_sure_delete_time_entry: "确认删除该工时记录？"
+  text_are_you_sure_delete_expense: "确认删除该费用记录？"
+  text_time_exceeded_time_remaining: "登记工时已超过合同的剩余时间  %{hours_over} 小时。\n为保留在合同记录内，请修改您的工时记录不超过 %{hours_remaining} 小时。"
+  text_must_come_after_agreement_date: 不能早于协议日期
+  text_must_come_after_start_date: 不能早于开始日期
+  text_contract_saved: 合同已添加。
+  text_contract_updated: 合同已更新。
+  text_contract_deleted: 合同已删除。
+  text_hours_over_contract: "目前已超合同上限 %{hours_over} 工时。"
+  text_split_time_entry_saved: 由于工时登记的数量已超过了当前合同的剩余时间，您的工时记录已自动拆分为两条。拆分的第二条工时记录已添加到新的待定合同中。
+  text_one_time_entry_saved: 由于您选择的合同工时余额已耗尽，故创建一个新合同，并将工时记录保存至该合同。
+  text_hours_too_large: 无效。金额已超剩余时间加上新合同的大小。
+  text_invalid_rate: "承包商费率必须大于等于零。"
+  text_invalid_issue_id: "不是有效的问题ID"
+  text_invalid_hours: "无效。合同 %{title} 仅剩 %{hours} 小时。 请与管理联系确认开启合同自动创建配置。"
+  text_second_time_entry_failure: "系统故障。无法保存第2条工时记录。错误信息：%{error}"
+  text_auto_contract_failure: "系统故障。无法保存该合同的拆分工时记录。错误信息：%{error}"
+  text_expense_created: '费用已添加。'
+  text_expense_updated: '费用已更新。'
+  text_agreement_pending: '协议待定'
+  text_no_end_date: '没有结束日期'
+  text_na: 'N/A'
+  text_contract_locked: 合同已锁定。
+  text_contract_unlocked: 合同已解锁。
+  text_locked_contract_cache_updated: 此条目与锁定合同关联。合同的缓存值已更新以反映您的更改。
+  text_expenses_uneditable: 该合同的费用不可编辑。（合同已锁定）。
+  text_expense_deleted: 费用记录已删除。
+  text_apply: 应用
+  text_previous_id: "为该项目创建的最近一个合同使用的合同ID为 %{previous_id}"
+  text_contract_category_helper: "[可选] 如果没有提供合同类别，默认将使用此类别。合同类别使用枚举值。"
+  text_contract_title_helper: "[可选] 用于覆盖默认标题。"
+  text_hour: / hr
+
+  field_contract: 合同
+  field_project_contract: 合同编号
+  field_description: 描述
+  field_agreement_date: 协议日期
+  field_start_date: 起始日期
+  field_end_date: 结束日期
+  field_purchase_amount: 购买金额
+  field_hourly_rate: 费用/小时
+  field_contract_url: 合同 URL
+  field_invoice_url: 票据 URL
+  field_is_fixed_price: 定价
+
+  field_expense_name: 名称
+  field_expense_date: 费用发生日期
+  field_amount: 数额
+  field_expense_contract: 合同
+  field_issue: 问题 (ID)
+
+  enumeration_contract_categories: 合同类别

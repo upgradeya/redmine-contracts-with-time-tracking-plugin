@@ -1,0 +1,129 @@
+# Dutch strings go here for Rails i18n
+nl:
+  project_module_contracts: Contracten
+  permission_view_all_contracts_for_project: Alle contracten voor project bekijken
+  permission_view_contract_details: Contractdetails bekijken
+  permission_edit_contracts: Contracten bewerken
+  permission_create_contracts: Contracten aanmaken
+  permission_delete_contracts: Contracten verwijderen
+  permission_view_hourly_rate: Bekijk uurtarief
+  permission_create_expenses: Kostenposten aanmaken
+  permission_edit_expenses: Kostenposten bewerken
+  permission_delete_expenses: Kostenposten verwijderen
+  permission_view_expenses: Kostenposten bekijken
+
+  contracts: Contracten
+  label_contracts: Contracten
+  label_contract: Contracten
+  label_contractors_rates: Uurtarieven
+  label_new_contract: Nieuw Contract
+  label_editing_contract: Contract bewerken
+  label_add_time_entries: Tijd registreren
+  label_add_time_entries: Tijdregistraties in bulk toewijzen
+  label_add_expense: Kostenpost toevoegen
+  label_log_time: Tijd registreren
+  label_edit: Bewerken
+  label_delete: Verwijderen
+  label_view_contract: Contract bekijken
+  label_view_invoice: Factuur bekijken
+  label_date_period: Datumbereik
+  label_amount_purchased: Aantal aangeschaft
+  label_invoice: Factuur
+  label_members: Leden
+  label_hours: Uren
+  label_contractor_rate: Uurtarief
+  label_billable_amount: Factureerbaar aantal
+  label_time_entries: Tijdregistraties
+  label_hourly_priced_contracts: Uurcontracten
+  label_effective_rate: Effectieve uurtarieven
+  label_fixed_priced_contracts: Vaste prijs contracten
+  label_add_to_contract: Aan contract toevoegen
+  label_date: Datum
+  label_current_contract: Huidig contract
+  label_member: Lid
+  label_activity: Activiteit
+  label_issue: Incident
+  label_cost: Kosten
+  label_comments: Commentaar
+  label_apply: Toepassen
+  label_name: Naam
+  label_agreed_on: Akkoord op
+  label_purchased: Gekocht
+  label_remaining: Resterend
+  label_hours_worked: Uren gewerkt
+  label_hours_left: "~Uren resterend"
+  label_total_purchased: Totaal gekocht voor alle contracten
+  label_total_remaining: Totaal resterend voor alle contracten
+  label_total_fixed: Totaal gekocht voor vaste prijs contracten
+  label_total_hourly: Totaal gekocht voor uurcontracten
+  label_remaining_hourly: Totaal resterend voor uurcontracten
+  label_or: "-of-"
+  label_create_contract: Contract aanmaken
+  label_update_contract: Contract bijwerken
+  label_contract_empty: Geen contract
+  label_select_contract: "[Selecteer een contract]"
+  label_save_expense: Kostenpost opslaan
+  label_expenses: Kostenposten
+  label_summary: Samenvatting
+  label_description: Omschrijving
+  label_amount: Aantal
+  label_edit_expense: Kostenpost bewerken
+  label_new_expense: Nieuwe kostenpost
+  label_lock: Sluiten
+  label_unlock: Openen
+  label_show_locked_contracts: Toon gesloten contracten
+
+  text_contract_list: Contractenoverzicht
+  text_are_you_sure_delete_title: "Weet je zeker dat je %{value} wilt verwijderen?"
+  text_are_you_sure_delete_time_entry: "Weet je zeker dat je deze tijdregistratie wilt verwijderen?"
+  text_are_you_sure_delete_expense: "Weet je zeker dat je deze kostenpost wilt verwijderen?"
+  text_time_exceeded_time_remaining: "Deze tijdregistatie overschrijdt de resterende tijd op het contract met %{hours_over} uren.\nPas de tijdregistratie aan zodat deze niet meer dan %{hours_remaining} is om binnen het contract te blijven."
+  text_must_come_after_agreement_date: moet op of na de datum van akkoord zijn
+  text_must_come_after_start_date: moet na de startdatum zijn
+  text_contract_saved: Contract succesvol opgeslagen!
+  text_contract_updated: Contract succesvol bijgewerkt!
+  text_contract_deleted: Contract succesvol verwijderd
+  text_hours_over_contract: "Je bent nu %{hours_over} uren over de limiet van het contract heen."
+  text_split_time_entry_saved: Je tijdregistratie is gesplitst naar twee tijdregistraties, omdat het de resterende tijd op het geselecteerde contract overschreed. De tweede tijdregistratie is toegevoegd aan een nieuw contract in afwachting van akkoord.
+  text_one_time_entry_saved: Een nieuw contract in afwachting van akkoord is aangemaakt en je tijdregistratie is opgeslagen, omdat het contract dat je hebt geselecteerd geen resterende tijd meer bevat.
+  text_hours_too_large: is invalid. The amount exceeds the time remaining plus the size of a new contract.
+  text_invalid_rate: "Uurtarief moet 0 of hoger zijn."
+  text_invalid_issue_id: "is een ongeldig incident ID"
+  text_invalid_hours: "is ongeldig. Het contract %{title} heeft slechts %{hours} resterende uren. Vraag je beheerder om het automatisch aanmaken van contracten in te schakelen in de contract instellingen."
+  text_second_time_entry_failure: "er is iets fout gegaan. De tweede tijdregistratie voor deze gesplitste tijdregistratie kon niet worden opgeslagen. %{error}"
+  text_auto_contract_failure: "er is iets fout gegaan. Het nieuwe contract voor deze gesplitste tijdregistratie kon niet worden opgeslagen. %{error}"
+  text_expense_created: 'Kostenpost is succesvol aangemaakt.'
+  text_expense_updated: 'Kostenpost is succesvol bijgewerkt.'
+  text_agreement_pending: 'wacht op akkoord'
+  text_no_end_date: 'geen einddatum'
+  text_na: 'n.v.t.'
+  text_contract_locked: Contract is succesvolg gesloten.
+  text_contract_unlocked: Contract is succesvol geopend.
+  text_locked_contract_cache_updated: Deze tijdregistratie is gekoppeld met een gesloten contract. De gecachte waarden van het contract zijn bijgewerkt om je wijzigingen zichtbaar te maken.
+  text_expenses_uneditable: Kostenposten voor dit contract zijn niet te bewerken (contract is gesloten).
+  text_expense_deleted: Kostenpost verwijderd.
+  text_apply: Toepassen
+  text_previous_id: "Het laatste contract dat is aangemaakt voor dit project heeft ID %{previous_id}"
+  text_contract_category_helper: "[Optioneel] Gebruikt om contracten makkelijker te identificeren door de titel te varieren. Deze worden beheerd als enumeraties."
+  text_contract_title_helper: "[Optioneel] Gebruikt om de standaardtitel te overschrijven."
+  text_hour: / u
+
+  field_contract: Contract
+  field_project_contract: Contract ID
+  field_description: Omschrijving
+  field_agreement_date: Datum akkoord
+  field_start_date: Startdatum
+  field_end_date: Einddatum
+  field_purchase_amount: Gekocht aantal
+  field_hourly_rate: Uurtarief
+  field_contract_url: Contract URL
+  field_invoice_url: Factuur URL
+  field_is_fixed_price: Vaste prijs
+
+  field_expense_name: Naam
+  field_expense_date: Datum kostenpost
+  field_amount: Aantal
+  field_expense_contract: Contract
+  field_issue: Incident (ID)
+
+  enumeration_contract_categories: Contract categorieën

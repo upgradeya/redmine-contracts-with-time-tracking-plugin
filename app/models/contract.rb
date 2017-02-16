@@ -55,6 +55,14 @@ class Contract < ActiveRecord::Base
     return total_amount
   end
 
+  def effective_rate
+    if self.smart_hours_spent >= 1
+      (self.purchase_amount - self.expenses_total) / self.smart_hours_spent
+    else
+      self.purchase_amount - self.expenses_total
+    end
+  end
+
   def billable_amount_for_user(user)
     member_hours = self.time_entries.select { |entry| entry.user == user }.map(&:hours).inject(0, &:+)
     member_rate = self.user_contract_rate_or_default(user)

@@ -50,7 +50,7 @@
         <% if (@project != nil) && (User.current.allowed_to?(:view_time_entries, @project)) && (User.current.allowed_to?(:view_hourly_rate, @project)) %>
           <td><%= number_to_currency(contract.expenses_total) %></td>
           <td><%= number_with_precision contract.smart_hours_spent, :precision => 2 %></td>
-          <td><%= contract.smart_hours_spent >= 1 ? number_to_currency((contract.purchase_amount - contract.expenses_total) / contract.smart_hours_spent) : number_to_currency(contract.purchase_amount) %><%=  l(:text_hour) %></td>
+          <td><%= number_to_currency(contract.effective_rate) %><%=  l(:text_hour) %></td>
         <% end %>
         <td>
           <% if !contract.contract_url.blank? %>

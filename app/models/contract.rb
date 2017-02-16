@@ -8,6 +8,8 @@ class Contract < ActiveRecord::Base
   validates_presence_of :start_date, :purchase_amount, :hourly_rate, :project_id
   validates_uniqueness_of :project_contract_id, :scope => :project_id
   validates :project_contract_id, :numericality => { :greater_than_or_equal_to => 1, :less_than_or_equal_to => 999 }
+  validates :purchase_amount, :numericality => { :greater_than_or_equal_to => 0 }
+  validates :hourly_rate, :numericality => { :greater_than_or_equal_to => 0 }
   validates :end_date, :is_after_start_date => true
   before_destroy { |contract| contract.time_entries.clear }
   after_save :apply_rates

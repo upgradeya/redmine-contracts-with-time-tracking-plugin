@@ -80,20 +80,14 @@ class ContractsController < ApplicationController
 
   def create
     @contract = Contract.new(contract_params)
-    rates = params[:rates]
 
-    # Ensure only positive-value rates are entered
-    if !rates.nil?
-      rates.each_pair do |user_id, rate|
-        if rate.to_f < 0
-          flash[:error] = l(:text_invalid_rate)
-          redirect_to :action => "new", :id => @contract.id
-          return
-        end
-      end
+    if !rates_are_valid(params[:rates])
+      flash[:error] = l(:text_invalid_rate)
+      redirect_to :action => "new", :id => @contract.id
+      return
     end
 
-    @contract.rates = rates
+    @contract.rates = params[:rates]
     @contract.project_contract_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
 
     if @contract.save
@@ -132,23 +126,18 @@ class ContractsController < ApplicationController
 
   def update
     @contract = Contract.find(params[:id])
+
+    if !rates_are_valid(params[:rates])
+      flash[:error] = l(:text_invalid_rate)
+      redirect_to :action => "edit", :id => @contract.id
+      return
+    end
+
     if @contract.update_attributes(contract_params)
-      @rate_error = false
-      rates = params[:rates]
       @contract.rates = params[:rates]
-      rates.each_pair do |user_id, rate|
-        if rate.to_f <= 0
-          rate_error = true
-        end
-      end
-      if @rate_error
-        flash[:error] = l(:text_invalid_rate)
-        redirect_to :action => "edit", :id => @contract.id
-      else
-        @contract.save
-        flash[:notice] = l(:text_contract_updated)
-        redirect_to :action => "show", :id => @contract.id 
-      end
+      @contract.save
+      flash[:notice] = l(:text_contract_updated)
+      redirect_to :action => "show", :id => @contract.id
     else
       flash[:error] = "* " + @contract.errors.full_messages.join("</br>* ")
       redirect_to :action => "edit", :id => @contract.id
@@ -215,6 +204,16 @@ class ContractsController < ApplicationController
 
   private
 
+  def rates_are_valid(rates)
+    return false if rates.nil?
+    rates.each_pair do |user_id, rate|
+      if !is_number?(rate) or rate.to_f < 0
+        return false
+      end
+    end
+    return true
+  end
+
   def load_contractors_and_rates
     @contractors = Contract.users_for_project_and_sub_projects(@project)
     @contractor_rates = {}
@@ -251,6 +250,11 @@ class ContractsController < ApplicationController
       # set session variable for first time guests
       session[:show_locked_contracts] = false
     end
+  end
+
+  # Helper method for determining if a string is numeric.
+  def is_number? string
+    true if Float(string) rescue false
   end
 
 end

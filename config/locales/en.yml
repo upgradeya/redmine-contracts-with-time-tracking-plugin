@@ -1,5 +1,9 @@
 # English strings go here for Rails i18n
 en:
+  contract_types:
+    hourly: "Hourly"
+    fixed: "Fixed"
+    recurring: "Recurring"
   project_module_contracts: Contracts
   permission_view_all_contracts_for_project: View all contracts for project
   permission_view_contract_details: View contract details

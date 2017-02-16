@@ -15,6 +15,9 @@ class Contract < ActiveRecord::Base
   after_save :apply_rates
   attr_accessor :rates
 
+  # The values have been made lower-case to match the conventions of Rails I18n
+  CONTRACT_TYPES = ["hourly", "fixed", "recurring"]
+
   def hours_purchased
     self.purchase_amount / self.hourly_rate
   end

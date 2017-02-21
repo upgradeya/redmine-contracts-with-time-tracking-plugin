@@ -56,7 +56,9 @@ class Contract < ActiveRecord::Base
   end
 
   def effective_rate
-    if self.smart_hours_spent >= 1
+    if self.expenses_total >= self.purchase_amount
+      0
+    elsif self.smart_hours_spent >= 1
       (self.purchase_amount - self.expenses_total) / self.smart_hours_spent
     else
       self.purchase_amount - self.expenses_total

@@ -123,6 +123,7 @@ en:
   field_contract_url: Contract URL
   field_invoice_url: Invoice URL
   field_is_fixed_price: Fixed Price
+  field_contract_type: Contract Type
 
   field_expense_name: Name
   field_expense_date: Expense Date

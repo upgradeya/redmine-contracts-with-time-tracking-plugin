@@ -234,7 +234,7 @@ class ContractsController < ApplicationController
 
   def contract_params
     params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url,
-      :invoice_url, :project_id, :purchase_amount, :hourly_rate, :category_id, :is_fixed_price, :title)
+      :invoice_url, :project_id, :purchase_amount, :hourly_rate, :category_id, :contract_type, :title)
   end
 
   # Allows the user to hide or show locked contracts on contract list pages

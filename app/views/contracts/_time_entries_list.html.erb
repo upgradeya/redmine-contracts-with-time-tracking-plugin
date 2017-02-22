@@ -6,7 +6,7 @@
       <th><%= l(:label_activity) %></th>
       <th><%= l(:label_issue) %></th>
       <th><%= l(:label_comments) %></th>
-      <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+      <% if User.current.allowed_to?(:view_time_entries, @project) || @contract.contract_type == 'hourly' %>
         <th><%= l(:label_hours) %></th>
       <% end %>
       <th></th>
@@ -20,7 +20,7 @@
       <td><%= time_entry.activity.name %></td>
       <td class="comments"><%= link_to time_entry.issue, issue_path(time_entry.issue) unless !time_entry.issue %></td>
       <td class="comments"><%= time_entry.comments %></td>
-      <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+      <% if User.current.allowed_to?(:view_time_entries, @project) || @contract.contract_type == 'hourly' %>
         <td><%= time_entry.hours %></td>
       <% end %>
       <td>

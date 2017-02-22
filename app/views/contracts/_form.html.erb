@@ -5,6 +5,7 @@
   <%= f.hidden_field :project_id, :value => @project.id %>
   <div class="box tabular">
     <p><%= f.select :contract_type, Contract::CONTRACT_TYPES.map { |s| [I18n.t("contract_types.#{s}"), s] } %></p>
+    <p><%= f.select :contract_frequency, Contract::CONTRACT_FREQUENCIES.map { |s| [I18n.t("contract_frequencies.#{s}"), s] } %></p>
     <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
     <p><%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
     <p><%= f.text_field :agreement_date, :size => 12 %><%= calendar_for('contract_agreement_date') %></p>

@@ -35,9 +35,9 @@
             <tr>
               <th><%= l(:field_agreement_date) %></th>
               <th><%= l(:label_date_period) %></th>
-              <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
+              <% if (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.contract_type == 'hourly') %>
                 <th><%= l(:field_hourly_rate) %></th>
-              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.is_fixed_price) %>
+              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.contract_type == 'fixed') %>
                 <th><%= l(:label_effective_rate) %></th>
               <% end %>
               <th><%= l(:label_amount_purchased) %></th>
@@ -68,9 +68,9 @@
                   <% end %>
                 <% end %>
               </td>
-              <% if (User.current.allowed_to?(:view_hourly_rate, @project) && !@contract.is_fixed_price) %>
+              <% if (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.contract_type == 'hourly') %>
                 <td><%= number_to_currency(@contract.hourly_rate) %></td>
-              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.is_fixed_price) %>
+              <% elsif (User.current.allowed_to?(:view_hourly_rate, @project) && @contract.contract_type == 'fixed') %>
                 <td><%= number_to_currency(@contract.effective_rate) %><%=  l(:text_hour) %></td>
               <% end %>
               <td><%= number_to_currency(@contract.purchase_amount) %></td>
@@ -84,7 +84,7 @@
           </tbody>
         </table>
       </td>
-      <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+      <% if User.current.allowed_to?(:view_time_entries, @project) || @contract.contract_type == 'hourly' %>
         <td class="hours-summary-td">
           <table class="hours-summary list">
             <thead>
@@ -128,7 +128,7 @@
     <li>
       <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id }) %>" <%= tab_selected unless @expenses_tab or @summary_tab %>><%= l(:label_time_entries) %></a>
     </li>
-    <% if User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price) %>
+    <% if User.current.allowed_to?(:view_time_entries, @project) || @contract.contract_type == 'hourly' %>
       <% if User.current.allowed_to?(:view_expenses, @project) %>
         <li>
           <a href="<%= url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id, :contracts_expenses => 'true' }) %>" <%= tab_selected if @expenses_tab %>><%= l(:label_expenses) %></a>
@@ -140,9 +140,9 @@
     <% end %>
   </ul>
 </div>
-<% if @expenses_tab && (User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price)) && User.current.allowed_to?(:view_expenses, @project) %>
+<% if @expenses_tab && (User.current.allowed_to?(:view_time_entries, @project) || @contract.contract_type == 'hourly') && User.current.allowed_to?(:view_expenses, @project) %>
   <%= render 'expenses_list' %>
-<% elsif @summary_tab && (User.current.allowed_to?(:view_time_entries, @project) || not(@contract.is_fixed_price)) %>
+<% elsif @summary_tab && (User.current.allowed_to?(:view_time_entries, @project) || @contract.contract_type == 'hourly') %>
   <%= render 'contract_summary' %>
 <% else %>
   <%= render 'time_entries_list' %>

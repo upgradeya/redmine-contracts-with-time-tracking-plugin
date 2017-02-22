@@ -5,8 +5,8 @@ class ContractsController < ApplicationController
   def index
     @project = Project.find(params[:project_id])
 
-    fixed_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '1')
-    hourly_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => '0')
+    fixed_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :contract_type => 'fixed')
+    hourly_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :contract_type => 'hourly')
 
     # Show the tabs only if there are hourly and fixed contracts within the same project.
     if fixed_contracts.size > 0 && hourly_contracts.size > 0
@@ -39,9 +39,9 @@ class ContractsController < ApplicationController
     user = User.current
     projects = user.projects.select { |project| user.allowed_to?(:view_all_contracts_for_project, project) }
 
-    fixed_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:is_fixed_price => '1') }
+    fixed_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:contract_type => 'fixed') }
     fixed_contracts.flatten!
-    hourly_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:is_fixed_price => '0') }
+    hourly_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:contract_type => 'hourly') }
     hourly_contracts.flatten!
     all_contracts = projects.collect { |project| project.contracts.order("start_date ASC") }
     all_contracts.flatten!
@@ -234,7 +234,7 @@ class ContractsController < ApplicationController
 
   def contract_params
     params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url,
-      :invoice_url, :project_id, :purchase_amount, :hourly_rate, :category_id, :contract_type, :title)
+      :invoice_url, :project_id, :purchase_amount, :hourly_rate, :category_id, :contract_type, :contract_frequency, :title)
   end
 
   # Allows the user to hide or show locked contracts on contract list pages

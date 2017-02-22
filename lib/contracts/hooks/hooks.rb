@@ -47,5 +47,23 @@ module Contracts
         "<p>This page will not work due to the contracts plugin. You must log time entries from within a project."
       end
     end
+
+    # Poor Man's Cron
+    def controller_account_success_authentication_after(context={})
+      Rails.logger.warn "**************************************************************"
+      # check to see if cron has ran today or if its null
+      last_run = Setting.plugin_contracts[:last_cron_run]
+      if last_run.nil? || last_run < Date.today
+        Rails.logger.warn "Running cron"
+        # Do something
+        contracts = Contract.where(contract_type: 'recurring')
+      else
+        Rails.logger.warn "Cron already ran today"
+        # Cron has already ran today
+      end
+
+      Setting.plugin_contracts.update({last_cron_run: Date.today})
+      Rails.logger.warn "**************************************************************"
+    end
   end
 end

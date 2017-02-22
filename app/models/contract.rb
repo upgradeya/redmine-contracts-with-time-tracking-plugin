@@ -17,6 +17,7 @@ class Contract < ActiveRecord::Base
 
   # The values have been made lower-case to match the conventions of Rails I18n
   CONTRACT_TYPES = ["hourly", "fixed", "recurring"]
+  CONTRACT_FREQUENCIES = ["monthly", "anually"]
 
   def hours_purchased
     self.purchase_amount / self.hourly_rate

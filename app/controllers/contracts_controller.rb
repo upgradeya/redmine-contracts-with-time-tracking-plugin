@@ -5,7 +5,8 @@ class ContractsController < ApplicationController
   def index
     @project = Project.find(params[:project_id])
 
-    fixed_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :contract_type => 'fixed')
+    fixed_contracts = Contract.order("start_date ASC").where(
+      "project_id = ? AND contract_type = 'fixed' OR contract_type = 'recurring'", @project.id)
     hourly_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :contract_type => 'hourly')
 
     # Show the tabs only if there are hourly and fixed contracts within the same project.
@@ -22,7 +23,7 @@ class ContractsController < ApplicationController
     else
       @contracts = hourly_contracts
     end
-    
+
     # Calculate metrics for display.
     @total_purchased_dollars = @project.total_amount_purchased
     @total_purchased_fixed = fixed_contracts.map(&:purchase_amount).inject(0, &:+)
@@ -39,7 +40,8 @@ class ContractsController < ApplicationController
     user = User.current
     projects = user.projects.select { |project| user.allowed_to?(:view_all_contracts_for_project, project) }
 
-    fixed_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:contract_type => 'fixed') }
+    fixed_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(
+      "contract_type = 'fixed' OR contract_type = 'recurring'") }
     fixed_contracts.flatten!
     hourly_contracts = projects.collect { |project| project.contracts.order("start_date ASC").where(:contract_type => 'hourly') }
     hourly_contracts.flatten!
@@ -90,6 +92,10 @@ class ContractsController < ApplicationController
     @contract.rates = params[:rates]
     @contract.project_contract_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
 
+    if @contract.contract_type != 'recurring'
+      @contract.contract_frequency = nil
+    end
+
     if @contract.save
       flash[:notice] = l(:text_contract_saved)
       redirect_to :action => "show", :id => @contract.id
@@ -131,6 +137,10 @@ class ContractsController < ApplicationController
       flash[:error] = l(:text_invalid_rate)
       redirect_to :action => "edit", :id => @contract.id
       return
+    end
+
+    if @contract.contract_type != 'recurring'
+      params[:contract][:contract_frequency] = nil
     end
 
     if @contract.update_attributes(contract_params)

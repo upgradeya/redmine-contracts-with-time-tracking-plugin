@@ -50,20 +50,39 @@ module Contracts
 
     # Poor Man's Cron
     def controller_account_success_authentication_after(context={})
-      Rails.logger.warn "**************************************************************"
       # check to see if cron has ran today or if its null
       last_run = Setting.plugin_contracts[:last_cron_run]
       if last_run.nil? || last_run < Date.today
-        Rails.logger.warn "Running cron"
-        # Do something
-        contracts = Contract.where(contract_type: 'recurring')
-      else
-        Rails.logger.warn "Cron already ran today"
-        # Cron has already ran today
+        # Get all monthly recurring contracts
+        monthly_contracts = Contract.where(contract_type: 'recurring', contract_frequency: 'monthly')
+        # Loop thru the contracts and check if any have passed their recurring date
+        monthly_contracts.each do |contract|
+          if Date.today > (contract.start_date + 1.month)
+            # Create new contract and expire the old one
+            new_contract = Contract.new
+            if new_contract.copy(contract)
+              # Expire the old contract
+              contract.update_attribute(:contract_frequency, 'completed')
+            end
+          end
+        end
+
+        # Get all annually recurring contracts
+        annual_contracts = Contract.where(contract_type: 'recurring', contract_frequency: 'annually')
+        # Loop thru the contracts and check if any have passed their recurring date
+        annual_contracts.each do |contract|
+          if Date.today > (contract.start_date + 1.year)
+            # Create new contract and expire the old one
+            new_contract = Contract.new
+            if new_contract.copy(contract)
+              # expire the old contract
+              contract.update_attribute(:contract_frequency, 'completed')
+            end
+          end
+        end
       end
 
       Setting.plugin_contracts.update({last_cron_run: Date.today})
-      Rails.logger.warn "**************************************************************"
     end
   end
 end

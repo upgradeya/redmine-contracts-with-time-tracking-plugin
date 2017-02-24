@@ -8,6 +8,7 @@
   <thead>
     <tr>
       <th><%= l(:label_name) %></th>
+      <th><%= l(:label_recurring) %></th>
       <th><%= l(:label_agreed_on) %></th>
       <th><%= l(:label_date_period) %></th>
       <th><%= l(:label_purchased) %></th>
@@ -29,6 +30,9 @@
       <tr class="<%= cycle("odd", "even") %>">
         <td>
           <%= link_to contract.title, { :controller => 'contracts', :action => 'show', :project_id => contract.project.identifier, :id => contract.id } %>
+        </td>
+        <td>
+          <%= I18n.t("contract_frequencies.#{contract.contract_frequency}") %>
         </td>
         <td>
           <% if contract.agreement_date != nil %>

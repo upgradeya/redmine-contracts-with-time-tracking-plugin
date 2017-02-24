@@ -6,7 +6,8 @@ en:
     recurring: "Recurring"
   contract_frequencies:
     monthly: "Monthly"
-    anually: "Anually"
+    annually: "Annually"
+    completed: "Completed"
   project_module_contracts: Contracts
   permission_view_all_contracts_for_project: View all contracts for project
   permission_view_contract_details: View contract details
@@ -79,6 +80,7 @@ en:
   label_lock: Lock
   label_unlock: Unlock
   label_show_locked_contracts: Show locked contracts
+  label_recurring: Recurring
 
   text_contract_list: Contract List
   text_are_you_sure_delete_title: "Are you sure you want to delete %{value}?"
@@ -125,7 +127,6 @@ en:
   field_hourly_rate: Hourly Rate
   field_contract_url: Contract URL
   field_invoice_url: Invoice URL
-  field_is_fixed_price: Fixed Price
   field_contract_type: Contract Type
   field_contract_frequency: Frequency
 

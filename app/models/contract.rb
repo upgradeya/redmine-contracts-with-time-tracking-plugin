@@ -17,7 +17,7 @@ class Contract < ActiveRecord::Base
 
   # The values have been made lower-case to match the conventions of Rails I18n
   CONTRACT_TYPES = ["hourly", "fixed", "recurring"]
-  CONTRACT_FREQUENCIES = ["monthly", "anually"]
+  CONTRACT_FREQUENCIES = ["monthly", "annually"]
 
   def hours_purchased
     self.purchase_amount / self.hourly_rate
@@ -186,6 +186,49 @@ class Contract < ActiveRecord::Base
     Project.find(self.project_id).identifier + "_" + category + "#" + ("%03d" % (self.project_contract_id))
   end
 
+  def copy(contract, project = nil)
+    if project.nil?
+      project = Project.find(contract.project_id)
+    end
+
+    self.project_contract_id = project.contracts.last.project_contract_id + 1
+    self.category_id = contract.category_id
+    self.description = contract.description
+    self.title = contract[:title]
+    self.contract_type = contract.contract_type
+    self.contract_frequency = contract.contract_frequency
+    self.hourly_rate = contract.hourly_rate
+    self.purchase_amount = contract.purchase_amount
+    self.contract_url = ""
+    self.invoice_url = ""
+    self.project_id = contract.project_id
+    if contract.contract_type == 'recurring'
+      if contract.contract_frequency = 'monthly'
+        self.start_date = contract.start_date + 1.month
+      elsif contract.contract_frequency = 'annually'
+        self.start_date = contract.start_date + 1.year
+      end
+    else
+      self.start_date = Time.new
+    end
+
+    # add the contractors and rates
+    contractors = Contract.users_for_project_and_sub_projects(project)
+    contractor_rates = {}
+    contractors.each do |contractor|
+      if contract.new_record?
+        rate = project.rate_for_user(contractor)
+      else
+        rate = contract.user_contract_rate_or_default(contractor)
+      end
+      contractor_rates[contractor.id] = rate
+    end
+
+    self.rates = contractor_rates
+
+    self.save
+  end
+
   private
 
   def apply_rates
@@ -203,4 +246,5 @@ class Contract < ActiveRecord::Base
       time_entry.save
     end
   end
+
 end

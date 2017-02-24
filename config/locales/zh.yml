@@ -118,7 +118,6 @@ zh:
   field_hourly_rate: 费用/小时
   field_contract_url: 合同 URL
   field_invoice_url: 票据 URL
-  field_is_fixed_price: 定价
 
   field_expense_name: 名称
   field_expense_date: 费用发生日期

@@ -118,7 +118,6 @@ nl:
   field_hourly_rate: Uurtarief
   field_contract_url: Contract URL
   field_invoice_url: Factuur URL
-  field_is_fixed_price: Vaste prijs
 
   field_expense_name: Naam
   field_expense_date: Datum kostenpost

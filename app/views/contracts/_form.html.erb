@@ -5,7 +5,8 @@
   <%= f.hidden_field :project_id, :value => @project.id %>
   <div class="box tabular">
     <p><%= f.select :contract_type, Contract::CONTRACT_TYPES.map { |s| [I18n.t("contract_types.#{s}"), s] } %></p>
-    <p><%= f.select :contract_frequency, Contract::CONTRACT_FREQUENCIES.map { |s| [I18n.t("contract_frequencies.#{s}"), s] } %></p>
+    <p id="contract-frequency" <%= raw "style=\"display:none;\"" if @contract.contract_type != 'recurring' %>>
+    <%= f.select :contract_frequency, Contract::CONTRACT_FREQUENCIES.map { |s| [I18n.t("contract_frequencies.#{s}"), s] } %></p>
     <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
     <p><%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
     <p><%= f.text_field :agreement_date, :size => 12 %><%= calendar_for('contract_agreement_date') %></p>
@@ -36,15 +37,16 @@
   </div>
 <% end %>
 
-<!--<script type="text/javascript">
-  var checkbox = document.getElementById('contract_is_fixed_price');
-  var hourly_details = document.getElementById('hourly_rate_details');
-  checkbox.onchange = function() {
-     if (this.checked) {
-       hourly_details.style['display'] = 'none';
+<script type="text/javascript">
+  var frequencyDropdown = document.getElementById('contract-frequency');
+  var contractTypeDropdown = document.getElementById('contract_contract_type');
+  contractTypeDropdown.onchange = function() {
+      console.log('picked up the change');
+     if (this.value == 'recurring') {
+      frequencyDropdown.style['display'] = 'block';
      }
      else {
-       hourly_details.style['display'] = 'block';
+      frequencyDropdown.style['display'] = 'none';
      }
   };
-</script>-->
+</script>

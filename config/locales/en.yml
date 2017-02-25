@@ -8,6 +8,7 @@ en:
     monthly: "Monthly"
     annually: "Annually"
     completed: "Completed"
+    not: "No"
   project_module_contracts: Contracts
   permission_view_all_contracts_for_project: View all contracts for project
   permission_view_contract_details: View contract details

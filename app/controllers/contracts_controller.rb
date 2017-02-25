@@ -92,8 +92,14 @@ class ContractsController < ApplicationController
     @contract.rates = params[:rates]
     @contract.project_contract_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
 
-    if @contract.contract_type != 'recurring'
-      @contract.contract_frequency = nil
+    if @contract.contract_type == 'recurring'
+      if @contract.contract_frequency == 'monthly'
+        @contract.end_date = @contract.start_date + 1.month
+      elsif @contract.contract_frequency == 'annually'
+        @contract.end_date = @contract.start_date + 1.year
+      end
+    else
+      @contract.contract_frequency = 'not'
     end
 
     if @contract.save
@@ -140,7 +146,7 @@ class ContractsController < ApplicationController
     end
 
     if @contract.contract_type != 'recurring'
-      params[:contract][:contract_frequency] = nil
+      params[:contract][:contract_frequency] = 'not'
     end
 
     if @contract.update_attributes(contract_params)

@@ -203,10 +203,12 @@ class Contract < ActiveRecord::Base
     self.invoice_url = ""
     self.project_id = contract.project_id
     if contract.contract_type == 'recurring'
-      if contract.contract_frequency = 'monthly'
+      if contract.contract_frequency == 'monthly'
         self.start_date = contract.start_date + 1.month
-      elsif contract.contract_frequency = 'annually'
+        self.end_date = contract.start_date + 2.month
+      elsif contract.contract_frequency == 'annually'
         self.start_date = contract.start_date + 1.year
+        self.end_date = contract.start_date + 2.year
       end
     else
       self.start_date = Time.new

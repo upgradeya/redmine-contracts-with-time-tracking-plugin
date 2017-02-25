@@ -61,8 +61,7 @@ module Contracts
             # Create new contract and expire the old one
             new_contract = Contract.new
             if new_contract.copy(contract)
-              # Expire the old contract
-              contract.update_attribute(:contract_frequency, 'completed')
+              expire_contract(contract)
             end
           end
         end
@@ -75,14 +74,19 @@ module Contracts
             # Create new contract and expire the old one
             new_contract = Contract.new
             if new_contract.copy(contract)
-              # expire the old contract
-              contract.update_attribute(:contract_frequency, 'completed')
+              expire_contract(contract)
             end
           end
         end
       end
 
       Setting.plugin_contracts.update({last_cron_run: Date.today})
+    end
+
+    def expire_contract(contract)
+      contract.contract_frequency = 'completed'
+      contract.is_locked = true
+      contract.save
     end
   end
 end

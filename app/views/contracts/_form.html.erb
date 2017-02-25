@@ -8,7 +8,8 @@
     <p id="contract-frequency" <%= raw "style=\"display:none;\"" if @contract.contract_type != 'recurring' %>>
     <%= f.select :contract_frequency, Contract::CONTRACT_FREQUENCIES.map { |s| [I18n.t("contract_frequencies.#{s}"), s] } %></p>
     <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
-    <p><%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
+    <p id="end-date" <%= raw "style=\"display:none;\"" if @contract.contract_type == 'recurring' %>>
+    <%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
     <p><%= f.text_field :agreement_date, :size => 12 %><%= calendar_for('contract_agreement_date') %></p>
     <p><%= f.text_field :purchase_amount, :size => 10, :required => true %></p>
     <p><%= f.text_field :hourly_rate, :size => 10, :required => true %></p>
@@ -40,13 +41,16 @@
 <script type="text/javascript">
   var frequencyDropdown = document.getElementById('contract-frequency');
   var contractTypeDropdown = document.getElementById('contract_contract_type');
+  var endDateField = document.getElementById('end-date');
   contractTypeDropdown.onchange = function() {
       console.log('picked up the change');
      if (this.value == 'recurring') {
       frequencyDropdown.style['display'] = 'block';
+      endDateField.style['display'] = 'none';
      }
      else {
       frequencyDropdown.style['display'] = 'none';
+      endDateField.style['display'] = 'block';
      }
   };
 </script>

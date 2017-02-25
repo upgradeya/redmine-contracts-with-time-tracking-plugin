@@ -145,12 +145,17 @@ class ContractsController < ApplicationController
       return
     end
 
-    if @contract.contract_type != 'recurring'
-      params[:contract][:contract_frequency] = 'not'
-    end
-
     if @contract.update_attributes(contract_params)
       @contract.rates = params[:rates]
+      if @contract.contract_type == 'recurring'
+        if @contract.contract_frequency == 'monthly'
+          @contract.end_date = @contract.start_date + 1.month
+        elsif @contract.contract_frequency == 'annually'
+          @contract.end_date = @contract.start_date + 1.year
+        end
+      else
+        @contract.contract_frequency = 'not'
+      end
       @contract.save
       flash[:notice] = l(:text_contract_updated)
       redirect_to :action => "show", :id => @contract.id

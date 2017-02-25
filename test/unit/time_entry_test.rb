@@ -46,7 +46,7 @@ class TimeEntryTest < ActiveSupport::TestCase
     new_time_entry.hours = @contract.hours_remaining + 5
     new_time_entry.contract_id = @contract.id
     assert !new_time_entry.save, "Saved the entry exceeding the remaining contract time"
-    assert_match /is invalid. The contract #{@contract.title} only has #{"%.2f" % @contract.hours_remaining} hours remaining. Ask your administrator to enable auto contract creation in contract settings./,
+    assert_match /is invalid. The contract #{@contract.getDisplayTitle} only has #{"%.2f" % @contract.hours_remaining} hours remaining. Ask your administrator to enable auto contract creation in contract settings./,
       new_time_entry.errors.messages[:hours].to_s
   end
 end

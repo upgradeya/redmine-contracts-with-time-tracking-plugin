@@ -176,8 +176,8 @@ class Contract < ActiveRecord::Base
     expenses_sum = self.contracts_expenses.map(&:amount).inject(0, &:+)
   end
 
-  def title
-    return self[:title] if self[:title].present? || self.id.nil?
+  def getDisplayTitle
+    return self.title if self.title.present?
     if self.category_id.blank?
       category = 'Contract'
     else
@@ -194,7 +194,7 @@ class Contract < ActiveRecord::Base
     self.project_contract_id = project.contracts.last.project_contract_id + 1
     self.category_id = contract.category_id
     self.description = contract.description
-    self.title = contract[:title]
+    self.title = contract.title
     self.contract_type = contract.contract_type
     self.contract_frequency = contract.contract_frequency
     self.hourly_rate = contract.hourly_rate

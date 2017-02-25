@@ -36,7 +36,7 @@ module Contracts
               end
             else
               if hours > (contract.hours_remaining + previous_hours)
-                errors.add :hours, l(:text_invalid_hours, :title => contract.title, :hours => l_hours(contract.hours_remaining + previous_hours))
+                errors.add :hours, l(:text_invalid_hours, :title => contract.getDisplayTitle, :hours => l_hours(contract.hours_remaining + previous_hours))
               end
             end
           end

@@ -32,7 +32,7 @@ module Contracts
             # There is NO selected contract. Only show NON-locked contracts in the drop-down
             @contracts = @current_project.unlocked_contracts_for_all_ancestor_projects
           end
-          db_options = options_from_collection_for_select(@contracts, :id, :title, selected_contract)
+          db_options = options_from_collection_for_select(@contracts, :id, :getDisplayTitle, selected_contract)
           no_contract_option = "<option value=''>-- #{l(:label_contract_empty)} -- </option>\n".html_safe
           if !contract_unselectable
             all_options = no_contract_option << db_options

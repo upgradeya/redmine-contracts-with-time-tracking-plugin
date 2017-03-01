@@ -17,6 +17,7 @@ match 'projects/:project_id/contracts/:id/add_time_entries' => 'contracts#add_ti
 match 'projects/:project_id/contracts/:id/assoc_time_entries_with_contract' => 
         'contracts#assoc_time_entries_with_contract', 
         :via => :put
+match 'projects/:project_id/contracts/:id/cancel_recurring' => 'contracts#cancel_recurring', :via => :put
 
 # Expenses
 match 'projects/:project_id/expenses/new'                   => 'contracts_expenses#new',   :via => :get

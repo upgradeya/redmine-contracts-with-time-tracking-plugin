@@ -36,7 +36,7 @@ module Contracts
               end
             else
               if hours > (contract.hours_remaining + previous_hours)
-                errors.add :hours, l(:text_invalid_hours, :title => contract.title, :hours => l_hours(contract.hours_remaining + previous_hours))
+                errors.add :hours, l(:text_invalid_hours, :title => contract.getDisplayTitle, :hours => l_hours(contract.hours_remaining + previous_hours))
               end
             end
           end
@@ -51,31 +51,7 @@ module Contracts
           previous_hours = (hours_was != nil) ? hours_was : 0
           if Setting.plugin_contracts['automatic_contract_creation'] && hours > (contract.hours_remaining + previous_hours)
             new_contract = Contract.new
-            new_contract.project_contract_id = Project.find(contract.project_id).contracts.last.project_contract_id + 1
-            new_contract.category_id = contract.category_id
-            new_contract.description = contract.description
-            new_contract.start_date = Time.new
-            new_contract.hourly_rate = contract.hourly_rate
-            new_contract.purchase_amount = contract.purchase_amount
-            new_contract.contract_url = ""
-            new_contract.invoice_url = ""
-            new_contract.project_id = contract.project_id
-
-            # add the contractors and rates
-            contractors = Contract.users_for_project_and_sub_projects(project)
-            contractor_rates = {}
-            contractors.each do |contractor|
-              if contract.new_record?
-                rate = project.rate_for_user(contractor)
-              else
-                rate = contract.user_contract_rate_or_default(contractor)
-              end
-              contractor_rates[contractor.id] = rate
-            end
-
-            new_contract.rates = contractor_rates
-
-            if new_contract.save
+            if new_contract.copy(contract, project)
 
               # split the time entry and save new entry in the new contract
               new_time_entry = TimeEntry.new

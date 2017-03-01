@@ -34,7 +34,7 @@ end
         <% @contracts_expense.contract_id = @project.contracts.maximum(:id) %>
       <% end %>
       <% @contracts = @project.contracts_for_all_ancestor_projects %>
-      <%= select("contracts_expense", "contract_id", @contracts.collect { |c| [ c.title, c.id ] }, {:include_blank => l(:label_select_contract)}) %>
+      <%= select("contracts_expense", "contract_id", @contracts.collect { |c| [ c.getDisplayTitle, c.id ] }, {:include_blank => l(:label_select_contract)}) %>
     </p>
     <p><%= f.text_field :issue_id, :size => 5 %></p>
     <p><%= f.text_field :description, :size => 50 %></p>

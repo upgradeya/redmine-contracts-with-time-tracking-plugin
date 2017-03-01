@@ -32,7 +32,7 @@ module Contracts
             # There is NO selected contract. Only show NON-locked contracts in the drop-down
             @contracts = @current_project.unlocked_contracts_for_all_ancestor_projects
           end
-          db_options = options_from_collection_for_select(@contracts, :id, :title, selected_contract)
+          db_options = options_from_collection_for_select(@contracts, :id, :getDisplayTitle, selected_contract)
           no_contract_option = "<option value=''>-- #{l(:label_contract_empty)} -- </option>\n".html_safe
           if !contract_unselectable
             all_options = no_contract_option << db_options
@@ -46,6 +46,47 @@ module Contracts
       else
         "<p>This page will not work due to the contracts plugin. You must log time entries from within a project."
       end
+    end
+
+    # Poor Man's Cron
+    def controller_account_success_authentication_after(context={})
+      # check to see if cron has ran today or if its null
+      last_run = Setting.plugin_contracts[:last_cron_run]
+      if last_run.nil? || last_run < Date.today
+        # Get all monthly recurring contracts
+        monthly_contracts = Contract.where(is_recurring: true, contract_frequency: 'monthly')
+        # Loop thru the contracts and check if any have passed their recurring date
+        monthly_contracts.each do |contract|
+          if Date.today > (contract.start_date + 1.month)
+            # Create new contract and expire the old one
+            new_contract = Contract.new
+            if new_contract.copy(contract)
+              expire_contract(contract)
+            end
+          end
+        end
+
+        # Get all yearly recurring contracts
+        yearly_contracts = Contract.where(is_recurring: true, contract_frequency: 'yearly')
+        # Loop thru the contracts and check if any have passed their recurring date
+        yearly_contracts.each do |contract|
+          if Date.today > (contract.start_date + 1.year)
+            # Create new contract and expire the old one
+            new_contract = Contract.new
+            if new_contract.copy(contract)
+              expire_contract(contract)
+            end
+          end
+        end
+      end
+
+      Setting.plugin_contracts.update({last_cron_run: Date.today})
+    end
+
+    def expire_contract(contract)
+      contract.contract_frequency = 'completed'
+      contract.is_locked = true
+      contract.save
     end
   end
 end

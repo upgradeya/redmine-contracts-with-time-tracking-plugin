@@ -1,5 +1,14 @@
 # English strings go here for Rails i18n
 en:
+  contract_types:
+    hourly: "Hourly"
+    fixed: "Fixed"
+    recurring: "Recurring"
+  contract_frequencies:
+    monthly: "Monthly"
+    yearly: "Yearly"
+    completed: "Completed"
+    not: "No"
   project_module_contracts: Contracts
   permission_view_all_contracts_for_project: View all contracts for project
   permission_view_contract_details: View contract details
@@ -72,6 +81,8 @@ en:
   label_lock: Lock
   label_unlock: Unlock
   label_show_locked_contracts: Show locked contracts
+  label_recurring: Recurring
+  label_cancel_recurring: Stop Recurring
 
   text_contract_list: Contract List
   text_are_you_sure_delete_title: "Are you sure you want to delete %{value}?"
@@ -119,6 +130,8 @@ en:
   field_contract_url: Contract URL
   field_invoice_url: Invoice URL
   field_is_fixed_price: Fixed Price
+  field_contract_type: Contract Type
+  field_contract_frequency: Frequency
 
   field_expense_name: Name
   field_expense_date: Expense Date

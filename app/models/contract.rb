@@ -15,9 +15,23 @@ class Contract < ActiveRecord::Base
   after_save :apply_rates
   attr_accessor :rates
 
+  enum recurring_frequency: {
+    not_recurring: 0,
+    monthly: 1,
+    yearly: 2,
+    completed: 3
+  }
+
   # The values have been made lower-case to match the conventions of Rails I18n
-  CONTRACT_TYPES = ["hourly", "fixed", "recurring"]
-  CONTRACT_FREQUENCIES = ["monthly", "yearly"]
+  HOURLY = "hourly"
+  FIXED = "fixed"
+  RECURRING = "recurring"
+
+  CONTRACT_TYPES = [HOURLY, FIXED, RECURRING]
+  DROPDOWN_RECURRING_FREQUENCIES = [
+    "monthly",
+    "yearly"
+  ]
 
   def hours_purchased
     self.purchase_amount / self.hourly_rate
@@ -144,27 +158,24 @@ class Contract < ActiveRecord::Base
   # Getter method for contract_type (virtual attribute)
   def contract_type
     if self.is_fixed_price?
-      if self.is_recurring?
-        return CONTRACT_TYPES[2]
+      if self.not_recurring?
+        return FIXED
       else
-        return CONTRACT_TYPES[1]
+        return RECURRING
       end
     else
-      return CONTRACT_TYPES[0]
+      return HOURLY
     end
   end
 
   # Setter method for contract_type (virtual attribute)
   def contract_type=(contract_type)
-    if contract_type == CONTRACT_TYPES[0]
+    if contract_type == HOURLY
       self.is_fixed_price = false
-      self.is_recurring = false
-    elsif contract_type == CONTRACT_TYPES[1]
+    elsif contract_type == FIXED
       self.is_fixed_price = true
-      self.is_recurring = false
-    elsif contract_type == CONTRACT_TYPES[2]
+    elsif contract_type == RECURRING
       self.is_fixed_price = true
-      self.is_recurring = true
     end
   end
 
@@ -219,31 +230,28 @@ class Contract < ActiveRecord::Base
     if project.nil?
       project = Project.find(contract.project_id)
     end
-
     self.project_contract_id = project.contracts.last.project_contract_id + 1
     self.category_id = contract.category_id
     self.description = contract.description
     self.title = contract.title
     self.is_fixed_price = contract.is_fixed_price
-    self.is_recurring = contract.is_recurring
-    self.contract_frequency = contract.contract_frequency
+    self.recurring_frequency = contract.recurring_frequency
     self.hourly_rate = contract.hourly_rate
     self.purchase_amount = contract.purchase_amount
     self.contract_url = ""
     self.invoice_url = ""
     self.project_id = contract.project_id
-    if contract.is_recurring == true
-      if contract.contract_frequency == 'monthly'
+    if contract.contract_type == "recurring"
+      if contract.monthly?
         self.start_date = contract.start_date + 1.month
         self.end_date = contract.start_date + 2.month
-      elsif contract.contract_frequency == 'yearly'
+      elsif contract.yearly?
         self.start_date = contract.start_date + 1.year
         self.end_date = contract.start_date + 2.year
       end
     else
       self.start_date = Time.new
     end
-
     # add the contractors and rates
     contractors = Contract.users_for_project_and_sub_projects(project)
     contractor_rates = {}
@@ -257,7 +265,6 @@ class Contract < ActiveRecord::Base
     end
 
     self.rates = contractor_rates
-
     self.save
   end
 

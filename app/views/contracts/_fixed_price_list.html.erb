@@ -32,7 +32,7 @@
           <%= link_to contract.getDisplayTitle, { :controller => 'contracts', :action => 'show', :project_id => contract.project.identifier, :id => contract.id } %>
         </td>
         <td>
-          <%= I18n.t("contract_frequencies.#{contract.contract_frequency}", :default => 'contract_frequencies.not') %>
+          <%= I18n.t("recurring_frequencies.#{contract.recurring_frequency}") %>
         </td>
         <td>
           <% if contract.agreement_date != nil %>

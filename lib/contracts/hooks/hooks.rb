@@ -54,7 +54,7 @@ module Contracts
       last_run = Setting.plugin_contracts[:last_cron_run]
       if last_run.nil? || last_run < Date.today
         # Get all monthly recurring contracts
-        monthly_contracts = Contract.where(is_recurring: true, contract_frequency: 'monthly')
+        monthly_contracts = Contract.monthly
         # Loop thru the contracts and check if any have passed their recurring date
         monthly_contracts.each do |contract|
           if Date.today > (contract.start_date + 1.month)
@@ -67,7 +67,7 @@ module Contracts
         end
 
         # Get all yearly recurring contracts
-        yearly_contracts = Contract.where(is_recurring: true, contract_frequency: 'yearly')
+        yearly_contracts = Contract.yearly
         # Loop thru the contracts and check if any have passed their recurring date
         yearly_contracts.each do |contract|
           if Date.today > (contract.start_date + 1.year)
@@ -84,7 +84,7 @@ module Contracts
     end
 
     def expire_contract(contract)
-      contract.contract_frequency = 'completed'
+      contract.completed!
       contract.is_locked = true
       contract.save
     end

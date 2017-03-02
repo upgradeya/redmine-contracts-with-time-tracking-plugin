@@ -4,10 +4,12 @@
 <%= labelled_form_for @contract, :url => { :action => action }, :method => method do |f| %>
   <%= f.hidden_field :project_id, :value => @project.id %>
   <div class="box tabular">
-    <p><%= f.select :contract_type, Contract::CONTRACT_TYPES.map { |s| [I18n.t("contract_types.#{s}"), s] } %></p>
+    <p><%= f.select :contract_type, Contract::CONTRACT_TYPES.map { |s| [I18n.t("contract_types.#{s}"), s] }, {}, {:disabled => action == 'update'} %></p>
     <p id="contract-frequency" <%= raw "style=\"display:none;\"" if @contract.contract_type != 'recurring' %>>
-    <%= f.select :contract_frequency, Contract::CONTRACT_FREQUENCIES.map { |s| [I18n.t("contract_frequencies.#{s}"), s] } %>
-      <%= link_to l(:label_cancel_recurring), { :controller => 'contracts', :action => 'cancel_recurring', :project_id => @project.identifier, :id => @contract.id }, :method => :put %>
+    <%= f.select :recurring_frequency, Contract::DROPDOWN_RECURRING_FREQUENCIES.map { |s| [I18n.t("recurring_frequencies.#{s}"), s] } %>
+      <% if action == "update" %>
+        <%= link_to l(:label_cancel_recurring), { :controller => 'contracts', :action => 'cancel_recurring', :project_id => @project.identifier, :id => @contract.id }, :method => :put %>
+      <% end %>
     </p>
     <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
     <p id="end-date" <%= raw "style=\"display:none;\"" if @contract.contract_type == 'recurring' %>>

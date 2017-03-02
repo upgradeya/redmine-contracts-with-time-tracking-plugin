@@ -4,11 +4,11 @@ en:
     hourly: "Hourly"
     fixed: "Fixed"
     recurring: "Recurring"
-  contract_frequencies:
+  recurring_frequencies:
     monthly: "Monthly"
     yearly: "Yearly"
     completed: "Completed"
-    not: "No"
+    not_recurring: "No"
   project_module_contracts: Contracts
   permission_view_all_contracts_for_project: View all contracts for project
   permission_view_contract_details: View contract details
@@ -131,7 +131,7 @@ en:
   field_invoice_url: Invoice URL
   field_is_fixed_price: Fixed Price
   field_contract_type: Contract Type
-  field_contract_frequency: Frequency
+  field_recurring_frequency: Frequency
 
   field_expense_name: Name
   field_expense_date: Expense Date

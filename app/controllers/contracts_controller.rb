@@ -89,13 +89,13 @@ class ContractsController < ApplicationController
     @contract.project_contract_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
 
     if @contract.contract_type == 'recurring'
-      if @contract.contract_frequency == 'monthly'
+      if @contract.monthly?
         @contract.end_date = @contract.start_date + 1.month
-      elsif @contract.contract_frequency == 'yearly'
+      elsif @contract.yearly?
         @contract.end_date = @contract.start_date + 1.year
       end
     else
-      @contract.contract_frequency = 'not'
+      @contract.not_recurring!
     end
 
     if @contract.save
@@ -144,13 +144,13 @@ class ContractsController < ApplicationController
     if @contract.update_attributes(contract_params)
       @contract.rates = params[:rates]
       if @contract.contract_type == 'recurring'
-        if @contract.contract_frequency == 'monthly'
+        if @contract.monthly?
           @contract.end_date = @contract.start_date + 1.month
-        elsif @contract.contract_frequency == 'yearly'
+        elsif @contract.yearly?
           @contract.end_date = @contract.start_date + 1.year
         end
       else
-        @contract.contract_frequency = 'not'
+        @contract.not_recurring!
       end
       @contract.save
       flash[:notice] = l(:text_contract_updated)
@@ -163,9 +163,10 @@ class ContractsController < ApplicationController
 
   def cancel_recurring
     @contract = Contract.find(params[:id])
-    @contract.is_recurring = false
+    @contract.completed!
 
     if @contract.save
+      # TODO: Should we also lock the contract?
       flash[:notice] = l(:text_contract_updated)
       redirect_to :action => "show", :id => @contract.id
     else
@@ -265,7 +266,7 @@ class ContractsController < ApplicationController
   def contract_params
     params.require(:contract).permit(:description, :agreement_date, :start_date, :end_date, :contract_url,
       :invoice_url, :project_id, :purchase_amount, :hourly_rate, :category_id, :is_fixed_price, :title,
-      :contract_type, :contract_frequency)
+      :contract_type, :recurring_frequency)
   end
 
   # Allows the user to hide or show locked contracts on contract list pages

@@ -40,6 +40,10 @@ Screenshots
 
 Changelog
 ---------
+Contracts v2.2 2017-3-6
+-----------------------
+- Added a recurring contract option so you that can have fixed contracts created automatically each month or year.
+
 Contracts v2.2 2017-2-7
 -----------------------
 - Added a 'Fixed Price' contract type that calculates your effective rate and hides hourly information from your client (in permissions uncheck 'View spent time ').

@@ -1,6 +1,6 @@
 class ContractsController < ApplicationController
   before_filter :find_project, :authorize, :only => [:index, :show, :new, :create, :edit, :update, :destroy, 
-                                                     :add_time_entries, :assoc_time_entries_with_contract]
+                                                     :add_time_entries, :assoc_time_entries_with_contract, :series]
   
   def index
     fixed_contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :is_fixed_price => true)
@@ -77,6 +77,10 @@ class ContractsController < ApplicationController
   end
 
   def create
+    if contract_params[:contract_type] != 'recurring'
+      params[:contract][:recurring_frequency] = :not_recurring
+    end
+
     @contract = Contract.new(contract_params)
 
     if !rates_are_valid(params[:rates])
@@ -85,20 +89,25 @@ class ContractsController < ApplicationController
       return
     end
 
+    if contract_params[:contract_type] != 'recurring'
+      params[:contract][:recurring_frequency] = :not_recurring
+    end
+
     @contract.rates = params[:rates]
     @contract.project_contract_id = @project.contracts.empty? ? 1 : @project.contracts.last.project_contract_id + 1
 
-    if @contract.contract_type == 'recurring'
-      if @contract.monthly?
-        @contract.end_date = @contract.start_date + 1.month
-      elsif @contract.yearly?
-        @contract.end_date = @contract.start_date + 1.year
-      end
-    else
-      @contract.not_recurring!
-    end
+    # Set the series ID to the project_contract_id if its a new recurring contract.
+    @contract.series_id = @contract.project_contract_id if contract_params[:contract_type] == 'recurring'
 
     if @contract.save
+      if contract_params[:contract_type] == 'recurring'
+        if @contract.monthly?
+          @contract.update_attribute(:end_date, @contract.start_date + 1.month)
+        elsif @contract.yearly?
+          @contract.update_attribute(:end_date, @contract.start_date + 1.year)
+        end
+      end
+
       flash[:notice] = l(:text_contract_saved)
       redirect_to :action => "show", :id => @contract.id
     else
@@ -141,18 +150,22 @@ class ContractsController < ApplicationController
       return
     end
 
+    # Set the end date to null so that the start_date end_date validation passes
+    # if the start date is changed to after the end date.
+    if @contract.contract_type == 'recurring'
+      params[:contract][:end_date] = nil
+      @contract.end_date = nil
+    end
+
     if @contract.update_attributes(contract_params)
-      @contract.rates = params[:rates]
+      @contract.update_attribute(:rates, params[:rates])
       if @contract.contract_type == 'recurring'
         if @contract.monthly?
-          @contract.end_date = @contract.start_date + 1.month
+          @contract.update_attribute(:end_date, @contract.start_date + 1.month)
         elsif @contract.yearly?
-          @contract.end_date = @contract.start_date + 1.year
+          @contract.update_attribute(:end_date, @contract.start_date + 1.year)
         end
-      else
-        @contract.not_recurring!
       end
-      @contract.save
       flash[:notice] = l(:text_contract_updated)
       redirect_to :action => "show", :id => @contract.id
     else
@@ -161,12 +174,24 @@ class ContractsController < ApplicationController
     end
   end
 
+  def series
+    @contracts = Contract.order("start_date ASC").where(:project_id => @project.id, :series_id => params[:id])
+    @show_fixed_contracts = true
+
+    # Calculate metrics for display.
+    @total_purchased_fixed = @contracts.map(&:purchase_amount).inject(0, &:+)
+
+    set_contract_visibility
+
+    render "index"
+  end
+
   def cancel_recurring
     @contract = Contract.find(params[:id])
     @contract.completed!
+    @contract.is_locked = true
 
     if @contract.save
-      # TODO: Should we also lock the contract?
       flash[:notice] = l(:text_contract_updated)
       redirect_to :action => "show", :id => @contract.id
     else

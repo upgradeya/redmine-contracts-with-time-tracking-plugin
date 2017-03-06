@@ -22,7 +22,7 @@ Redmine::Plugin.register :contracts do
   settings :default => {'empty' => true}, :partial => 'settings/contract_settings'
 
   project_module :contracts do
-    permission :view_all_contracts_for_project,       :contracts => :index
+    permission :view_all_contracts_for_project,       :contracts => [:index, :series]
     permission :view_contract_details,                :contracts => :show
     permission :edit_contracts,                       :contracts => [:edit, :update, :add_time_entries, :assoc_time_entries_with_contract, :lock]
     permission :create_contracts,                     :contracts => [:new, :create]

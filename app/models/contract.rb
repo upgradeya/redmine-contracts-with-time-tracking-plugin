@@ -236,6 +236,7 @@ class Contract < ActiveRecord::Base
     self.title = contract.title
     self.is_fixed_price = contract.is_fixed_price
     self.recurring_frequency = contract.recurring_frequency
+    self.series_id = contract.series_id
     self.hourly_rate = contract.hourly_rate
     self.purchase_amount = contract.purchase_amount
     self.contract_url = ""

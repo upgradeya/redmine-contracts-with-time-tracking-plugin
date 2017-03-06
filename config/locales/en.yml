@@ -23,6 +23,7 @@ en:
 
   contracts: Contracts
   label_contracts: Contracts
+  label_series_title: "Recurring Contracts in Series #%{series_id}"
   label_contract: Contract
   label_contractors_rates: Contractor Rates
   label_new_contract: New Contract
@@ -64,6 +65,7 @@ en:
   label_total_purchased: Total Purchased for All Contracts
   label_total_remaining: Total Remaining for All Contracts
   label_total_fixed: Total Purchased for Fixed Contracts
+  label_total_series: Total Purchased in Series
   label_total_hourly: Total Purchased for Hourly Contracts
   label_remaining_hourly: Total Remaining for Hourly Contracts
   label_or: "-or-"
@@ -83,9 +85,11 @@ en:
   label_show_locked_contracts: Show locked contracts
   label_recurring: Recurring
   label_cancel_recurring: Stop Recurring
+  label_view_series: View Series
 
   text_contract_list: Contract List
   text_are_you_sure_delete_title: "Are you sure you want to delete %{value}?"
+  text_are_you_sure_stop_recurring: "Are you sure you want to stop this recurring contract?"
   text_are_you_sure_delete_time_entry: "Are you sure you want to delete this time entry?"
   text_are_you_sure_delete_expense: "Are you sure you want to delete this expense?"
   text_time_exceeded_time_remaining: "This time entry exceeded the time remaining for the contract by %{hours_over}.\nTo stay within the contract, please edit the time entry to be no more than %{hours_remaining}."

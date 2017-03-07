@@ -86,6 +86,8 @@ en:
   label_recurring: Recurring
   label_cancel_recurring: Stop Recurring
   label_view_series: View Series
+  label_tooltips: Redmine Contract Help
+  label_contract_types: Contract Types
 
   text_contract_list: Contract List
   text_are_you_sure_delete_title: "Are you sure you want to delete %{value}?"
@@ -121,7 +123,11 @@ en:
   text_previous_id: "The last contract created for this project used ID %{previous_id}"
   text_contract_category_helper: "[Optional] If title is not provided, the default title will use this category. These are managed by enumerations."
   text_contract_title_helper: "[Optional] Used to override the default title."
+  text_hourly_rate_helper: "Helpful in determining how much to pay a contractor. Has nothing to do with the effective hourly rate."
   text_hour: / hr
+  text_fixed_contract_help: Fixed contracts are ideal when you are being paid a fixed price. Fixed Price contracts will display under the fixed contracts tab on the Contracts List page. In fixed contracts, time entries will determine your effective hourly rate and will not subtract from the Purchase Amount. The hourly rate field simply helps you determine what to pay potential contractors that are working on the project.
+  text_recurring_contract_help: Recurring contracts are ideal for subscriptions. Recurring contracts will display under the fixed contracts tab on the Contracts List page. They are identified under the "Recurring" column. Fixed Price Recurring contracts are just like fixed contracts except they will automatically create new contracts based on recurring schedule.
+  text_hourly_contract_help: Hourly contracts are ideal when you are being paid by the hour. Hourly contracts will display under the hourly contracts tab on the Contract List page. In hourly contracts, time entries (at the contractors hourly rate) will subtract from the Purchase Amount. If selected in the Contract Plugin settings, you can have new contracts automatically be created when time log entry exceeds the current Purchase Amount.
 
   field_contract: Contract
   field_project_contract: Contract ID

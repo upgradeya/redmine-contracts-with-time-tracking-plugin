@@ -85,7 +85,6 @@ module Contracts
 
     def expire_contract(contract)
       contract.completed!
-      contract.is_locked = true
       contract.save
     end
   end

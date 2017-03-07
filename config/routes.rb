@@ -5,6 +5,7 @@
 match 'contracts/all'                                       => 'contracts#all',     :via => :get
 match 'contracts/:id'                                       => 'contracts#destroy', :via => :delete
 match 'contracts/:id/edit'                                  => 'contracts#edit',    :via => :get
+match 'contracts/tooltips/:id'                              => 'contracts#tooltips',:via => :get
 match 'projects/:project_id/contracts'                      => 'contracts#index',   :via => :get
 match 'projects/:project_id/contracts/new'                  => 'contracts#new',     :via => :get
 match 'projects/:project_id/contracts/:id/edit'             => 'contracts#edit',    :via => :get

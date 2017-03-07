@@ -189,7 +189,6 @@ class ContractsController < ApplicationController
   def cancel_recurring
     @contract = Contract.find(params[:id])
     @contract.completed!
-    @contract.is_locked = true
 
     if @contract.save
       flash[:notice] = l(:text_contract_updated)
@@ -257,6 +256,11 @@ class ContractsController < ApplicationController
       redirect_to url_for({ :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id })
     end
   end
+
+  def tooltips
+    @id = params[:id]
+  end
+
 
   private
 

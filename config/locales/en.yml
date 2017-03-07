@@ -3,7 +3,7 @@ en:
   contract_types:
     hourly: "Hourly"
     fixed: "Fixed"
-    recurring: "Recurring"
+    recurring: "Fixed-Recurring"
   recurring_frequencies:
     monthly: "Monthly"
     yearly: "Yearly"

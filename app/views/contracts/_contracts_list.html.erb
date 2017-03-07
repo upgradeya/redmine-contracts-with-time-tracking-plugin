@@ -30,7 +30,7 @@
     <% if !contract.is_locked || session[:show_locked_contracts] %>
       <tr class="<%= cycle("odd", "even") %>">
         <td>
-          <%= link_to contract.title, { :controller => 'contracts', :action => 'show', :project_id => contract.project.identifier, :id => contract.id } %>
+          <%= link_to contract.getDisplayTitle, { :controller => 'contracts', :action => 'show', :project_id => contract.project.identifier, :id => contract.id } %>
         </td>
         <td>
           <% if contract.agreement_date != nil %>
@@ -83,7 +83,7 @@
         <td>
           <% if !contract.is_locked && (User.current.allowed_to?(:delete_contracts, contract.project)) %>
               <%= link_to image_tag("delete.png"), { :controller => 'contracts', :action => 'destroy', :project_id => contract.project.identifier, :id => contract.id }, :method => :delete, 
-              :title => l(:label_delete), :data => {:confirm => l(:text_are_you_sure_delete_title, contract.title)} %>
+              :title => l(:label_delete), :data => {:confirm => l(:text_are_you_sure_delete_title, contract.getDisplayTitle)} %>
           <% end %>
         </td>
       </tr>

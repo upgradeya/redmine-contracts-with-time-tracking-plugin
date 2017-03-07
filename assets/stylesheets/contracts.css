@@ -26,6 +26,17 @@
   color:#0072ca;
 }
 
+p .red{
+  color: red;
+  text-decoration: underline;
+  font-size: 85%;
+}
+
+p .blue{
+  text-decoration: underline;
+  font-size: 85%;
+}
+
 .contract-summary-td {
 	width: 60%;
 	padding-right: 10px;

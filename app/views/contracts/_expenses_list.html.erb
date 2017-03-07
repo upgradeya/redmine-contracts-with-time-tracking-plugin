@@ -16,7 +16,7 @@
       <td><%= format_date(expense.expense_date) %></td>
       <td><%= link_to expense.name, expense_edit_urlpath(@contract, expense) %></td>
       <td><%= number_to_currency(expense.amount) %></td>
-      <td><%= link_to expense.contract.title, { :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id } %></td>
+      <td><%= link_to expense.contract.getDisplayTitle, { :controller => 'contracts', :action => 'show', :project_id => @contract.project.identifier, :id => @contract.id } %></td>
       <td><%= expense.issue.nil? ? l(:text_na) : link_to("#{expense.issue.tracker.name} ##{expense.issue_id}: #{expense.issue.subject}", issue_path(expense.issue)) %></td>
       <td class="comments"><%= expense.description %></td>
       <td>

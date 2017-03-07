@@ -8,10 +8,30 @@ class Contract < ActiveRecord::Base
   validates_presence_of :start_date, :purchase_amount, :hourly_rate, :project_id
   validates_uniqueness_of :project_contract_id, :scope => :project_id
   validates :project_contract_id, :numericality => { :greater_than_or_equal_to => 1, :less_than_or_equal_to => 999 }
+  validates :purchase_amount, :numericality => { :greater_than_or_equal_to => 0 }
+  validates :hourly_rate, :numericality => { :greater_than_or_equal_to => 0 }
   validates :end_date, :is_after_start_date => true
   before_destroy { |contract| contract.time_entries.clear }
   after_save :apply_rates
   attr_accessor :rates
+
+  enum recurring_frequency: {
+    not_recurring: 0,
+    monthly: 1,
+    yearly: 2,
+    completed: 3
+  }
+
+  # The values have been made lower-case to match the conventions of Rails I18n
+  HOURLY = "hourly"
+  FIXED = "fixed"
+  RECURRING = "recurring"
+
+  CONTRACT_TYPES = [HOURLY, FIXED, RECURRING]
+  DROPDOWN_RECURRING_FREQUENCIES = [
+    "monthly",
+    "yearly"
+  ]
 
   def hours_purchased
     self.purchase_amount / self.hourly_rate
@@ -51,6 +71,16 @@ class Contract < ActiveRecord::Base
       total_amount += entry.hours * self.user_contract_rate_or_default(entry.user)
     end
     return total_amount
+  end
+
+  def effective_rate
+    if self.expenses_total >= self.purchase_amount
+      0
+    elsif self.smart_hours_spent >= 1
+      (self.purchase_amount - self.expenses_total) / self.smart_hours_spent
+    else
+      self.purchase_amount - self.expenses_total
+    end
   end
 
   def billable_amount_for_user(user)
@@ -125,6 +155,30 @@ class Contract < ActiveRecord::Base
     @rates = rates
   end
 
+  # Getter method for contract_type (virtual attribute)
+  def contract_type
+    if self.is_fixed_price?
+      if self.not_recurring?
+        return FIXED
+      else
+        return RECURRING
+      end
+    else
+      return HOURLY
+    end
+  end
+
+  # Setter method for contract_type (virtual attribute)
+  def contract_type=(contract_type)
+    if contract_type == HOURLY
+      self.is_fixed_price = false
+    elsif contract_type == FIXED
+      self.is_fixed_price = true
+    elsif contract_type == RECURRING
+      self.is_fixed_price = true
+    end
+  end
+
   def user_project_rate_or_default(user)
     upr = self.project.user_project_rate_by_user(user)
     upr.nil? ? self.hourly_rate : upr.rate
@@ -162,14 +216,57 @@ class Contract < ActiveRecord::Base
     expenses_sum = self.contracts_expenses.map(&:amount).inject(0, &:+)
   end
 
-  def title
-    return self[:title] if self[:title].present? || self.id.nil?
+  def getDisplayTitle
+    return self.title if self.title.present?
     if self.category_id.blank?
       category = 'Contract'
     else
       category = ContractCategory.find(self.category_id).name
     end
     Project.find(self.project_id).identifier + "_" + category + "#" + ("%03d" % (self.project_contract_id))
+  end
+
+  def copy(contract, project = nil)
+    if project.nil?
+      project = Project.find(contract.project_id)
+    end
+    self.project_contract_id = project.contracts.last.project_contract_id + 1
+    self.category_id = contract.category_id
+    self.description = contract.description
+    self.title = contract.title
+    self.is_fixed_price = contract.is_fixed_price
+    self.recurring_frequency = contract.recurring_frequency
+    self.series_id = contract.series_id
+    self.hourly_rate = contract.hourly_rate
+    self.purchase_amount = contract.purchase_amount
+    self.contract_url = ""
+    self.invoice_url = ""
+    self.project_id = contract.project_id
+    if contract.contract_type == "recurring"
+      if contract.monthly?
+        self.start_date = contract.start_date + 1.month
+        self.end_date = contract.start_date + 2.month
+      elsif contract.yearly?
+        self.start_date = contract.start_date + 1.year
+        self.end_date = contract.start_date + 2.year
+      end
+    else
+      self.start_date = Time.new
+    end
+    # add the contractors and rates
+    contractors = Contract.users_for_project_and_sub_projects(project)
+    contractor_rates = {}
+    contractors.each do |contractor|
+      if contract.new_record?
+        rate = project.rate_for_user(contractor)
+      else
+        rate = contract.user_contract_rate_or_default(contractor)
+      end
+      contractor_rates[contractor.id] = rate
+    end
+
+    self.rates = contractor_rates
+    self.save
   end
 
   private

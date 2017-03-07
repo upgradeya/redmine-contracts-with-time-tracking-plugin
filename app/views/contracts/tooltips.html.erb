@@ -1,0 +1,13 @@
+<h2><%=l(:label_tooltips) %></h2>
+
+<% if @id == '1' %>
+	<h3><%= l(:label_contract_types) %></h3>
+	<strong><%= I18n.t("contract_types.hourly") %></strong><br />
+	<%= l(:text_hourly_contract_help) %>
+	<br /><br />
+	<strong><%= I18n.t("contract_types.fixed") %></strong><br />
+	<%= l(:text_fixed_contract_help) %>
+	<br/><br />
+	<strong><%= I18n.t("contract_types.recurring") %></strong><br />
+	<%= l(:text_recurring_contract_help) %>
+<% end %>

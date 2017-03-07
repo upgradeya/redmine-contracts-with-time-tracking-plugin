@@ -4,7 +4,9 @@
   <% end %>
 </div>
 
-<h2><%= l(:label_contracts) %></h2>
+<h2>
+  <%= controller.action_name == "series" ? l(:label_series_title, :series_id => params[:id]) : l(:label_contracts) %>
+</h2>
 <% if @contracts.size > 0 %>
   <%= render 'contracts_summary' %>
 

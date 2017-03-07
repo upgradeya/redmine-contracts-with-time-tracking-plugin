@@ -8,7 +8,9 @@
         </td>
       <% end %>
       <td>
-        <h3><%= l(:label_total_fixed) %></h3>
+        <h3>
+          <%= controller.action_name == "series" ? l(:label_total_series) : l(:label_total_fixed) %>
+        </h3>
         <p class="bigbold"><%= number_to_currency(@total_purchased_fixed) %></p>
       </td>
     </tr>

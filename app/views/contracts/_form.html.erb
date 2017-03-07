@@ -9,9 +9,11 @@
     </p>
     <p id="contract-frequency" <%= raw "style=\"display:none;\"" if @contract.contract_type != 'recurring' %>>
     <%= f.select :recurring_frequency, Contract::DROPDOWN_RECURRING_FREQUENCIES.map { |s| [I18n.t("recurring_frequencies.#{s}"), s] }, {}, {:disabled => action == 'update'} %>
-      <% if action == "update" and @contract.contract_type == 'recurring' and !@contract.completed?%>
+      <% if action == "update" and @contract.contract_type == 'recurring' %>
         <%= link_to l(:label_view_series), { :controller => 'contracts', :action => 'series', :project_id => @project.identifier, :id => @contract.series_id }, :method => :get, :class => 'blue' %>
-        <%= link_to l(:label_cancel_recurring), { :controller => 'contracts', :action => 'cancel_recurring', :project_id => @project.identifier, :id => @contract.id }, :method => :put, :class => 'red', :data => {:confirm => l(:text_are_you_sure_stop_recurring, @contract.getDisplayTitle)} %>
+        <% if !@contract.completed? %>
+          <%= link_to l(:label_cancel_recurring), { :controller => 'contracts', :action => 'cancel_recurring', :project_id => @project.identifier, :id => @contract.id }, :method => :put, :class => 'red', :data => {:confirm => l(:text_are_you_sure_stop_recurring, @contract.getDisplayTitle)} %>
+        <% end %>
       <% end %>
     </p>
     <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>

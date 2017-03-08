@@ -16,7 +16,7 @@
         <% end %>
       <% end %>
     </p>
-    <p><%= f.text_field :start_date, :size => 12, :required => true %><%= calendar_for('contract_start_date') %></p>
+    <p><%= f.text_field :start_date, :size => 12, :required => true, :disabled => @contract.completed? %><%= calendar_for('contract_start_date') %></p>
     <p id="end-date" <%= raw "style=\"display:none;\"" if @contract.contract_type == 'recurring' %>>
     <%= f.text_field :end_date, :size => 12 %><%= calendar_for('contract_end_date') %></p>
     <p><%= f.text_field :agreement_date, :size => 12 %><%= calendar_for('contract_agreement_date') %></p>

@@ -35,7 +35,7 @@
         <% if contract.not_recurring? %>
           <%= I18n.t("recurring_frequencies.#{contract.recurring_frequency}") %>
         <% else %>
-          <%= link_to I18n.t("recurring_frequencies.#{contract.recurring_frequency}"), { :controller => 'contracts', :action => 'series', :project_id => @project.identifier, :id => contract.series_id }, :method => :get, :class => 'blue' %>
+          <%= link_to I18n.t("recurring_frequencies.#{contract.recurring_frequency}"), { :controller => 'contracts', :action => 'series', :project_id => contract.project.identifier, :id => contract.series_id }, :method => :get, :class => 'blue' %>
         <% end %>
         </td>
         <td>

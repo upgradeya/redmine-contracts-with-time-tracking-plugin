@@ -83,6 +83,7 @@ en:
   label_lock: Lock
   label_unlock: Unlock
   label_show_locked_contracts: Show locked contracts
+  label_show_only_active_recurring: "Show only \"Active\" recurring contracts"
   label_recurring: Recurring
   label_cancel_recurring: Stop Recurring
   label_view_series: View Series

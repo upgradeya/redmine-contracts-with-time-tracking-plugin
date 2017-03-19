@@ -307,9 +307,15 @@ class ContractsController < ApplicationController
       else
         session[:show_locked_contracts] = false
       end
+      if params[:contract_list][:show_only_active_recurring] == "true"
+        session[:show_only_active_recurring] = true
+      else
+        session[:show_only_active_recurring] = false
+      end
     elsif session[:show_locked_contracts].nil?
       # set session variable for first time guests
       session[:show_locked_contracts] = false
+      session[:show_only_active_recurring] = false
     end
   end
 

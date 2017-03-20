@@ -21,7 +21,7 @@ zh:
   permission_delete_expenses: 删除费用
   permission_view_expenses: 查看费用
 
-  contracts: 合同
+  contracts: 合同管理
   label_contracts: 合同
   label_series_title: "#%{series_id} 系列的续生合同"
   label_contract: 合同
@@ -83,6 +83,7 @@ zh:
   label_lock: 锁定
   label_unlock: 解锁
   label_show_locked_contracts: 显示已锁定的合同
+  label_show_only_active_recurring: "仅显示 \"活动中\" 的续生合同"
   label_recurring: 续生周期
   label_cancel_recurring: 结束续生
   label_view_series: 查看系列

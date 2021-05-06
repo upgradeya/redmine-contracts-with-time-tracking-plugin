@@ -1,5 +1,6 @@
 class ContractsController < ApplicationController
-  before_filter :find_project, :authorize, :only => [:index, :show, :new, :create, :edit, :update, :destroy, 
+  #before_filter
+  before_action :find_project, :authorize, :only => [:index, :show, :new, :create, :edit, :update, :destroy, 
                                                      :add_time_entries, :assoc_time_entries_with_contract, :series]
   
   def index

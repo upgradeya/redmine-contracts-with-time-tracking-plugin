@@ -1,6 +1,6 @@
 class ContractsExpensesController < ApplicationController
-  before_filter :set_project, :authorize, :only => [:new, :edit, :update, :create, :destroy]
-  before_filter :set_expense, :only => [:edit, :update, :destroy]
+  before_action :set_project, :authorize, :only => [:new, :edit, :update, :create, :destroy]
+  before_action :set_expense, :only => [:edit, :update, :destroy]
 
   def new
     @contracts_expense = ContractsExpense.new

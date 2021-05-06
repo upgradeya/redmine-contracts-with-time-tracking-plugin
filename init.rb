@@ -36,7 +36,8 @@ Redmine::Plugin.register :contracts do
 end
 
 # Load your patches from contracts/lib/contracts/patches/
-ActionDispatch::Callbacks.to_prepare do
+# ActionDispatch::Callbacks.to_prepare do
+ActiveSupport::Reloader.to_prepare do
   Project.send(:include, Contracts::ProjectPatch)
   TimeEntry.send(:include, Contracts::TimeEntryPatch)
   TimelogController.send(:include, Contracts::TimelogControllerPatch)
